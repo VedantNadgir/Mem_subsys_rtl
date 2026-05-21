@@ -102,7 +102,7 @@ The `ADDR_WIDTH`-bit address from the requestor is decoded as follows:
 **Decision: Bank selection from low-order bits.**
 
 - **Option A (Low bits, committed):** `bank_sel  = addr[BANK_SEL_BITS-1 : 0]`
-- **Option A (Low bits, committed):** `bank_addr = addr[BANK_SEL_BITS + BANK_ADDR_BITS - 1 : BANK_SEL_BITS]`
+                                      `bank_addr = addr[BANK_SEL_BITS + BANK_ADDR_BITS - 1 : BANK_SEL_BITS]`
 - **Option B (High bits, rejected):** `bank_sel  = addr[BANK_SEL_BITS + BANK_ADDR_BITS - 1 : BANK_ADDR_BITS]`
 
 **Committed choice: Option A — low-order bits select the bank.**
