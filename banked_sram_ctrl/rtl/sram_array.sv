@@ -1,0 +1,20 @@
+module sram_array #(
+    parameter int DEPTH      = 256,
+    parameter int DATA_WIDTH = 32
+) (
+    input  logic                     clk,
+    input  logic                     rst_n,
+    input  logic                     we,
+    input  logic [$clog2(DEPTH)-1:0] addr,
+    input  logic [   DATA_WIDTH-1:0] wdata,
+    input  logic [DATA_WIDTH/8 -1:0] bwe,
+    output logic [   DATA_WIDTH-1:0] rdata
+);
+  logic [DATA_WIDTH-1:0] mem[0:DEPTH-1];
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (we) begin
+      for (int i = 0; i < DATA_WIDTH / 8; i++) if (bwe[i]) mem[addr][i*8+:8] <= wdata[i*8+:8];
+    end
+    rdata <= mem[addr];  //read register
+  end
+endmodule
