@@ -9,77 +9,60 @@ module sync_fifo #(
     input logic clk,
     input logic rst_n,
 
-    //Producer side (requestor --> FIFO queue)
-    input logic                  valid_in,
-    input logic [DATA_WIDTH-1:0] data_in,
-    input logic                  ready_out,
+    // Producer side
+    input  logic                  valid_in,
+    input  logic [DATA_WIDTH-1:0] data_in,
+    output logic                  ready_out,
 
-    //Consumer side (FIFO queue --> arbiter)
+    // Consumer side
     output logic                  valid_out,
     output logic [DATA_WIDTH-1:0] data_out,
-    output logic                  ready_in
+    input  logic                  ready_in
 );
 
-  localparam int ptr_width = $clog2(
-      QUEUE_DEPTH
-  ) + 1;  // Pointer width = $clog2(QUEUE_DEPTH) + 1 (extra bit for full/empty distinction)
+  localparam int ptr_width = $clog2(QUEUE_DEPTH) + 1;
   localparam int depth_width = $clog2(QUEUE_DEPTH);
 
   logic [DATA_WIDTH-1:0] fifo_mem[0:QUEUE_DEPTH-1];
-  logic [ptr_width-1:0] wr_ptr;
-  logic [ptr_width-1:0] rd_ptr;
-
-  logic [ptr_width-1:0] occupancy;
-  logic [ptr_width-1:0] nxt_occupancy;
-  logic empty;
-  logic full;
-  logic nxt_full;
-  logic wr_accept;
-  logic rd_accept;
+  logic [ptr_width-1:0] wr_ptr, rd_ptr;
+  logic [ptr_width-1:0] occupancy, nxt_occupancy;
+  logic empty, full, nxt_full;
+  logic wr_accept, rd_accept;
 
   assign occupancy = wr_ptr - rd_ptr;
-
   assign empty = (occupancy == '0);
-  assign full = (occupancy == ptr_width'(QUEUE_DEPTH)); //to match same bit length during comparision
+  assign full = (occupancy == ptr_width'(QUEUE_DEPTH));
+
   assign wr_accept = valid_in && ready_out;
   assign rd_accept = valid_out && ready_in;
 
-  assign nxt_occupancy = occupancy + ptr_width'(wr_accept) - ptr_width'(rd_accept); // After this cycle: add 1 if write, subtract 1 if read
+  assign nxt_occupancy = occupancy + ptr_width'(wr_accept) - ptr_width'(rd_accept);
   assign nxt_full = (nxt_occupancy == ptr_width'(QUEUE_DEPTH));
 
-  assign valid_out = !empty;
+  // Outputs
+  assign valid_out = ~empty;
+  assign ready_out = ~nxt_full;
+
+  always_comb begin
+    if (empty && wr_accept) begin
+      data_out = data_in;
+    end else begin
+      data_out = fifo_mem[rd_ptr[depth_width-1:0]];
+    end
+  end
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       wr_ptr <= '0;
       rd_ptr <= '0;
-      data_out <= '0;
-      ready_out <= 1'b1;  //ready to accept writes
     end else begin
-      //write side
       if (wr_accept) begin
         fifo_mem[wr_ptr[depth_width-1:0]] <= data_in;
         wr_ptr <= wr_ptr + 1'b1;
       end
-
-      //read side
       if (rd_accept) begin
         rd_ptr <= rd_ptr + 1'b1;
       end
-
-      if (rd_accept) begin
-        if ((occupancy == 1) && wr_accept) begin
-          data_out <= data_in;
-        end else if (occupancy > 1) begin
-          logic [ptr_width-1:0] rd_ptr_plus1 = rd_ptr + 1'b1;
-          data_out <= fifo_mem[rd_ptr_plus1[depth_width-1:0]];
-        end
-
-      end else if (empty && wr_accept) begin
-        data_out <= data_in;
-      end
-
-      ready_out <= !nxt_full;
     end
   end
 endmodule
