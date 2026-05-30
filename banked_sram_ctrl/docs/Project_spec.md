@@ -324,7 +324,7 @@ Per bank (NUM_BANKS instances):
 
 **General latency formulas (no stalls):**
 - Read latency = `PIPELINE_STAGES + 1` cycles from request handshake to response valid.
-- Write latency = `PIPELINE_STAGES` cycles from request handshake to write completion ack in response queue.
+- Write latency = `PIPELINE_STAGES + 1` cycles from request handshake to write completion ack in response queue.
 
 For `PIPELINE_STAGES = 2` (the locked default):
 
@@ -346,12 +346,6 @@ Cycle 2:   SRAM read data available. [PP1] register captures:
 Cycle 3:   Response placed into per-port response queue.
            Requestor sees valid response on this cycle if ready.
 ```
-
-**Total read latency at default PIPELINE_STAGES=2 (no conflicts, empty queues): 3 cycles.**
-
-**Total write latency at default PIPELINE_STAGES=2: 2 cycles.**
-
-> This is a *committed* latency for the no-conflict case. Any stall (conflict, backpressure) adds cycles on top of this base.
 
 ### 5.2 Pipeline Register Details
 
@@ -397,7 +391,7 @@ end
 
 ### 5.3 Pipeline Valid Tracking
 
-Each pipeline stage carries its own `valid` bit. This is **not** a global stall pipeline. Conflict stalls manifest as bubbles (valid = 0) in the pipeline rather than a freeze of all stages. This enables conflict-free requests to continue flowing through while a conflicted port is held.
+Each pipeline stage carries its own `valid` bit. This is **not** a global stall pipeline. Because each bank pipeline is independent, a conflict on Bank X stalls only the winning/losing ports' queues; banks Y and Z continue processing their own requests without interruption.
 
 ---
 
@@ -432,7 +426,7 @@ This means: if Port 0 targets Bank 0 and Port 1 targets Bank 1, both are granted
 
 ### 6.3 Arbitration Timing
 
-The arbiter is **combinatorial** — it looks at the heads of all request queues and produces a grant in the same cycle. The grant is registered by PP0. The arbiter has a maximum combinatorial depth of `O(log NUM_REQ_PORTS)` due to the priority mux.
+The arbiter is **combinatorial** — it looks at the heads of all request queues and produces a grant in the same cycle. The grant is registered by PP0. The arbiter has a maximum combinatorial depth of `O(log NUM_REQ_PORTS)` due to the priority mux. If **grant_ready** (from the Bank Scheduler / PP0 stage) is low, the arbiter must hold its grant decision and **grant_pkt** stable until **grant_ready** returns high.
 
 ---
 
@@ -476,7 +470,7 @@ The losing port holds its request at the head of its queue. The port's `ready` s
 > - Port P's request queue does **not** dequeue. R_P stays at the head.
 > - Port P's `priority_ptr` for bank B advances so that P has priority next cycle.
 > - No new request is drawn from port P's queue for bank B until R_P is granted.
-> - Port P's requests targeting **other banks** are unaffected and may proceed in parallel — the per-bank arbiters are independent.
+> - **Because each port has a single FIFP, losing arbitration for any banks stalls the **entire port** until that head request wins. Requestsbehind it - even to free banks - cannot be issued. This is head-of-line blocking cost of Option A**
 
 **Rationale:** Option A is the standard choice for a banked memory subsystem at this complexity level. It is fully implementable within the existing queue structure (no additional conflict queues needed), predictable in behavior, and verifiable with simple assertions. Head-of-line blocking is a real cost, but its impact is mitigated by:
 1. The bank interleaving policy (low-address-bit selection) distributes sequential traffic across banks, reducing the conflict probability.
@@ -506,8 +500,6 @@ ready[port] = (req_queue[port].occupancy < QUEUE_DEPTH)
 ```
 
 This is registered — `ready` reflects the queue state one cycle before. Specifically, the queue uses a **fall-through FIFO with registered output**, so `ready` is deasserted on the cycle when the last slot is filled (after the handshake that fills it). The requestor must respect `ready` on every cycle and must not issue when `ready == 0`.
-
-**Timing of `ready` deassertion:** `ready` goes low at the end of the cycle that completes the transaction filling the last slot. It goes high again at the end of the cycle that completes the transaction draining the first slot from a full queue. There is no dead cycle — the requestor sees ready go low and immediately high if a drain and fill happen simultaneously.
 
 **Important edge case:** `ready` deasserts one cycle *after* the filling transaction, meaning a requestor that presents a new request in that final cycle will see the transfer complete (valid && ready both high) but `ready` will go low on the next cycle. The requestor must inspect `ready` on the cycle it wants to issue, not a cycle ahead.
 
