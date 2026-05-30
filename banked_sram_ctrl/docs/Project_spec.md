@@ -923,3 +923,40 @@ banked_sram_ctrl (top)
 | Weighted round-robin | **Out of Scope** | No QoS requirement in v1.0 |
 | ECC (SECDED) | **Out of Scope** | ASIC hardening future work |
 | Multi-clock / CDC | **Out of Scope** | v1.0 is single-clock |
+# Appendix D: Performance Counter CSR Read Port
+
+## D.1 Interface Signals
+
+| Signal | Width | Direction | Description |
+|---|---|---|---|
+| `csr_req` | 1 | IN | Read strobe. Asserted for one cycle to request a counter value. |
+| `csr_addr` | `$clog2(NUM_COUNTERS)` | IN | Counter index. See §D.2 for decoding. |
+| `csr_rdata` | 32 | OUT | Counter value. Valid in the cycle **after** `csr_req`. |
+| `csr_ack` | 1 | OUT | Asserted when `csr_rdata` is valid (registered read). |
+
+## D.2 Address Map
+
+NUM_COUNTERS is defined as:
+
+```verilog
+localparam int NUM_COUNTERS = (2 * NUM_REQ_PORTS)                     // req_count + rsp_count
+                            + (NUM_BANKS * NUM_REQ_PORTS)             // conflict_count
+                            + NUM_REQ_PORTS                           // queue_full_count
+                            + NUM_BANKS;                              // idle_count
+```
+
+| Address Range | Counter | Flattening Formula |
+|---|---|---|
+| `0 … NUM_REQ_PORTS-1` | `req_count[port]` | `base = 0` |
+| `NUM_REQ_PORTS … 2*NUM_REQ_PORTS-1` | `rsp_count[port]` | `base = NUM_REQ_PORTS` |
+| `2*NUM_REQ_PORTS … 2*NUM_REQ_PORTS + (NUM_BANKS*NUM_REQ_PORTS) - 1` | `conflict_count[bank][port]` | `base = 2*NUM_REQ_PORTS + bank*NUM_REQ_PORTS + port` |
+| `… + NUM_REQ_PORTS` | `queue_full_count[port]` | `base = 2*NUM_REQ_PORTS + NUM_BANKS*NUM_REQ_PORTS` |
+| `… + NUM_BANKS` | `idle_count[bank]` | `base = 2*NUM_REQ_PORTS + NUM_BANKS*NUM_REQ_PORTS + NUM_REQ_PORTS` |
+
+## D.3 Timing and Behavior
+
+- **Read-only:** Writes to `csr_addr` are ignored (no decode).
+- **Registered read:** `csr_rdata` returns the counter value one cycle after `csr_req` is sampled high.
+- **Saturating:** All counters clamp at `32'hFFFF_FFFF` and do not wrap.
+- **Clear on reset:** All counters reset to `0` with `rst_n`.
+- **Non-intrusive:** The CSR port does **not** participate in request/response arbitration. It is a passive status window.
