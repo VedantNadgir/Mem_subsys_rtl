@@ -1,6 +1,6 @@
 package sram_ctrl_pkg;
 
-  // User Parameters (with Default Values)
+  // User Parameters (with Default Values) --> Override at instantiation
   parameter int NUM_BANKS = 4;
   parameter int BANK_DEPTH = 256;
   parameter int DATA_WIDTH = 32;
@@ -14,7 +14,7 @@ package sram_ctrl_pkg;
   localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);
   localparam int BANK_ADDR_BITS = $clog2(BANK_DEPTH);
   localparam int PORT_ID_BITS = $clog2(NUM_REQ_PORTS);
-  localparam int TOTAL_ID_BITS = ID_WIDTH + PORT_ID_BITS;
+  localparam int TOTAL_ID_BITS = ID_WIDTH + PORT_ID_BITS;  //txn id
   localparam int STROBE_WIDTH = DATA_WIDTH / 8;
 
   // Structs

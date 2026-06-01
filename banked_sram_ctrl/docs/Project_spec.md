@@ -63,7 +63,7 @@ All parameters are defined at the top of the top-level RTL module and propagated
 | `BANK_DEPTH` | `256` | 16–65536, power of 2 | Number of addressable rows per bank |
 | `DATA_WIDTH` | `32` | 8, 16, 32, 64, 128 | Width of the data bus in bits |
 | `ADDR_WIDTH` | `10` | ≥ `$clog2(NUM_BANKS) + $clog2(BANK_DEPTH)` | Word-address width presented by requestors (see Section 2.3) |
-| `NUM_REQ_PORTS` | `4` | 2 or 4 | Number of independent requestor interfaces |
+| `NUM_REQ_PORTS` | `4` | 2 - 8 | Number of independent requestor interfaces |
 | `QUEUE_DEPTH` | `4` | 2–16, power of 2 | Depth of each per-port request FIFO and response FIFO |
 | `PIPELINE_STAGES` | `2` | 1–4 | Number of pipeline registers between arbiter output and bank output |
 | `ID_WIDTH` | `4` | 1–8 | Width of transaction ID field per port |
