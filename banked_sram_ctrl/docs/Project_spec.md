@@ -63,9 +63,9 @@ All parameters are defined at the top of the top-level RTL module and propagated
 | `BANK_DEPTH` | `256` | 16–65536, power of 2 | Number of addressable rows per bank |
 | `DATA_WIDTH` | `32` | 8, 16, 32, 64, 128 | Width of the data bus in bits |
 | `ADDR_WIDTH` | `10` | ≥ `$clog2(NUM_BANKS) + $clog2(BANK_DEPTH)` | Word-address width presented by requestors (see Section 2.3) |
-| `NUM_REQ_PORTS` | `4` | 2 - 8 | Number of independent requestor interfaces |
+| `NUM_REQ_PORTS` | `4` | 1 - 8 | Number of independent requestor interfaces |
 | `QUEUE_DEPTH` | `4` | 2–16, power of 2 | Depth of each per-port request FIFO and response FIFO |
-| `PIPELINE_STAGES` | `2` | 1–4 | Number of pipeline registers between arbiter output and bank output |
+| `PIPELINE_STAGES` | `2` | `2` | Number of pipeline registers between arbiter output and bank output (FIXED)|
 | `ID_WIDTH` | `4` | 1–8 | Width of transaction ID field per port |
 
 ### 2.2 Derived Parameters (Not User-Set)
@@ -322,8 +322,6 @@ Per bank (NUM_BANKS instances):
 ## 5. Pipeline Architecture
 
 ### 5.1 Pipeline Stage Definitions
-
-`PIPELINE_STAGES` controls the number of pipeline registers between the arbiter and the bank output. The minimum is 1 (required for timing closure on SRAM access). The default is 2.
 
 **General latency formulas (no stalls):**
 - Read latency = `PIPELINE_STAGES + 1` cycles from request handshake to response valid.
@@ -717,22 +715,19 @@ The following rules are enforced via `initial begin ... $fatal` checks in RTL (s
 2. BANK_DEPTH must be a power of 2:
    assert (BANK_DEPTH & (BANK_DEPTH - 1)) == 0
 
-3. QUEUE_DEPTH must be a power of 2:
-   assert (QUEUE_DEPTH & (QUEUE_DEPTH - 1)) == 0
+3. NUM_REQ_PORTS must be between 1 and 8:
+   assert NUM_REQ_PORTS >= 1 && NUM_REQ_PORTS <= 8
 
-4. NUM_REQ_PORTS must be 2 or 4:
-   assert (NUM_REQ_PORTS == 2 || NUM_REQ_PORTS == 4)
-
-5. ADDR_WIDTH must be wide enough to hold both BANK_SEL and BANK_ADDR:
+4. ADDR_WIDTH must be wide enough to hold both BANK_SEL and BANK_ADDR:
    assert ADDR_WIDTH >= (BANK_SEL_BITS + BANK_ADDR_BITS)
 
-6. DATA_WIDTH must be a power of 2 between 8 and 128:
+5. DATA_WIDTH must be a power of 2 between 8 and 128:
    assert DATA_WIDTH inside {8, 16, 32, 64, 128}
 
-7. PIPELINE_STAGES must be between 1 and 4:
-   assert PIPELINE_STAGES >= 1 && PIPELINE_STAGES <= 4
+6. PIPELINE_STAGES must be 2:
+   assert PIPELINE_STAGES == 2
 
-8. ID_WIDTH must be between 1 and 8:
+7. ID_WIDTH must be between 1 and 8:
    assert ID_WIDTH >= 1 && ID_WIDTH <= 8
 ```
 
@@ -868,9 +863,6 @@ An out-of-range address is one where the upper unused bits are non-zero. When `A
 |---|---|---|
 | Read latency (no stall) | `PIPELINE_STAGES + 1` | **3 cycles at default PIPELINE_STAGES=2** |
 | Write latency (no stall) | `PIPELINE_STAGES` | **2 cycles at default PIPELINE_STAGES=2** |
-
-**Implication:** Anyone instantiating the block with a non-default `PIPELINE_STAGES` (e.g., 1 for a low-latency variant or 3–4 for a slower technology) would have used the wrong latency in their timing budgets or testbench scoreboard timers. The general formula makes the dependency explicit and allows the scoreboard to parameterize its expected completion cycle.
-
 ---
 
 ## Appendix A: Interface Signal Naming Convention

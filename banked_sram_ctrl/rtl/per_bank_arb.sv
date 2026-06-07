@@ -12,7 +12,8 @@ module per_bank_arb #(
     output logic [$clog2(NUM_REQ_PORTS)-1:0] grant_port,
 
     //Backpressure from downstream pipeline
-    input logic grant_ready
+    input logic grant_ready,
+    output logic [NUM_REQ_PORTS-1:0] conflict_mask
 );
   localparam int port_width = $clog2(NUM_REQ_PORTS);
   logic [port_width-1:0] priority_ptr;
@@ -41,6 +42,15 @@ module per_bank_arb #(
       if (!grant_port_nxt && req_valid[idx]) begin
         grant_port_nxt  = port_width'(idx);
         grant_valid_nxt = 1'b1;
+      end
+    end
+  end
+  //conflict mask: 1-hot of ports that presented a valid request but lost
+  always_comb begin
+    conflict_mask = '0;
+    if (contention) begin
+      for (int i = 0; i < NUM_REQ_PORTS; i++) begin
+        conflict_mask[i] = (req_valid[i] && grant_port_nxt != i);
       end
     end
   end

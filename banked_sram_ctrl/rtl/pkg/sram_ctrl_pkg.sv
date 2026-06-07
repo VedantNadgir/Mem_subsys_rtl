@@ -7,7 +7,6 @@ package sram_ctrl_pkg;
   parameter int ADDR_WIDTH = 10;
   parameter int NUM_REQ_PORTS = 4;
   parameter int QUEUE_DEPTH = 4;
-  parameter int PIPELINE_STAGES = 2;
   parameter int ID_WIDTH = 4;
 
   // Derived (localparam - do not Override)

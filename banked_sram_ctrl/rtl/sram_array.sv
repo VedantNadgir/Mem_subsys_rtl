@@ -13,7 +13,11 @@ module sram_array #(
   logic [DATA_WIDTH-1:0] mem[0:DEPTH-1];
   always_ff @(posedge clk) begin
     if (we) begin
-      for (int i = 0; i < DATA_WIDTH / 8; i++) if (bwe[i]) mem[addr][i*8+:8] <= wdata[i*8+:8];
+      for (int i = 0; i < DATA_WIDTH / 8; i++) begin
+        if (bwe[i]) begin
+          mem[addr][i*8+:8] <= wdata[i*8+:8];
+        end
+      end
     end
     rdata <= mem[addr];  //read register
   end
