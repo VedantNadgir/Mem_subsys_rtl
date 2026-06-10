@@ -102,7 +102,6 @@ module banked_sram_ctrl #(
   logic [NUM_BANKS-1:0] cnt_bank_idle;
   logic [NUM_REQ_PORTS-1:0] cnt_queue_full;
 
-  //---------//
   //Per port request queues
   genvar p;
   generate
