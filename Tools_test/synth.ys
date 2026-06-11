@@ -1,3 +1,0 @@
-read_verilog -sv counter.sv
-synth -top counter
-stat

@@ -5,3 +5,4 @@ matplotlib==3.9.0      # throughput / latency graphs
 pandas==2.2.2          # CSV parsing for simulation output
 numpy==1.26.4          # numerical analysis
 jupyter==1.0.0         # optional: interactive graph exploration
+dataclasses-json

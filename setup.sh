@@ -1,49 +1,130 @@
-#!/bin/bash
-# ─────────────────────────────────────────────────────────────
-# Mem_Subsystem_RTL — environment setup for macOS
-# Run once on a fresh machine: bash setup.sh
-# ─────────────────────────────────────────────────────────────
+#!/usr/bin/env bash
+# ============================================================
+# Mem_Subsystem_RTL Environment Setup
+#
+# Supported Platform:
+#   - macOS
+#
+# Installs:
+#   - Verilator
+#   - Verible
+#   - Yosys
+#   - Python3
+#
+# Usage:
+#   bash setup.sh
+# ============================================================
 
-set -e  # stop on first error
+set -e
 
-echo "── Checking Homebrew ──"
-if ! command -v brew &>/dev/null; then
-    echo "Homebrew not found. Install it from https://brew.sh then re-run."
+echo "===================================================="
+echo "Mem_Subsystem_RTL Setup"
+echo "===================================================="
+
+# ------------------------------------------------------------
+# Check Homebrew
+# ------------------------------------------------------------
+
+if ! command -v brew >/dev/null 2>&1; then
+    echo ""
+    echo "[ERROR] Homebrew not found."
+    echo "Install Homebrew first:"
+    echo "https://brew.sh"
     exit 1
 fi
-brew update --quiet
-
-echo "── Installing RTL toolchain ──"
-brew install verilator     # cycle-accurate SV simulator
-brew install verible       # SV linter + formatter
-brew install yosys         # open-source synthesis
-
-echo "── Installing build utilities ──"
-brew install make          # build orchestration (usually pre-installed)
-brew install git           # version control  (usually pre-installed)
-
-echo "── Installing Python analysis stack ──"
-brew install python3
-pip3 install -r requirements.txt --quiet
 
 echo ""
-echo "── Version check ──"
+echo "[INFO] Updating Homebrew..."
+brew update || true
+
+# ------------------------------------------------------------
+# RTL Toolchain
+# ------------------------------------------------------------
+
+echo ""
+echo "[INFO] Installing Verilator..."
+brew install verilator
+
+echo ""
+echo "[INFO] Installing Yosys..."
+brew install yosys
+
+echo ""
+echo "[INFO] Installing Python..."
+brew install python
+
+# ------------------------------------------------------------
+# Verible
+# ------------------------------------------------------------
+
+echo ""
+echo "[INFO] Installing Verible..."
+
+if ! brew tap | grep -q "chipsalliance/verible"; then
+    brew tap chipsalliance/verible
+fi
+
+brew install verible
+
+# ------------------------------------------------------------
+# Python Packages
+# ------------------------------------------------------------
+
+if [ -f requirements.txt ]; then
+    echo ""
+    echo "[INFO] Installing Python requirements..."
+    python3 -m pip install -r requirements.txt
+else
+    echo ""
+    echo "[WARN] requirements.txt not found. Skipping."
+fi
+
+# ------------------------------------------------------------
+# Tool Verification
+# ------------------------------------------------------------
+
+echo ""
+echo "===================================================="
+echo "Tool Versions"
+echo "===================================================="
+
+echo ""
 verilator --version
-verible-verilog-lint --version
+
+echo ""
 yosys --version
+
+echo ""
+verible-verilog-lint --version
+
+echo ""
 python3 --version
 
+# ------------------------------------------------------------
+# Basic Smoke Tests
+# ------------------------------------------------------------
+
 echo ""
-echo "── VSCode extensions (install manually or paste into terminal) ──"
-echo "code --install-extension eirikpre.systemverilog"
-echo "code --install-extension chipsalliance.verible-verilog"
-echo "code --install-extension wavetrace.wavetrace"
-echo "code --install-extension ms-python.python"
-echo "code --install-extension ms-python.jupyter"
-echo "code --install-extension eamodio.gitlens"
-echo "code --install-extension ms-vscode.makefile-tools"
-echo "code --install-extension hediet.vscode-drawio"
+echo "===================================================="
+echo "Running Smoke Tests"
+echo "===================================================="
+
+verilator --version >/dev/null
+yosys -p "help" >/dev/null
+verible-verilog-lint --version >/dev/null
+
 echo ""
-echo "Run the lines above to auto-install all VSCode extensions."
+echo "[PASS] Verilator OK"
+echo "[PASS] Yosys OK"
+echo "[PASS] Verible OK"
+
 echo ""
-echo "✓ Setup complete. Run 'make sim' in Tools_test/ to verify."
+echo "===================================================="
+echo "Recommended VSCode Extensions"
+echo "===================================================="
+
+echo "chipsalliance.verible-verilog"
+echo "wavetrace.wavetrace"
+
+echo ""
+echo "[SUCCESS] Setup complete."
