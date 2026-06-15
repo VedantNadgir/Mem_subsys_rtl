@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module banked_sram_ctrl #(
     parameter int NUM_BANKS = 4,
     parameter int BANK_DEPTH = 256,

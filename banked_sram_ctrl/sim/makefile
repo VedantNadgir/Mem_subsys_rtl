@@ -6,6 +6,17 @@
 
 include config.mk
 
+###############################################################################
+# Derived Variables
+###############################################################################
+
+TB_UNIT_DIR   := ../verif/unit
+TB_SYSTEM_DIR := ../verif/system
+
+TB_FILE := $(TB_UNIT_DIR)/tb_$(TEST).sv
+TOP     := tb_$(TEST)
+
+#Targets
 .PHONY: \
 	help \
 	build \
@@ -39,9 +50,17 @@ help:
 
 build:
 	@echo ""
-	@echo "[INFO] Testbench not implemented yet."
-	@echo "[INFO] Build target is currently a placeholder."
-	@echo ""
+	@echo "[BUILD] $(TEST)"
+	@mkdir -p $(LOG_DIR)
+	@mkdir -p $(WAVE_DIR)
+
+	$(VERILATOR) \
+		--binary \
+		--sv \
+		--trace \
+		-f filelist.f \
+		$(TB_FILE) \
+		--top-module $(TOP)
 
 ###############################################################################
 # Run
@@ -49,8 +68,14 @@ build:
 
 run:
 	@echo ""
-	@echo "[INFO] Simulation not implemented yet."
+	@echo "[RUN] $(TEST)"
+	@./$(BUILD_DIR)/V$(TOP) \
+		> $(LOG_DIR)/$(TEST).log 2>&1
+
 	@echo ""
+	@echo "[DONE]"
+	@echo "Log  : $(LOG_DIR)/$(TEST).log"
+	@echo "Wave : $(WAVE_DIR)/$(TEST).vcd"
 
 ###############################################################################
 # Sim
@@ -63,9 +88,7 @@ sim: build run
 ###############################################################################
 
 smoke:
-	@echo ""
-	@echo "[INFO] Smoke test not implemented yet."
-	@echo ""
+	@$(MAKE) sim TEST=req_fifo
 
 ###############################################################################
 # Regression
@@ -73,17 +96,23 @@ smoke:
 
 regress:
 	@echo ""
-	@echo "[INFO] Regression suite not implemented yet."
+	@echo "[REGRESSION]"
 	@echo ""
+
+	@$(MAKE) sim TEST=req_fifo
+	@$(MAKE) sim TEST=rsp_fifo
+	@$(MAKE) sim TEST=sram_array
+# 	@$(MAKE) sim TEST=rsp_mux
+	@$(MAKE) sim TEST=per_bank_arb
+# 	@$(MAKE) sim TEST=bank_scheduler
+# 	@$(MAKE) sim TEST=perf_counter
 
 ###############################################################################
 # Waveforms
 ###############################################################################
 
 wave:
-	@echo ""
-	@echo "[INFO] No waveform generated."
-	@echo ""
+	@code waves/$(TEST).vcd
 
 ###############################################################################
 # Clean

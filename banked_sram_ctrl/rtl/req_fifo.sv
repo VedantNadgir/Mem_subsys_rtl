@@ -1,5 +1,6 @@
 //request side fifo
 //Synchronous
+`timescale 1ns / 1ps
 
 module req_fifo #(
     parameter int DATA_WIDTH  = 64,  //Width of req_pkt_t
@@ -32,21 +33,17 @@ module req_fifo #(
 
   //Combinational head - memory read is async; rd_ptr maay advance in same cycle
   logic [ptr_width-1:0] nxt_rd_ptr;
-  assign nxt_rd_ptr = pop ? rd_ptr + 1'b1 : rd_ptr;
+  assign nxt_rd_ptr = (pop && !empty) ? rd_ptr + 1'b1 : rd_ptr;
   assign head_data = fifo_mem[nxt_rd_ptr];
   assign head_valid = (occupancy != 0);
-  assign full = (occupancy == QUEUE_DEPTH);
+  assign full = (32'(occupancy) == QUEUE_DEPTH);
   assign empty = (occupancy == 0);
 
   //Backpressure: requestor sees push_ready --> reflect NEXT cycle's capacity
   always_comb begin
-    case ({
-      push_valid && push_ready, pop
-    })
-      2'b10:   nxt_occupancy = occupancy + 1'b1;
-      2'b01:   nxt_occupancy = occupancy - 1'b1;
-      default: nxt_occupancy = occupancy;
-    endcase
+    nxt_occupancy = occupancy;
+    if (push_valid && push_ready) nxt_occupancy++;
+    if (pop && !empty) nxt_occupancy--;
   end
 
   always_ff @(posedge clk or negedge rst_n) begin
@@ -60,11 +57,11 @@ module req_fifo #(
         fifo_mem[wr_ptr] <= push_data;
         wr_ptr <= wr_ptr + 1'b1;
       end
-      if (pop) begin
+      if (pop && !empty) begin
         rd_ptr <= rd_ptr + 1'b1;
       end
       occupancy  <= nxt_occupancy;
-      push_ready <= (nxt_occupancy < QUEUE_DEPTH);
+      push_ready <= (32'(nxt_occupancy) < QUEUE_DEPTH);
     end
   end
 endmodule

@@ -2,13 +2,19 @@
 # Simulation Configuration
 ###############################################################################
 
-TOP       := banked_sram_ctrl
+# Verilator
+VERILATOR := verilator
 
-TRACE     := 1
-SEED      := 1
-
+# Build outputs
 BUILD_DIR := obj_dir
 LOG_DIR   := logs
 WAVE_DIR  := waves
 
-TIMEOUT   := 10000
+# Waveform generation
+TRACE ?= 1
+
+# Randomization seed
+SEED ?= 1
+
+# Test selection
+TEST ?= req_fifo

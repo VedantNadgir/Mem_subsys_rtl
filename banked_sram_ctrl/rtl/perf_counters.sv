@@ -9,7 +9,7 @@ module perf_counter #(
     //event strobes (1 cycle per event)
     input logic [NUM_REQ_PORTS-1:0] req_accept,  //request pushed to req_fifo
     input logic [NUM_REQ_PORTS-1:0] rsp_issue,  //response popped from rsp_fifo
-    input logic [NUM_BANKS-1:0][NUM_REQ_PORTS-1:0] conflicts,  //arbiter lost per bank/port
+    input logic [NUM_BANKS-1:0][NUM_REQ_PORTS-1:0] conflict,  //arbiter lost per bank/port
     input logic [NUM_REQ_PORTS-1:0] req_queue_full,
     input logic [NUM_BANKS-1:0] bank_idle,  //no req_valid for this bank this cycle
 

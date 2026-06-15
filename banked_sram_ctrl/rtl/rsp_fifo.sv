@@ -1,5 +1,6 @@
 //response side fifo
 //Synchronous
+`timescale 1ns / 1ps
 
 module rsp_fifo #(
     parameter int DATA_WIDTH  = 64,  //Wdith of rsp_pkt_t
@@ -28,9 +29,9 @@ module rsp_fifo #(
   logic [ptr_width-1:0] wr_ptr, rd_ptr;
   logic [ptr_width:0] occupancy;
 
-  assign push_ready = (occupancy < QUEUE_DEPTH);
+  assign push_ready = (32'(occupancy) < QUEUE_DEPTH);
   assign pop_valid = (occupancy != 0);
-  assign full = (occupancy == QUEUE_DEPTH);
+  assign full = (32'(occupancy) == QUEUE_DEPTH);
   assign empty = (occupancy == 0);
   assign pop_data = fifo_mem[rd_ptr];  // Registered output — rd_ptr flops address
 

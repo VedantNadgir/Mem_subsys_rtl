@@ -39,7 +39,7 @@ module per_bank_arb #(
     for (int i = 0; i < NUM_REQ_PORTS; i++) begin
       //NUM_REQ_PORTS need not be a power of 2; costs a bit of gates for modulo operation
       int idx = (priority_ptr + i) % NUM_REQ_PORTS;
-      if (!grant_port_nxt && req_valid[idx]) begin
+      if (!grant_valid_nxt && req_valid[idx]) begin
         grant_port_nxt  = port_width'(idx);
         grant_valid_nxt = 1'b1;
       end
