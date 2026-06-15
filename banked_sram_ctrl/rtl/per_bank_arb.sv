@@ -60,7 +60,7 @@ module per_bank_arb #(
     if (!rst_n) begin
       grant_port_q  <= '0;
       grant_valid_q <= 1'b0;
-    end else if (grant_valid || !grant_valid_q) begin
+    end else if (grant_valid_nxt || !grant_valid_q) begin
       grant_valid_q <= grant_valid_nxt;
       grant_port_q  <= grant_port_nxt;
     end
@@ -75,7 +75,7 @@ module per_bank_arb #(
       priority_ptr <= '0;
     end else begin
       if (grant_valid && grant_ready && contention) begin
-        priority_ptr <= (grant_port + 1'b1) % NUM_REQ_PORTS;
+          priority_ptr <= (grant_port_nxt + 1'b1) % NUM_REQ_PORTS;
       end
     end
   end
