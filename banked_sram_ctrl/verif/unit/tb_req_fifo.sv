@@ -1,3 +1,24 @@
+req_fifo.sv
+| ID | Feature | Signal(s) | Exact Condition | Expected Behavior |
+| --- | --- | --- | --- | --- |
+| R1 | Reset State | rst_n low → high | After 3+ cycles of rst_n=0 then deassert | wr_ptr=0, rd_ptr=0, occupancy=0, push_ready=1, empty=1, full=0, head_valid=0 |
+| R2 | Push Handshake | push_valid && push_ready | Rising clock edge with both high | Entry written to fifo_mem[wr_ptr], wr_ptr increments, occupancy increments by 1 |
+| R3 | Push Guard | push_valid=1 && push_ready=0 | Full FIFO | Write ignored. wr_ptr, fifo_mem, occupancy unchanged. |
+| R4 | Pop Operation | pop=1 && empty=0 | Rising clock edge | rd_ptr increments by 1, occupancy decrements by 1 |
+| R5 | Pop Guard | pop=1 && empty=1 | Empty FIFO | rd_ptr unchanged, occupancy unchanged (no underflow) |
+| R6 | Head Visibility | head_data, head_valid | Any cycle | head_data = fifo_mem[rd_ptr] (current head). head_valid = !empty. |
+| R6a | Fall-Through | head_data | Cycle where pop=1 && !empty | head_data immediately shows fifo_mem[rd_ptr+1] on the same cycle (combinational advance) so arbiter sees next entry for next arbitration |
+| R7 | Full Flag | full | occupancy == QUEUE_DEPTH | Asserted. Combinational (derived from flopped occupancy). |
+| R8 | Empty Flag | empty | occupancy == 0 | Asserted. Combinational. |
+| R9 | Registered Backpressure | push_ready | Every cycle | push_ready is a flop. It reflects nxt_occupancy < QUEUE_DEPTH. One-cycle delay from actual occupancy reaching full. |
+| R10 | Simultaneous Push+Pop | push_valid && push_ready && pop && !empty | Same cycle | wr_ptr and rd_ptr both increment. occupancy unchanged. push_ready reflects net change. |
+| R11 | Pointer Wraparound | wr_ptr, rd_ptr | After QUEUE_DEPTH increments | Wraps naturally because QUEUE_DEPTH is power of 2 and pointer width = $clog2(QUEUE_DEPTH) |
+| R12 | Occupancy Accuracy | occupancy | All operations | Must exactly equal (wr_ptr - rd_ptr) modulo QUEUE_DEPTH. Never negative, never exceeds QUEUE_DEPTH. |
+| R13 | Memory Persistence | fifo_mem | Between writes | Unwritten entries retain previous values. Pops do not clear memory. |
+
+
+
+
 `timescale 1ns / 1ps
 
 module tb_req_fifo;
