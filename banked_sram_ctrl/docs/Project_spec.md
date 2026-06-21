@@ -427,7 +427,7 @@ This means: if Port 0 targets Bank 0 and Port 1 targets Bank 1, both are granted
 
 ### 6.3 Arbitration Timing
 
-The arbiter is **combinatorial** — it looks at the heads of all request queues and produces a grant in the same cycle. The grant is registered by PP0. The arbiter has a maximum combinatorial depth of `O(log NUM_REQ_PORTS)` due to the priority mux. If **grant_ready** (from the Bank Scheduler / PP0 stage) is low, the arbiter must hold its grant decision and **grant_pkt** stable until **grant_ready** returns high.
+The arbiter is **combinatorial** — it looks at the heads of all request queues and produces a grant in the same cycle. The grant is registered by PP0. The arbiter has a maximum combinatorial depth of `O(log NUM_REQ_PORTS)` due to the priority mux. If **grant_ready** (from the Bank Scheduler / PP0 stage) is low, then the bank_scheduler's PP0 will hold its content. So the arbiter does not the hold mechanism so sudden request vector would cause the grant port to change.
 
 ---
 
