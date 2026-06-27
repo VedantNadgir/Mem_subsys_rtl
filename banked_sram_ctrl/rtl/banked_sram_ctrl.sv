@@ -38,7 +38,7 @@ module banked_sram_ctrl #(
     output logic [31:0] csr_rdata,
     output logic csr_ack
 );
-
+  import sram_ctrl_pkg::*;
   //Derived parameters
   localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);
   localparam int BANK_ADDR_BITS = $clog2(BANK_DEPTH);
@@ -50,14 +50,12 @@ module banked_sram_ctrl #(
   initial begin
     if ((NUM_BANKS & (NUM_BANKS - 1)) != 0) $fatal("NUM_BANKS must be a power of 2");
     if ((BANK_DEPTH & (BANK_DEPTH - 1)) != 0) $fatal("BANK_DEPTH must be power of 2");
-    //if ((QUEUE_DEPTH & (QUEUE_DEPTH - 1)) != 0) $fatal("QUEUE_DEPTH must be power of 2");
+    if ((QUEUE_DEPTH & (QUEUE_DEPTH - 1)) != 0) $fatal("QUEUE_DEPTH must be power of 2");
     if (NUM_REQ_PORTS < 1 || NUM_REQ_PORTS > 8) $fatal("NUM_REQ_PORTS out of range");
     if (ADDR_WIDTH < (BANK_SEL_BITS + BANK_ADDR_BITS)) $fatal("ADDR_WIDTH too small");
     if (!(DATA_WIDTH inside {8, 16, 32, 64, 128})) $fatal("DATA_WIDTH illegal");
     if (ID_WIDTH < 1 || ID_WIDTH > 8) $fatal("ID_WIDTH out of range");
   end
-
-  import sram_ctrl_pkg::*;
 
   //Flat arrays for FIFO datapaths (struct-based wiring)
   logic [NUM_REQ_PORTS-1:0] req_fifo_pop;
@@ -139,9 +137,8 @@ module banked_sram_ctrl #(
   genvar i;
   generate
     for (i = 0; i < NUM_BANKS; i++) begin : g_bank
-      integer x;
       always_comb begin
-        for (x = 0; x < NUM_REQ_PORTS; x++) begin
+        for (int x = 0; x < NUM_REQ_PORTS; x++) begin
           bank_req_valid[i][x] = req_fifo_head_valid[x] && (req_fifo_head_pkt[x].addr[BANK_SEL_BITS-1:0] == i);
         end
       end
@@ -162,8 +159,8 @@ module banked_sram_ctrl #(
       //this creates per-bank pop signals; we OR them outside the generate
       logic [NUM_REQ_PORTS-1:0] bank_pop;
       always_comb begin
-        for (x = 0; x < NUM_REQ_PORTS; x++) begin
-          bank_pop[x] = (arb_grant_valid[i] && arb_grant_ready[i] && (arb_grant_port[i] == x));
+        for (int a = 0; a < NUM_REQ_PORTS; a++) begin
+          bank_pop[a] = (arb_grant_valid[i] && arb_grant_ready[i] && (arb_grant_port[i] == a));
         end
       end
       assign bank_pop_array[i] = bank_pop;
@@ -227,11 +224,11 @@ module banked_sram_ctrl #(
 
   //OR reduce all per bank pops into per port req fifo pop
   always_comb begin
-    integer x, y;
-    for (x = 0; x < NUM_REQ_PORTS; x++) begin
-      req_fifo_pop[x] = '0;
+    integer z, y;
+    for (z = 0; z < NUM_REQ_PORTS; z++) begin
+      req_fifo_pop[z] = '0;
       for (y = 0; y < NUM_BANKS; y++) begin
-        req_fifo_pop[x] |= bank_pop_array[y][x];
+        req_fifo_pop[z] |= bank_pop_array[y][z];
       end
     end
   end
@@ -246,11 +243,11 @@ module banked_sram_ctrl #(
   logic [NUM_REQ_PORTS-1:0] mux_rsp_err;
 
   always_comb begin
-    for (i = 0; i < NUM_BANKS; i++) begin
-      mux_pp1_rdata[i] = pp1_rdata[i];
-      mux_pp1_id[i] = pp1_id[i];
-      mux_pp1_we[i] = pp1_we[i];
-      mux_pp1_err[i] = pp1_err[i];
+    for (int p = 0; p < NUM_BANKS; p++) begin
+      mux_pp1_rdata[p] = pp1_rdata[p];
+      mux_pp1_id[p] = pp1_id[p];
+      mux_pp1_we[p] = pp1_we[p];
+      mux_pp1_err[p] = pp1_err[p];
     end
   end
 
@@ -286,7 +283,7 @@ module banked_sram_ctrl #(
       assign cnt_rsp_issue[p] = rsp_valid[p] && rsp_ready[p];
 
       rsp_fifo #(
-          .DATA_WIDTH (DATA_WIDTH),
+          .DATA_WIDTH ($bits(rsp_pkt_t)),
           .QUEUE_DEPTH(QUEUE_DEPTH)
       ) u_rsp_fifo (
           .clk       (clk),

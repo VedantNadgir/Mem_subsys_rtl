@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 package sram_ctrl_pkg;
 
   // User Parameters (with Default Values) --> Override at instantiation

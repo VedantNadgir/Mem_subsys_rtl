@@ -32,14 +32,13 @@ module req_fifo #(
   logic [ptr_width:0] occupancy, nxt_occupancy;  //extra bit for full/empty logic
 
   //Combinational head - memory read is async; rd_ptr maay advance in same cycle
-  logic [ptr_width-1:0] nxt_rd_ptr;
-  assign nxt_rd_ptr = (pop && !empty) ? rd_ptr + 1'b1 : rd_ptr;
-  assign head_data = fifo_mem[nxt_rd_ptr];
+  //logic [ptr_width-1:0] nxt_rd_ptr;
+  //assign nxt_rd_ptr = (pop && !empty) ? rd_ptr + 1'b1 : rd_ptr;
+  assign head_data = fifo_mem[rd_ptr];  //fifo_mem[nxt_rd_ptr];
   assign head_valid = (occupancy != 0);
   assign full = (32'(occupancy) == QUEUE_DEPTH);
   assign empty = (occupancy == 0);
 
-  //Backpressure: requestor sees push_ready --> reflect NEXT cycle's capacity
   always_comb begin
     nxt_occupancy = occupancy;
     if (push_valid && push_ready) nxt_occupancy++;

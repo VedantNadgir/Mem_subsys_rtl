@@ -40,7 +40,7 @@ module perf_counter #(
     return en ? ((val == 32'hFFFF_FFFF) ? val : val + 1'b1) : val;
   endfunction
 
-  integer i, x;
+  integer i, b;
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       for (i = 0; i < N_counter; i++) counter[i] <= 32'd0;

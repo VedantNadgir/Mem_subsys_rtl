@@ -1,34 +1,17 @@
-req_fifo.sv
-| ID | Feature | Signal(s) | Exact Condition | Expected Behavior |
-| --- | --- | --- | --- | --- |
-| R1 | Reset State | rst_n low → high | After 3+ cycles of rst_n=0 then deassert | wr_ptr=0, rd_ptr=0, occupancy=0, push_ready=1, empty=1, full=0, head_valid=0 |
-| R2 | Push Handshake | push_valid && push_ready | Rising clock edge with both high | Entry written to fifo_mem[wr_ptr], wr_ptr increments, occupancy increments by 1 |
-| R3 | Push Guard | push_valid=1 && push_ready=0 | Full FIFO | Write ignored. wr_ptr, fifo_mem, occupancy unchanged. |
-| R4 | Pop Operation | pop=1 && empty=0 | Rising clock edge | rd_ptr increments by 1, occupancy decrements by 1 |
-| R5 | Pop Guard | pop=1 && empty=1 | Empty FIFO | rd_ptr unchanged, occupancy unchanged (no underflow) |
-| R6 | Head Visibility | head_data, head_valid | Any cycle | head_data = fifo_mem[rd_ptr] (current head). head_valid = !empty. |
-| R6a | Fall-Through | head_data | Cycle where pop=1 && !empty | head_data immediately shows fifo_mem[rd_ptr+1] on the same cycle (combinational advance) so arbiter sees next entry for next arbitration |
-| R7 | Full Flag | full | occupancy == QUEUE_DEPTH | Asserted. Combinational (derived from flopped occupancy). |
-| R8 | Empty Flag | empty | occupancy == 0 | Asserted. Combinational. |
-| R9 | Registered Backpressure | push_ready | Every cycle | push_ready is a flop. It reflects nxt_occupancy < QUEUE_DEPTH. One-cycle delay from actual occupancy reaching full. |
-| R10 | Simultaneous Push+Pop | push_valid && push_ready && pop && !empty | Same cycle | wr_ptr and rd_ptr both increment. occupancy unchanged. push_ready reflects net change. |
-| R11 | Pointer Wraparound | wr_ptr, rd_ptr | After QUEUE_DEPTH increments | Wraps naturally because QUEUE_DEPTH is power of 2 and pointer width = $clog2(QUEUE_DEPTH) |
-| R12 | Occupancy Accuracy | occupancy | All operations | Must exactly equal (wr_ptr - rd_ptr) modulo QUEUE_DEPTH. Never negative, never exceeds QUEUE_DEPTH. |
-| R13 | Memory Persistence | fifo_mem | Between writes | Unwritten entries retain previous values. Pops do not clear memory. |
-
-
-
-
+// tb_req_fifo.sv
 `timescale 1ns / 1ps
 
 module tb_req_fifo;
 
-  // ── Parameters ──
-  localparam int DATA_WIDTH  = 64;
+  // ============================================================
+  // Parameters
+  // ============================================================
+  localparam int DATA_WIDTH = 64;
   localparam int QUEUE_DEPTH = 4;
-  localparam int PTR_W       = $clog2(QUEUE_DEPTH);
 
-  // ── DUT Signals ──
+  // ============================================================
+  // DUT signals
+  // ============================================================
   logic                  clk;
   logic                  rst_n;
   logic                  push_valid;
@@ -40,364 +23,477 @@ module tb_req_fifo;
   logic                  full;
   logic                  empty;
 
-  // ── DUT Instantiation ──
+  // ============================================================
+  // Test variables
+  // ============================================================
+  logic [DATA_WIDTH-1:0] A, B, C, D;
+  logic [DATA_WIDTH-1:0] D0, D1, D2, D3, D4, D5, D6, D7;
+  logic [DATA_WIDTH-1:0] old_head;
+  logic [DATA_WIDTH-1:0] cap_data;
+  logic [DATA_WIDTH-1:0] exp_data;
+
+  int error_count = 0;
+  int test_id = 0;
+  // ============================================================
+  // DUT instantiation
+  // ============================================================
   req_fifo #(
-    .DATA_WIDTH (DATA_WIDTH),
-    .QUEUE_DEPTH(QUEUE_DEPTH)
+      .DATA_WIDTH (DATA_WIDTH),
+      .QUEUE_DEPTH(QUEUE_DEPTH)
   ) dut (
-    .clk       (clk),
-    .rst_n     (rst_n),
-    .push_valid(push_valid),
-    .push_ready(push_ready),
-    .push_data (push_data),
-    .head_valid(head_valid),
-    .head_data (head_data),
-    .pop       (pop),
-    .full      (full),
-    .empty     (empty)
+      .clk       (clk),
+      .rst_n     (rst_n),
+      .push_valid(push_valid),
+      .push_ready(push_ready),
+      .push_data (push_data),
+      .head_valid(head_valid),
+      .head_data (head_data),
+      .pop       (pop),
+      .full      (full),
+      .empty     (empty)
   );
+  // ============================================================
+  // Clock generation
+  // ============================================================
+  initial clk = 1'b0;
+  always #5 clk = ~clk;  //10ns period (5ns low + 5ns high)
 
-  // ── Clock ──
-  initial clk = 0;
-  always #5 clk = ~clk;  // 10ns period
-
-  // ── VCD ──
+  // ============================================================
+  // Wave dump / watchdog
+  // ============================================================
   initial begin
-    $dumpfile("req_fifo.vcd");
+    $dumpfile("waves/req_fifo.vcd");
     $dumpvars(0, tb_req_fifo);
   end
 
-  // ── Watchdog ──
   initial begin
-    #1500;
-    $display("[WATCHDOG] Timeout @ %0t", $time);
+    #2000ns;
+    $display("[ERROR] WATCHDOG EXPIRED @ time %0t", $time);
     $finish;
   end
-
-  // ── Test Tracking ──
-  int test_num = 0;
-  int err_cnt  = 0;
-
-  task automatic check(input bit cond, input string msg);
-    test_num++;
-    if (!cond) begin
-      $display("[FAIL] T%0d: %s @ %0t", test_num, msg, $time);
-      err_cnt++;
-    end else begin
-      $display("[PASS] T%0d: %s @ %0t", test_num, msg, $time);
-    end
-  endtask
-
-  // ── Helpers ──
-
-  // Reset DUT
-  task automatic do_reset();
-    rst_n = 0;
-    push_valid = 0;
-    push_data  = 0;
-    pop = 0;
-    repeat(3) @(posedge clk);
-    rst_n = 1;
-    @(posedge clk);
-  endtask
-
-  // Wait for N cycles
-  task automatic wait_cycles(int n);
-    repeat(n) @(posedge clk);
-  endtask
-
-  // Push one entry (blocks until accepted)
-  task automatic push_entry(input logic [DATA_WIDTH-1:0] data);
-    push_data  = data;
-    push_valid = 1'b1;
-    // Wait for handshake cycle
-    @(posedge clk);
-    while (!push_ready) @(posedge clk);
-    // Deassert
-    push_valid = 1'b0;
-    push_data  = '0;
-  endtask
-
-  // Pop one entry (pulse pop for 1 cycle)
-  task automatic pop_entry();
-    pop = 1'b1;
-    @(posedge clk);
-    pop = 1'b0;
-  endtask
-
-  // ── Shadow FIFO for Reference Checking ──
-  logic [DATA_WIDTH-1:0] shadow[$];
-  int exp_occ;  // expected occupancy
-
-  // ── Main Test Sequence ──
+  // ============================================================
+  // Reset
+  // ============================================================
   initial begin
-    logic [DATA_WIDTH-1:0] val, nxt, hd;
-    int i;
-
-    $display("\n========== REQ_FIFO TESTBENCH ==========\n");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 1: Reset State (R1)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 1: Reset State ---");
-    do_reset();
-    check(empty == 1'b1,      "T1: empty=1 after reset");
-    check(full == 1'b0,       "T1: full=0 after reset");
-    check(head_valid == 1'b0, "T1: head_valid=0 after reset");
-    check(push_ready == 1'b1, "T1: push_ready=1 after reset");
-    exp_occ = 0;
-
-    ////////////////////////////////////////////////////////////
-    // TEST 2: Single Push (R2, R6)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 2: Single Push ---");
-    val = 64'hA5A5_A5A5_A5A5_A5A5;
-    push_entry(val);
-    shadow.push_back(val);
-    exp_occ++;
-    wait_cycles(1);
-    check(empty == 1'b0,      "T2: empty=0 after one push");
-    check(head_valid == 1'b1, "T2: head_valid=1 after one push");
-    check(head_data == val,   "T2: head_data matches pushed value");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 3: Push-to-Full then Overflow Protection (R2, R7, R3, R9)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 3: Fill to Full & Overflow ---");
-    val = 64'h1111_1111_1111_1111; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h2222_2222_2222_2222; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h3333_3333_3333_3333; push_entry(val); shadow.push_back(val); exp_occ++;
-    // Now 4 entries total (QUEUE_DEPTH=4)
-    wait_cycles(1);
-    check(full == 1'b1,       "T3: full=1 when QUEUE_DEPTH entries present");
-    check(push_ready == 1'b0, "T3: push_ready=0 when full");
-    check(empty == 1'b0,      "T3: empty=0 when full");
-
-    // Try to push when full (should be ignored)
-    push_data  = 64'hFFFF_FFFF_FFFF_FFFF;
-    push_valid = 1'b1;
-    @(posedge clk);  // present overflow attempt
-    wait_cycles(1);
-    push_valid = 1'b0;
-    push_data  = '0;
-    check(full == 1'b1,       "T3: full stays 1 after overflow attempt");
-    check(push_ready == 1'b0, "T3: push_ready stays 0 after overflow");
-    // head_data should still be first entry (not corrupted)
-    check(head_data == shadow[0], "T3: head_data unchanged on overflow");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 4: FIFO Ordering (R2, R4, R12)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 4: FIFO Ordering ---");
-    // Drain what we have so far
-    while (!empty) begin
-      pop_entry();
-      void'(shadow.pop_front());
-      exp_occ--;
-      wait_cycles(1);
-    end
-    check(empty == 1'b1, "T4: drained to empty before ordering test");
-
-    // Push A, B, C, D
-    val = 64'hAAA0; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hBBB0; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hCCC0; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hDDD0; push_entry(val); shadow.push_back(val); exp_occ++;
-    wait_cycles(1);
-
-    // Pop in order A, B, C, D
-    for (i = 0; i < 4; i++) begin
-      check(head_data == shadow[0], $sformatf("T4: head_data is shadow[%0d] before pop", i));
-      check(head_valid == 1'b1,     $sformatf("T4: head_valid=1 before pop %0d", i));
-      pop_entry();
-      void'(shadow.pop_front());
-      exp_occ--;
-      wait_cycles(1);
-    end
-    check(empty == 1'b1, "T4: empty after draining all 4 entries in order");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 5: Pop on Empty (R5)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 5: Pop on Empty ---");
-    check(empty == 1'b1,  "T5: empty=1 before pop-on-empty test");
-    hd = head_data;       // capture current head
-    pop_entry();
-    wait_cycles(1);
-    check(empty == 1'b1,  "T5: empty stays 1 after pop-on-empty");
-    check(head_valid == 1'b0, "T5: head_valid stays 0 after pop-on-empty");
-    check(head_data == hd,"T5: head_data unchanged after pop-on-empty");
-    ////////////////////////////////////////////////////////////
-    // TEST 6: Simultaneous Push + Pop (R10)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 6: Simultaneous Push+Pop ---");
-    // Start empty, push X, Y
-    val = 64'hXXXX_XXXX_XXXX_XXXX; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hYYYY_YYYY_YYYY_YYYY; push_entry(val); shadow.push_back(val); exp_occ++;
-    wait_cycles(1);
-    check(head_data == 64'hXXXX_XXXX_XXXX_XXXX, "T6: head is X before simultaneous op");
-
-    // Now in one cycle: pop X AND push Z
-    push_data  = 64'hZZZZ_ZZZZ_ZZZZ_ZZZZ;
-    push_valid = 1'b1;
-    pop        = 1'b1;
-    @(posedge clk);  // handshake cycle
-    // After this cycle: X popped, Z pushed
-    // Net occupancy unchanged
+    rst_n      = 1'b0;
     push_valid = 1'b0;
     push_data  = '0;
     pop        = 1'b0;
-    wait_cycles(1);
-
-    // Shadow update: pop X, push Z
-    void'(shadow.pop_front());
-    shadow.push_back(64'hZZZZ_ZZZZ_ZZZZ_ZZZZ);
-    check(head_data == 64'hYYYY_YYYY_YYYY_YYYY,
-          "T6: after pop+push, head is Y (fall-through)");
-    check(occupancy_logic_correct(), "T6: occupancy unchanged after simultaneous push+pop");
-
-    // Pop Y
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);
-    // Pop Z
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);
-    check(empty == 1'b1, "T6: empty after draining");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 7: Fall-Through Head Visibility (R6a)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 7: Fall-Through Head Visibility ---");
-    val = 64'hAAAA_AAAA_AAAA_AAAA; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hBBBB_BBBB_BBBB_BBBB; push_entry(val); shadow.push_back(val); exp_occ++;
-    wait_cycles(1);
-    check(head_data == 64'hAAAA_AAAA_AAAA_AAAA, "T7: head=A with 2 entries");
-
-    // Assert pop but DO NOT wait for next cycle yet
-    pop = 1'b1;
-    @(negedge clk);  // mid-cycle check: fall-through visible immediately
-    // Note: negedge sampling is intentional to see combinational update
-    check(head_data == 64'hBBBB_BBBB_BBBB_BBBB,
-          "T7: fall-through head shows B during pop cycle (combinational)");
-    pop = 1'b0;
-    wait_cycles(1);
-    check(head_data == 64'hBBBB_BBBB_BBBB_BBBB,
-          "T7: after pop posedge, head still B");
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);
-    check(empty == 1'b1, "T7: empty after draining");
-    ////////////////////////////////////////////////////////////
-    // TEST 8: Pointer Wraparound (R11)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 8: Pointer Wraparound ---");
-    // Push 4, Pop 2, Push 2 more (wr_ptr wraps)
-    val = 64'h0000; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h0001; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h0002; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h0003; push_entry(val); shadow.push_back(val); exp_occ++;
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);  // pop 0000
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);  // pop 0001
-    // Now wr_ptr=0 (wrapped), rd_ptr=2, occupancy=2
-    val = 64'h0004; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'h0005; push_entry(val); shadow.push_back(val); exp_occ++;
-    wait_cycles(1);
-    // Should be able to read 0002, 0003, 0004, 0005 in order
-    for (i = 0; i < 4; i++) begin
-      check(head_data == shadow[0],
-            $sformatf("T8: wraparound ordering correct at step %0d", i));
-      pop_entry(); void'(shadow.pop_front()); wait_cycles(1);
-    end
-    check(empty == 1'b1, "T8: empty after wraparound drain");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 9: Back-to-Back Push then Back-to-Back Pop (Stress)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 9: Back-to-Back Stress ---");
-    for (i = 0; i < QUEUE_DEPTH; i++) begin
-      val = 64'h1000 + i;
-      push_entry(val);
-      shadow.push_back(val);
-    end
-    wait_cycles(1);
-    for (i = 0; i < QUEUE_DEPTH; i++) begin
-      check(head_data == (64'h1000 + i),
-            $sformatf("T9: back-to-back pop ordering step %0d", i));
-      pop_entry();
-      void'(shadow.pop_front());
-      wait_cycles(1);
-    end
-    check(empty == 1'b1, "T9: empty after stress drain");
-////////////////////////////////////////////////////////////
-    // TEST 10: Push-Ready Registered Timing (R9)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 10: push_ready Registered Timing ---");
-    // push_ready is a flop. When we fill the last slot, push_ready should
-    // deassert ONE cycle AFTER the handshake that filled it.
-    do_reset();
-    exp_occ = 0;
-    val = 64'hF001; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hF002; push_entry(val); shadow.push_back(val); exp_occ++;
-    val = 64'hF003; push_entry(val); shadow.push_back(val); exp_occ++;
-    // At this point occupancy=3, push_ready should still be 1
-    wait_cycles(1);
-    check(push_ready == 1'b1, "T10: push_ready=1 with 3 entries (room for 1 more)");
-    // Push the 4th entry
-    val = 64'hF004;
-    push_data  = val;
-    push_valid = 1'b1;
-    @(posedge clk);  // handshake on this edge: occupancy becomes 4
-    // push_ready is a flop: at THIS moment it still reflects nxt_occupancy from BEFORE this edge
-    // After this edge, nxt_occupancy=4, so on NEXT cycle push_ready=0
-    push_valid = 1'b0;
-    push_data  = '0;
-    wait_cycles(1);
-    check(full == 1'b1,       "T10: full=1 after 4th push");
-    check(push_ready == 1'b0, "T10: push_ready=0 one cycle after final fill");
-    check(empty == 1'b0,      "T10: not empty at full");
-
-    // Drain one, push_ready should return after 1 cycle delay
-    pop_entry(); void'(shadow.pop_front()); wait_cycles(1);
-    check(push_ready == 1'b1, "T10: push_ready=1 one cycle after drain from full");
-    check(full == 1'b0,       "T10: full=0 after drain");
-
-    ////////////////////////////////////////////////////////////
-    // TEST 11: Pop while Holding push_valid High (R2, R4)
-    ////////////////////////////////////////////////////////////
-    $display("\n--- TEST 11: Pop while push_valid held high ---");
-    do_reset();
-    // push_valid might be held unintentionally by requestor
-    push_data  = 64'hBEEF_BEEF_BEEF_BEEF;
-    push_valid = 1'b1;
-    @(posedge clk);
-    while (!push_ready) @(posedge clk);
-    // One entry in. Now pop it while push_valid accidentally stays high
-    // (push_data is X - we don't care since push_ready should not be asserted now... wait)
-    // Actually after push, if we don't drive new data, but push_valid stays high,
-    // and if push_ready is still 1, it would push X on next cycle!
-    // So requestor must deassert valid after handshake. We just verify:
-    push_valid = 1'b0;
-    push_data  = '0;
-    wait_cycles(1);
-    pop_entry(); wait_cycles(1);
-    check(empty == 1'b1, "T11: empty after single push+pop");
-
-    ////////////////////////////////////////////////////////////
-    // SUMMARY
-    ////////////////////////////////////////////////////////////
-    $display("\n========================================");
-    if (err_cnt == 0) begin
-      $display("ALL %0d TESTS PASSED", test_num);
-    end else begin
-      $display("%0d OF %0d TESTS FAILED", err_cnt, test_num);
-    end
-    $display("========================================\n");
-    $finish;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
   end
 
-  // ── Occupancy helper for simultaneous push+pop check ──
-  function automatic bit occupancy_logic_correct();
-    // We don't have direct access to internal occupancy, but we can infer from flags
-    // After simultaneous push+pop from non-empty non-full, occupancy should be unchanged
-    // Since we started with 2, pushed 1, popped 1 -> should still have 2
-    // But we already popped one earlier... let me fix this in the task above
-    return 1'b1;  // Simplified: the ordering check above already validates this
-  endfunction
+  // ============================================================
+  // Helpers
+  // ============================================================
+  task automatic check(input bit cond, input string msg);
+    if (!cond) begin
+      $display("[ERROR] Test %0d: %s @ time %0t", test_id, msg, $time);
+      error_count++;
+    end else begin
+      $display("[OK]    Test %0d: %s @ time %0t", test_id, msg, $time);
+    end
+  endtask
 
+  task automatic idle_cycle();
+    @(posedge clk);
+    push_valid = 1'b0;
+    push_data  = '0;
+    pop        = 1'b0;
+  endtask
+
+  task automatic push_1(input logic [DATA_WIDTH-1:0] data);
+    push_data  = data;
+    push_valid = 1'b1;
+    @(posedge clk);
+    push_valid = 1'b0;
+    push_data  = '0;
+  endtask
+
+  task automatic pop_1();
+    pop = 1'b1;
+    @(posedge clk);
+    $display("AFTER DEASSERT: pop=%0b rd_ptr=%0d head=%h", pop, dut.rd_ptr, head_data);
+    pop = 1'b0;
+    $display("AFTER DEASSERT: pop=%0b rd_ptr=%0d head=%h", pop, dut.rd_ptr, head_data);
+  endtask
+
+  task automatic sample_next_cycle();
+    @(posedge clk);
+  endtask
+  // ============================================================
+  // Test 1: Reset
+  // ============================================================
+  task automatic tc_rf_01_reset();
+    test_id = 1;
+    $display("\n=== TC_RF_01: Reset State Correctness ===");
+    // The testbench already waited for reset deassertion before calling this task.
+    check(push_ready == 1'b1, "push_ready should be 1 after reset");
+    check(head_valid == 1'b0, "head_valid should be 0 after reset");
+    check(full == 1'b0, "full should be 0 after reset");
+    check(empty == 1'b1, "empty should be 1 after reset");
+  endtask
+
+  // ============================================================
+  // Test 2: Single push
+  // ============================================================
+  task automatic tc_rf_02_single_push();
+    test_id = 2;
+    $display("\n=== TC_RF_02: Single Push ===");
+    A = 64'h0000_0000_0000_00AB;
+    push_1(A);
+    sample_next_cycle();
+    check(head_valid == 1'b1, "head_valid should be 1 one cycle after push");
+    check(head_data == A, "head_data should match pushed data");
+    check(push_ready == 1'b1, "push_ready should remain 1 with occupancy below full");
+  endtask
+  // ============================================================
+  // Test 3: Fill to full
+  // ============================================================
+  task automatic tc_rf_03_fill_to_full();
+    test_id = 3;
+    $display("\n=== TC_RF_03: Fill to Full ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    D0 = 64'h0;
+    D1 = 64'h1;
+    D2 = 64'h2;
+    D3 = 64'h3;
+
+    push_1(D0);
+    check(push_ready == 1'b1, "push_ready should be 1 during first push");
+    push_1(D1);
+    check(push_ready == 1'b1, "push_ready should be 1 during second push");
+    push_1(D2);
+    check(push_ready == 1'b1, "push_ready should be 1 during third push");
+    push_1(D3);
+    check(push_ready == 1'b0, "push_ready should be 0 on the last accepted push cycle");
+    push_valid = 1'b0;
+    push_data  = '0;
+
+    sample_next_cycle();
+    check(full == 1'b1, "full should be 1 one cycle after 4th push");
+    check(push_ready == 1'b0, "push_ready should deassert one cycle after queue becomes full");
+  endtask
+  // ============================================================
+  // Test 4: Push blocked when full
+  // ============================================================
+  task automatic tc_rf_04_push_blocked_when_full();
+    test_id = 4;
+    $display("\n=== TC_RF_04: Push Blocked When Full ===");
+    old_head   = head_data;
+    push_data  = 64'h0000_0000_0000_DEAD;
+    push_valid = 1'b1;
+    @(posedge clk);
+    push_valid = 1'b0;
+    push_data  = '0;
+    @(posedge clk);
+    check(head_data != 64'h0000_0000_0000_DEAD,
+          "head_data should not be overwritten by blocked push");
+  endtask
+
+  // ============================================================
+  // Test 5: Pop from full, ready recovers later
+  // ============================================================
+  task automatic tc_rf_05_pop_from_full_ready_recovers();
+    test_id = 5;
+    $display("\n=== TC_RF_05: Pop from Full ===");
+    // Must still be full from TC_RF_03 / TC_RF_04
+    check(full == 1'b1, "FIFO should be full at start of TC_RF_05");
+    check(push_ready == 1'b0, "push_ready should be 0 while full");
+    pop_1();
+    check(push_ready == 1'b1, "push_ready should remain 1 in the pop cycle from full");
+    sample_next_cycle();
+    check(push_ready == 1'b1, "push_ready should recover one cycle after pop");
+  endtask
+
+  // ============================================================
+  // Test 6: Combinational fall-through on pop
+  // ============================================================
+  task automatic tc_rf_06_fallthrough_on_pop();
+    test_id = 6;
+    $display("\n=== TC_RF_06: head_data Combinational Fall-Through ===");
+    // Rebuild known state with A=0x11, B=0x22
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    A = 64'h11;
+    B = 64'h22;
+    push_1(A);
+    sample_next_cycle();
+    push_1(B);
+    sample_next_cycle();
+
+    check(head_data == A, "head_data should initially point to A");
+    // pop_1();
+    pop = 1'b1;
+    #1;
+    check(head_data == B, "head_data should switch combinationally to B when pop is asserted");
+    @(posedge clk);
+    pop = 1'b0;
+    sample_next_cycle();
+    check(head_data == B, "head_data should remain B after pop clock edge");
+  endtask
+  // ============================================================
+  // Test 7: head_valid deasserts after last pop
+  // ============================================================
+  task automatic tc_rf_07_head_valid_deasserts_after_last_pop();
+    test_id = 7;
+    $display("\n=== TC_RF_07: head_valid Deasserts One Cycle After Last Pop ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    push_1(64'h55);
+    sample_next_cycle();
+    check(head_valid == 1'b1, "head_valid should be 1 with one entry present");
+    pop = 1'b1;
+    check(head_valid == 1'b1, "head_valid should still be 1 in same cycle as pop");
+    @(posedge clk);
+    pop = 1'b0;
+    sample_next_cycle();
+    check(head_valid == 1'b0, "head_valid should deassert one cycle after last pop");
+    check(empty == 1'b1, "empty should be 1 after last pop");
+  endtask
+  // ============================================================
+  // Test 8: Simultaneous push+pop at occupancy=1
+  // ============================================================
+  task automatic tc_rf_08_simul_push_pop_occ1();
+    test_id = 8;
+    $display("\n=== TC_RF_08: Simultaneous Push+Pop at occupancy=1 ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    A = 64'hAA;
+    B = 64'hBB;
+    push_1(A);
+    sample_next_cycle();
+    check(head_data == A, "head_data should be A before simultaneous push+pop");
+
+    push_data  = B;
+    push_valid = 1'b1;
+    pop        = 1'b1;
+    #1;
+    check(head_data == B, "head_data should switch combinationally to B in same cycle");
+    check(push_ready == 1'b1, "push_ready should stay 1");
+    @(posedge clk);
+    push_valid = 1'b0;
+    pop        = 1'b0;
+    sample_next_cycle();
+    check(head_valid == 1'b1, "head_valid should remain 1 after simultaneous push+pop");
+    check(head_data == B, "head_data should be B after the cycle");
+  endtask
+
+  // ============================================================
+  // Test 9: Simultaneous push+pop near-full
+  // ============================================================
+  task automatic tc_rf_09_simul_push_pop_near_full();
+    test_id = 9;
+    $display("\n=== TC_RF_09: Simultaneous Push+Pop Near-Full ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    push_1(64'h1);
+    push_1(64'h2);
+    push_1(64'h3);
+    sample_next_cycle();
+    check(push_ready == 1'b1, "push_ready should remain 1 at occupancy=3");
+
+    push_data  = 64'hCC;
+    push_valid = 1'b1;
+    pop        = 1'b1;
+    #1;
+    check(push_ready == 1'b1, "push_ready should not transiently deassert");
+    @(posedge clk);
+    push_valid = 1'b0;
+    pop        = 1'b0;
+    sample_next_cycle();
+    check(push_ready == 1'b1, "push_ready should remain 1 after simultaneous push+pop near-full");
+    check(full == 1'b0, "full should remain 0");
+  endtask
+  // ============================================================
+  // Test 10: Pop when empty
+  // ============================================================
+  task automatic tc_rf_10_pop_when_empty();
+    test_id = 10;
+    $display("\n=== TC_RF_10: Pop When Empty ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    check(empty == 1'b1, "empty should be 1 after reset");
+    pop = 1'b1;
+    @(posedge clk);
+    pop = 1'b0;
+    sample_next_cycle();
+    check(empty == 1'b1, "empty should remain 1 after pop on empty");
+    check(head_valid == 1'b0, "head_valid should remain 0 after pop on empty");
+  endtask
+
+  // ============================================================
+  // Test 11: Pointer wrap-around
+  // ============================================================
+  task automatic tc_rf_11_pointer_wrap();
+    test_id = 11;
+    $display("\n=== TC_RF_11: Pointer Wrap-Around Integrity ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    D0 = 64'h10;
+    D1 = 64'h20;
+    D2 = 64'h30;
+    D3 = 64'h40;
+    D4 = 64'h50;
+    D5 = 64'h60;
+    D6 = 64'h70;
+    D7 = 64'h80;
+
+    push_1(D0);
+    push_1(D1);
+    push_1(D2);
+    push_1(D3);
+    sample_next_cycle();
+
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D1, "Pop order should preserve D1");
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D2, "Pop order should preserve D2");
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D3, "Pop order should preserve D3");
+    pop_1();
+    sample_next_cycle();
+    check(empty == 1'b1, "FIFO should be empty after first 4 pops");
+
+    push_1(D4);
+    push_1(D5);
+    push_1(D6);
+    push_1(D7);
+    sample_next_cycle();
+
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D5, "Wrap pop order should preserve D5");
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D6, "Wrap pop order should preserve D6");
+    pop_1();
+    sample_next_cycle();
+    check(head_data == D7, "Wrap pop order should preserve D7");
+    pop_1();
+    sample_next_cycle();
+    check(empty == 1'b1, "FIFO should be empty after second drain");
+  endtask
+
+  // ============================================================
+  // Test 12: Last-slot critical edge case
+  // ============================================================
+  task automatic tc_rf_12_last_slot_edge();
+    test_id = 12;
+    $display("\n=== TC_RF_12: Last-Slot Critical Edge Case ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n = 1'b1;
+    push_valid = 1'b0;
+    pop = 1'b0;
+    @(posedge clk);
+
+    push_1(64'h0);
+    push_1(64'h1);
+    push_1(64'h2);
+    sample_next_cycle();
+
+    push_data  = 64'hFE;
+    push_valid = 1'b1;
+    check(push_ready == 1'b1, "push_ready should still be 1 in the last-slot cycle");
+    @(posedge clk);
+    push_valid = 1'b0;
+    push_data  = '0;
+    sample_next_cycle();
+    check(full == 1'b1, "full should assert one cycle after last-slot push");
+    check(head_data == 64'h0, "first entry should not be lost");
+  endtask
+  // ============================================================
+  // Test 13: No combinational push_valid -> push_ready dependency
+  // ============================================================
+  task automatic tc_rf_13_no_comb_path();
+    test_id = 13;
+    $display("\n=== TC_RF_13: No Combinational push_valid -> push_ready Dependency ===");
+    rst_n = 1'b0;
+    repeat (1) @(posedge clk);
+    rst_n      = 1'b1;
+    push_valid = 1'b0;
+    push_data  = '0;
+    pop        = 1'b0;
+    @(posedge clk);
+
+    check(push_ready == 1'b1, "push_ready should start at 1");
+    push_valid = 1'b1;
+    #1;
+    check(push_ready == 1'b1,
+          "push_ready should not change combinationally when push_valid toggles high");
+    push_valid = 1'b0;
+    #1;
+    check(push_ready == 1'b1,
+          "push_ready should not change combinationally when push_valid toggles low");
+    @(posedge clk);
+    check(push_ready == 1'b1, "push_ready should only change on clock edges");
+  endtask
+
+  // ============================================================
+  // Main sequence
+  // ============================================================
+  initial begin
+    @(posedge rst_n);
+    @(posedge clk);
+
+    tc_rf_01_reset();
+    tc_rf_02_single_push();
+    tc_rf_03_fill_to_full();
+    tc_rf_04_push_blocked_when_full();
+    tc_rf_05_pop_from_full_ready_recovers();
+    tc_rf_06_fallthrough_on_pop();
+    tc_rf_07_head_valid_deasserts_after_last_pop();
+    tc_rf_08_simul_push_pop_occ1();
+    tc_rf_09_simul_push_pop_near_full();
+    tc_rf_10_pop_when_empty();
+    tc_rf_11_pointer_wrap();
+    tc_rf_12_last_slot_edge();
+    tc_rf_13_no_comb_path();
+
+    $display("\n=== TESTBENCH SUMMARY ===");
+    if (error_count == 0) $display("ALL TESTS PASSED");
+    else $display("%0d TEST(S) FAILED", error_count);
+
+    $finish;
+  end
 endmodule

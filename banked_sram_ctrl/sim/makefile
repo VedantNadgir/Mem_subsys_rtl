@@ -88,7 +88,7 @@ sim: build run
 ###############################################################################
 
 smoke:
-	@$(MAKE) sim TEST=req_fifo
+	@$(MAKE) sim TEST= $(TEST)
 
 ###############################################################################
 # Regression
@@ -102,10 +102,10 @@ regress:
 	@$(MAKE) sim TEST=req_fifo
 	@$(MAKE) sim TEST=rsp_fifo
 	@$(MAKE) sim TEST=sram_array
-# 	@$(MAKE) sim TEST=rsp_mux
+	@$(MAKE) sim TEST=rsp_mux
 	@$(MAKE) sim TEST=per_bank_arb
-# 	@$(MAKE) sim TEST=bank_scheduler
-# 	@$(MAKE) sim TEST=perf_counter
+	@$(MAKE) sim TEST=bank_scheduler
+	@$(MAKE) sim TEST=perf_counter
 
 ###############################################################################
 # Waveforms

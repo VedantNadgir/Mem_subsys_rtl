@@ -3,7 +3,6 @@ module per_bank_arb #(
 ) (
     input logic clk,
     input logic rst_n,
-
     //Request vector from top level (alr bank filtered)
     input logic [NUM_REQ_PORTS-1:0] req_valid,
 
@@ -16,67 +15,52 @@ module per_bank_arb #(
     output logic [NUM_REQ_PORTS-1:0] conflict_mask
 );
   localparam int port_width = $clog2(NUM_REQ_PORTS);
-  logic [port_width-1:0] priority_ptr;
-  logic contention;  //multiple requests
+  logic [port_width-1:0] ptr;
+  logic contention;
+  always_comb contention = ($countones(req_valid) > 1);
+  //Rotate --> Priority encode --> Rotate (Modified RR)
+  //Step 1: rotate req_valid right by priority_ptr
+  //Step 2: priority encode - isolate lowest set bit of rotate r exactly 1 bit set in priority_out (winner in rotated space)
+  //Step 3: rotate priority_out left by ptr, grant = 1 hot winner in original port numbering
+  logic [NUM_REQ_PORTS-1:0] tmp_r, rotate_r;
+  logic [NUM_REQ_PORTS-1:0] priority_out;
+  logic [NUM_REQ_PORTS-1:0] grant, tmp_l;
 
-  //Detect Contention (if >1 req) so we only rotate pointer when true arbitration occurs
+  assign {tmp_r, rotate_r} = ({2{req_valid}} >> ptr);
+  assign priority_out = rotate_r & ~(rotate_r - 1'b1);
+  assign {grant, tmp_l} = ({2{priority_out}} << ptr);
+
+  //1 hot grant --> binary grant port
   always_comb begin
-    contention = ($countones(req_valid) > 1);
-  end
-
-  //Combinational next-state
-  logic grant_valid_nxt;
-  logic [port_width-1:0] grant_port_nxt;
-
-  //Registered output (held when grant_ready=0)
-  logic grant_valid_q;
-  logic [port_width-1:0] grant_port_q;
-
-  //Combinational priority search: start at priority_ptr, wrap around
-  always_comb begin
-    grant_port_nxt  = '0;
-    grant_valid_nxt = 1'b0;
+    grant_valid = |grant;
+    grant_port  = '0;
     for (int i = 0; i < NUM_REQ_PORTS; i++) begin
-      //NUM_REQ_PORTS need not be a power of 2; costs a bit of gates for modulo operation
-      int idx = (priority_ptr + i) % NUM_REQ_PORTS;
-      if (!grant_valid_nxt && req_valid[idx]) begin
-        grant_port_nxt  = port_width'(idx);
-        grant_valid_nxt = 1'b1;
-      end
-    end
-  end
-  //conflict mask: 1-hot of ports that presented a valid request but lost
-  always_comb begin
-    conflict_mask = '0;
-    if (contention) begin
-      for (int i = 0; i < NUM_REQ_PORTS; i++) begin
-        conflict_mask[i] = (req_valid[i] && grant_port_nxt != i);
+      if (grant[i]) begin
+        grant_port = port_width'(i);
       end
     end
   end
 
-  //Hold registers: update only when grant_ready is high OR when currently idle
+  //Priority pointer update
+  //Advance if:
+  //grant_valid = 1
+  //grant_ready = 1 (pp0 consumed the grant this cycle)
+  //contention = 1 (No rotation on single port grants)
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      grant_port_q  <= '0;
-      grant_valid_q <= 1'b0;
-    end else if (grant_valid_nxt || !grant_valid_q) begin
-      grant_valid_q <= grant_valid_nxt;
-      grant_port_q  <= grant_port_nxt;
-    end
-  end
-
-  assign grant_valid = grant_valid_q;
-  assign grant_port  = grant_port_q;
-
-  //priority pointer update
-  always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      priority_ptr <= '0;
+      ptr <= 0;
     end else begin
       if (grant_valid && grant_ready && contention) begin
-          priority_ptr <= (grant_port_nxt + 1'b1) % NUM_REQ_PORTS;
+        ptr <= port_width'((int'(grant_port) + 1) % NUM_REQ_PORTS);
       end
+    end
+  end
+
+  //Conflict mask: 1-hot of ports that presented a valid request but lost
+  always_comb begin
+    conflict_mask = '0;
+    if (grant_valid && contention) begin
+      conflict_mask = req_valid & ~grant;
     end
   end
 endmodule

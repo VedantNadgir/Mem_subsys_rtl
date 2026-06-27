@@ -26,6 +26,10 @@ module rsp_mux #(
 );
   //Extract destination port per bank
   logic [NUM_BANKS-1:0][PORT_ID_BITS-1:0] dest_ports;
+  //local variables declared outside always_comb blocks
+  logic [PORT_ID_BITS-1:0] p;
+  logic found;
+
   genvar i;
   generate
     for (i = 0; i < NUM_BANKS; i++) begin : g_dest
@@ -38,11 +42,11 @@ module rsp_mux #(
   always_comb begin
     bank_granted = '0;
     //For each port, grant the lowest-indexed bank req it
-    for (int i = 0; i < NUM_BANKS; i++) begin
-      logic found = 1'b0;
+    for (int i = 0; i < NUM_REQ_PORTS; i++) begin
+      found = 1'b0;
       for (int x = 0; x < NUM_BANKS; x++) begin
-        if (!found && pp1_valid[x] && (dest_ports[x] == i) && rsp_fifo_ready[i]) begin
-          bank_granted[x] = 1'b0;
+        if (!found && pp1_valid[x] && (int'(dest_ports[x]) == i) && rsp_fifo_ready[i]) begin
+          bank_granted[x] = 1'b1;
           found = 1'b1;
         end
       end
@@ -57,19 +61,19 @@ module rsp_mux #(
     rsp_id = '0;
 
     for (int x = 0; x < NUM_BANKS; x++) begin
-      logic [PORT_ID_BITS-1:0] p = dest_ports[x];
+      p = dest_ports[x];
       if (bank_granted[x]) begin
-        rsp_valid[x] = 1'b1;
-        rsp_data[x] = pp1_we[x] ? '0 : pp1_rdata[x];  //zero data on writes
-        rsp_err[x] = pp1_err[x];
-        rsp_id[x] = pp1_id[x][ID_WIDTH-1:0];  //Just the txn_id for request
+        rsp_valid[p] = 1'b1;
+        rsp_data[p] = pp1_we[x] ? '0 : pp1_rdata[x];  //zero data on writes
+        rsp_err[p] = pp1_err[x];
+        rsp_id[p] = pp1_id[x][ID_WIDTH-1:0];  //Just the txn_id for request
       end
     end
   end
 
   //Banks PP1 can advance if: PP1 is invalid or (granted by rsp_mux and its target port accepts push)
-  always_comb begin
-    for (int i = 0; i < NUM_BANKS; i++) begin
+  always_comb begin : pp1_adv
+    for (int x = 0; x < NUM_BANKS; x++) begin
       if (!pp1_valid[x]) begin
         bank_pp1_ready[x] = 1'b1;
       end else if (bank_granted[x]) begin
