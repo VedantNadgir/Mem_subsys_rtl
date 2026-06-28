@@ -92,7 +92,6 @@ module banked_sram_ctrl #(
   logic [NUM_REQ_PORTS-1:0] rsp_fifo_push_valid;
   logic [NUM_REQ_PORTS-1:0] rsp_fifo_push_ready;
   logic [NUM_REQ_PORTS-1:0] rsp_fifo_full;
-  rsp_pkt_t [NUM_REQ_PORTS-1:0] rsp_fifo_push_pkt;
 
   //Counter events
   logic [NUM_REQ_PORTS-1:0] cnt_req_accept;
@@ -139,7 +138,7 @@ module banked_sram_ctrl #(
     for (i = 0; i < NUM_BANKS; i++) begin : g_bank
       always_comb begin
         for (int x = 0; x < NUM_REQ_PORTS; x++) begin
-          bank_req_valid[i][x] = req_fifo_head_valid[x] && (req_fifo_head_pkt[x].addr[BANK_SEL_BITS-1:0] == i);
+          bank_req_valid[i][x] = req_fifo_head_valid[x] && (req_fifo_head_pkt[x].addr[BANK_SEL_BITS-1:0] == BANK_SEL_BITS'(i));
         end
       end
 
@@ -160,7 +159,7 @@ module banked_sram_ctrl #(
       logic [NUM_REQ_PORTS-1:0] bank_pop;
       always_comb begin
         for (int a = 0; a < NUM_REQ_PORTS; a++) begin
-          bank_pop[a] = (arb_grant_valid[i] && arb_grant_ready[i] && (arb_grant_port[i] == a));
+          bank_pop[a] = (arb_grant_valid[i] && arb_grant_ready[i] && (arb_grant_port[i] == PORT_ID_BITS'(a)));
         end
       end
       assign bank_pop_array[i] = bank_pop;
@@ -225,9 +224,9 @@ module banked_sram_ctrl #(
   //OR reduce all per bank pops into per port req fifo pop
   always_comb begin
     integer z, y;
-    for (z = 0; z < NUM_REQ_PORTS; z++) begin
+    for (int z = 0; z < NUM_REQ_PORTS; z++) begin
       req_fifo_pop[z] = '0;
-      for (y = 0; y < NUM_BANKS; y++) begin
+      for (int y = 0; y < NUM_BANKS; y++) begin
         req_fifo_pop[z] |= bank_pop_array[y][z];
       end
     end

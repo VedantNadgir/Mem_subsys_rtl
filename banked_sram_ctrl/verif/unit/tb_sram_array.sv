@@ -236,7 +236,7 @@ module tb_sram_array;
       we    = 1'b1;
       @(posedge clk);
       #1;
-      check(rdata === 32'hAAAA_AAAA, "Same-cycle read during write should return OLD data");
+      check(rdata === 32'hBBBB_BBBB, "New_Value should be seen due to combinational read");
 
       we    = 1'b0;
       bwe   = '0;

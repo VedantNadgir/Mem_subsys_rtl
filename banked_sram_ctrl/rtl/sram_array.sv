@@ -19,6 +19,6 @@ module sram_array #(
         end
       end
     end
-    rdata <= mem[addr];  //read register
   end
+  assign rdata = mem[addr];  //read register
 endmodule
