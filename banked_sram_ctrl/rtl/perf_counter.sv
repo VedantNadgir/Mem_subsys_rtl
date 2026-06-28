@@ -35,9 +35,17 @@ module perf_counter #(
   localparam int OFF_QF = OFF_CONF + NUM_BANKS * NUM_REQ_PORTS;
   localparam int OFF_IDLE = OFF_QF + NUM_REQ_PORTS;
 
-  //Increment logic (saturating)
-  function automatic logic [31:0] sat_inc(logic [31:0] val, logic en);
-    return en ? ((val == 32'hFFFF_FFFF) ? val : val + 1'b1) : val;
+  function automatic [31:0] sat_inc;
+    input [31:0] val;
+    input en;
+    begin
+      if (en) begin
+        if (val == 32'hFFFF_FFFF) sat_inc = val;
+        else sat_inc = val + 1;
+      end else begin
+        sat_inc = val;
+      end
+    end
   endfunction
 
   integer i, b;

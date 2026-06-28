@@ -2,19 +2,32 @@
 # Simulation Configuration
 ###############################################################################
 
-# Verilator
+# Simulator
 VERILATOR := verilator
 
-# Build outputs
+# Build directories
 BUILD_DIR := obj_dir
 LOG_DIR   := logs
 WAVE_DIR  := waves
 
+# Default test
+TEST ?= banked_sram_ctrl
+
 # Waveform generation
 TRACE ?= 1
 
-# Randomization seed
+# Random seed
 SEED ?= 1
 
-# Test selection
-TEST ?= req_fifo
+# Verilator compile flags
+VERILATOR_FLAGS := \
+	--binary \
+	--sv \
+	-Wall \
+	--timing \
+	--assert
+
+# Trace option
+ifeq ($(TRACE),1)
+VERILATOR_FLAGS += --trace
+endif

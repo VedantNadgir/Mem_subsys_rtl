@@ -115,7 +115,7 @@ fmt: format
 .PHONY: sim
 
 sim:
-	@$(MAKE) -C $(SIM_DIR) sim
+	@$(MAKE) -C $(SIM_DIR) sim TEST=$(TEST)
 
 .PHONY: regress
 
@@ -129,9 +129,7 @@ regress:
 .PHONY: synth
 
 synth:
-	@echo ""
-	@echo "[INFO] Synthesis flow not implemented yet."
-	@echo ""
+	@$(MAKE) -C banked_sram_ctrl/synth synth
 
 .PHONY: area
 
@@ -160,11 +158,16 @@ clean:
 		$(MAKE) -C $(SIM_DIR) clean; \
 	fi
 
+	@if [ -f banked_sram_ctrl/synth/makefile ]; then \
+		$(MAKE) -C banked_sram_ctrl/synth clean; \
+	fi
+
 	rm -rf "$(SIM_DIR)/logs"
 	rm -rf "$(SIM_DIR)/waves"
 
 	@rm -rf build
 	@rm -rf reports
 	@rm -rf logs
+	@rm -rf pdk
 
 	@echo "[DONE]"

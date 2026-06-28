@@ -38,13 +38,26 @@ module banked_sram_ctrl #(
     output logic [31:0] csr_rdata,
     output logic csr_ack
 );
-  import sram_ctrl_pkg::*;
   //Derived parameters
   localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);
   localparam int BANK_ADDR_BITS = $clog2(BANK_DEPTH);
   localparam int PORT_ID_BITS = $clog2(NUM_REQ_PORTS);
   localparam int TOTAL_ID_BITS = ID_WIDTH + PORT_ID_BITS;  //txn id + port_bits
   localparam int STROBE_WIDTH = DATA_WIDTH / 8;
+
+  typedef struct packed {
+    logic [ADDR_WIDTH-1:0]   addr;
+    logic [DATA_WIDTH-1:0]   data;
+    logic [STROBE_WIDTH-1:0] strobe;
+    logic [ID_WIDTH-1:0]     id;
+    logic                    we;
+  } req_pkt_t;
+
+  typedef struct packed {
+    logic [DATA_WIDTH-1:0] data;
+    logic [ID_WIDTH-1:0]   id;
+    logic                  err;
+  } rsp_pkt_t;
 
   //Validity checks
   initial begin
@@ -53,7 +66,7 @@ module banked_sram_ctrl #(
     if ((QUEUE_DEPTH & (QUEUE_DEPTH - 1)) != 0) $fatal("QUEUE_DEPTH must be power of 2");
     if (NUM_REQ_PORTS < 1 || NUM_REQ_PORTS > 8) $fatal("NUM_REQ_PORTS out of range");
     if (ADDR_WIDTH < (BANK_SEL_BITS + BANK_ADDR_BITS)) $fatal("ADDR_WIDTH too small");
-    if (!(DATA_WIDTH inside {8, 16, 32, 64, 128})) $fatal("DATA_WIDTH illegal");
+    if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32 || DATA_WIDTH == 64 || DATA_WIDTH == 128)) $fatal("DATA_WIDTH illegal");
     if (ID_WIDTH < 1 || ID_WIDTH > 8) $fatal("ID_WIDTH out of range");
   end
 
@@ -115,7 +128,7 @@ module banked_sram_ctrl #(
       assign cnt_queue_full[p] = !req_ready[p];
 
       req_fifo #(
-          .DATA_WIDTH ($bits(req_pkt_t)),
+          .DATA_WIDTH (DATA_WIDTH + STROBE_WIDTH + ID_WIDTH + 1),
           .QUEUE_DEPTH(QUEUE_DEPTH)
       ) u_req_fifo (
           .clk(clk),
@@ -282,7 +295,7 @@ module banked_sram_ctrl #(
       assign cnt_rsp_issue[p] = rsp_valid[p] && rsp_ready[p];
 
       rsp_fifo #(
-          .DATA_WIDTH ($bits(rsp_pkt_t)),
+          .DATA_WIDTH (DATA_WIDTH + ID_WIDTH + 1),
           .QUEUE_DEPTH(QUEUE_DEPTH)
       ) u_rsp_fifo (
           .clk       (clk),

@@ -1,4 +1,3 @@
-# RTL Source List
 ../rtl/pkg/sram_ctrl_pkg.sv
 ../rtl/req_fifo.sv
 ../rtl/rsp_fifo.sv

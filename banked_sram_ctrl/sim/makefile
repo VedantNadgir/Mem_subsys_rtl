@@ -16,7 +16,13 @@ TB_SYSTEM_DIR := ../verif/system
 TB_FILE := $(TB_UNIT_DIR)/tb_$(TEST).sv
 TOP     := tb_$(TEST)
 
-#Targets
+UNIT_TB := $(wildcard $(TB_UNIT_DIR)/tb_*.sv)
+UNIT_TESTS := $(patsubst tb_%.sv,%,$(notdir $(UNIT_TB)))
+
+###############################################################################
+# Targets
+###############################################################################
+
 .PHONY: \
 	help \
 	build \
@@ -34,13 +40,12 @@ help:
 	@echo ""
 	@echo "Simulation Targets"
 	@echo "------------------"
-	@echo "make build    Compile simulation"
-	@echo "make run      Run simulation"
-	@echo "make sim      Build + run"
-	@echo "make smoke    Quick smoke test"
-	@echo "make regress  Run regression suite"
-	@echo "make wave     Open waveform"
-	@echo "make clean    Remove artifacts"
+	@echo "make build TEST=req_fifo"
+	@echo "make run   TEST=req_fifo"
+	@echo "make sim   TEST=req_fifo"
+	@echo "make regress"
+	@echo "make wave TEST=req_fifo"
+	@echo "make clean"
 	@echo ""
 
 ###############################################################################
@@ -48,10 +53,21 @@ help:
 ###############################################################################
 
 build:
-	@echo ""
-	@echo "[BUILD] $(TEST)"
+	@test -f $(TB_FILE) || \
+		{ echo ""; \
+		  echo "[ERROR] Testbench not found:"; \
+		  echo "        $(TB_FILE)"; \
+		  echo ""; \
+		  exit 1; }
+
+	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(LOG_DIR)
 	@mkdir -p $(WAVE_DIR)
+
+	@echo ""
+	@echo "=================================================="
+	@echo "Building $(TOP)"
+	@echo "=================================================="
 
 	$(VERILATOR) \
 		--binary \
@@ -66,18 +82,32 @@ build:
 ###############################################################################
 
 run:
-	@echo ""
-	@echo "[RUN] $(TEST)"
-	@./$(BUILD_DIR)/V$(TOP) \
-		> $(LOG_DIR)/$(TEST).log 2>&1
+	@test -f $(BUILD_DIR)/V$(TOP) || \
+		{ echo ""; \
+		  echo "[ERROR] Executable not found."; \
+		  echo "Run: make build TEST=$(TEST)"; \
+		  echo ""; \
+		  exit 1; }
 
 	@echo ""
-	@echo "[DONE]"
+	@echo "=================================================="
+	@echo "Running $(TOP)"
+	@echo "=================================================="
+
+	@./$(BUILD_DIR)/V$(TOP) \
+		> $(LOG_DIR)/$(TEST).log 2>&1 || \
+		{ echo ""; \
+		  echo "[FAILED]"; \
+		  echo "See $(LOG_DIR)/$(TEST).log"; \
+		  exit 1; }
+
+	@echo ""
+	@echo "[PASS]"
+	@echo ""
 	@echo "Log  : $(LOG_DIR)/$(TEST).log"
-	@echo "Wave : $(WAVE_DIR)/$(TEST).vcd"
 
 ###############################################################################
-# Sim
+# Build + Run
 ###############################################################################
 
 sim: build run
@@ -88,31 +118,39 @@ sim: build run
 
 regress:
 	@echo ""
-	@echo "[REGRESSION]"
+	@echo "=================================================="
+	@echo "Running Unit Regression"
+	@echo "=================================================="
 	@echo ""
 
-	@$(MAKE) sim TEST=req_fifo
-	@$(MAKE) sim TEST=rsp_fifo
-	@$(MAKE) sim TEST=sram_array
-	@$(MAKE) sim TEST=rsp_mux
-	@$(MAKE) sim TEST=per_bank_arb
-	@$(MAKE) sim TEST=bank_scheduler
-	@$(MAKE) sim TEST=perf_counter
-	@$(MAKE) sim TEST=banked_sram_ctrl
+	@for t in $(UNIT_TESTS); do \
+		echo "===== $$t ====="; \
+		$(MAKE) sim TEST=$$t || exit $$?; \
+		echo ""; \
+	done
+
+	@echo "=================================================="
+	@echo "Regression Complete"
+	@echo "=================================================="
 
 ###############################################################################
-# Waveforms
+# Wave
 ###############################################################################
 
 wave:
-	@code waves/$(TEST).vcd
+	@test -f $(WAVE_DIR)/$(TEST).vcd || \
+		{ echo ""; \
+		  echo "Waveform not found."; \
+		  exit 1; }
+
+	code $(WAVE_DIR)/$(TEST).vcd
 
 ###############################################################################
 # Clean
 ###############################################################################
 
 clean:
-	@echo "[CLEAN] Simulation artifacts"
+	@echo "[CLEAN]"
 
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(LOG_DIR)
