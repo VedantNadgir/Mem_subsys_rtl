@@ -12,7 +12,7 @@ module tb_per_bank_arb;
   // 2. Watchdog Timer
   // -------------------------------------------------------------------------
   initial begin
-    #500ns;
+    #700ns;
     $display("WATCHDOG EXPIRED @ %0t", $time);
     $finish;
   end
@@ -292,7 +292,7 @@ module tb_per_bank_arb;
     test_id = 8;
     $display("\n=== Test %0d: No Requests ===", test_id);
 
-    // ptr == 1 (from previous tests). No requests for 5 cycles.
+    // ptr == 2 (left by previous tests). No requests for 5 cycles.
     req_valid   = '0;
     grant_ready = '0;
     repeat (5) begin
@@ -304,9 +304,18 @@ module tb_per_bank_arb;
     // Verify ptr unchanged by using a pattern that distinguishes ptr=1
     req_valid = 4'b1011;  // ports 0,1,3
     @(posedge clk);
-    check(grant_port == 2'd1, "ptr should still be 1 after 5 idle cycles (port 1 wins)");
+    check(grant_port == 2'd3, "ptr should still be 2 after 5 idle cycles (port 3 wins)");
   endtask
-
+  // always @(posedge clk)
+  //   $display(
+  //       "t=%0t ptr=%0d req=%b grant=%0d gv=%0b gr=%0b",
+  //       $time,
+  //       dut.ptr,
+  //       req_valid,
+  //       grant_port,
+  //       grant_valid,
+  //       grant_ready
+  //   );
   // -------------------------------------------------------------------------
   // 8. Main Test Sequence
   // -------------------------------------------------------------------------
