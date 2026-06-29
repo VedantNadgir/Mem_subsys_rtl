@@ -2,7 +2,6 @@
 
 package verif_pkg;
   localparam int NUM_BANKS = 4;
-  localparam int NUM_BANKS = 4;
   localparam int BANK_DEPTH = 256;
   localparam int DATA_WIDTH = 32;
   localparam int ADDR_WIDTH = 10;
