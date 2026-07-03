@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 import verif_pkg::*;
-module moniter (
+module monitor (
     input  logic                                     clk,
     input  logic                                     rst_n,
     input  logic [NUM_REQ_PORTS-1:0]                 rsp_valid,

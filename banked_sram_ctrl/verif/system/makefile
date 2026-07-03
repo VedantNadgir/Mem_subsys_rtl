@@ -2,7 +2,7 @@ RTL := ../../rtl
 VERIF := .
 TOP := tb_sys
 VL := verilator
-FLAGS := --cc --exe --build --timing -Wno-WIDTH -Wno-UNUSED -Wno-UNOPTFLAT \
+FLAGS := --cc --exe --main --build --timing -Wno-WIDTH -Wno-UNUSED -Wno-UNOPTFLAT \
 		 --top-module $(TOP)
 
 ifeq ($(WAVES),1)
