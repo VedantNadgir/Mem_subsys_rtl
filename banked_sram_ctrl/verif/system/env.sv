@@ -76,6 +76,10 @@ module env (
   task automatic reset_dut();
     repeat (4) @(posedge clk);
     #1;
+    for (int a = 0; a <= MAX_ADDR; a++) begin
+      u_sb.gold_mem[a]  = '0;
+      u_sb.gold_init[a] = 0;
+    end
     $display("[ENV] Reset released at %0t", $time);
     repeat (2) @(posedge clk);
     #1;
@@ -88,7 +92,7 @@ module env (
     logic [DATA_WIDTH-1:0] rd;
     logic [ID_WIDTH-1:0] ri;
     logic re;
-    u_drv.send(port, addr, data, 1'b1, strobe, txn_id);
+    u_drv.send(port, data, addr, 1'b1, strobe, txn_id);
     u_mon.wait_rsp(port, rd, ri, re);
     u_sb.check_write_ack(rd, ri, txn_id, re);
     u_sb.predict_write(addr, data, strobe);
@@ -99,7 +103,7 @@ module env (
     logic [DATA_WIDTH-1:0] rd;
     logic [ID_WIDTH-1:0] ri;
     logic re;
-    u_drv.send(port, addr, '0, 1'b0, '1, txn_id);
+    u_drv.send(port, '0, addr, 1'b0, '1, txn_id);
     u_mon.wait_rsp(port, rd, ri, re);
     u_sb.check_read(addr, rd, ri, txn_id, re);
   endtask

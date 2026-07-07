@@ -66,7 +66,8 @@ module banked_sram_ctrl #(
     if ((QUEUE_DEPTH & (QUEUE_DEPTH - 1)) != 0) $fatal("QUEUE_DEPTH must be power of 2");
     if (NUM_REQ_PORTS < 1 || NUM_REQ_PORTS > 8) $fatal("NUM_REQ_PORTS out of range");
     if (ADDR_WIDTH < (BANK_SEL_BITS + BANK_ADDR_BITS)) $fatal("ADDR_WIDTH too small");
-    if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32 || DATA_WIDTH == 64 || DATA_WIDTH == 128)) $fatal("DATA_WIDTH illegal");
+    if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32 || DATA_WIDTH == 64 || DATA_WIDTH == 128))
+      $fatal("DATA_WIDTH illegal");
     if (ID_WIDTH < 1 || ID_WIDTH > 8) $fatal("ID_WIDTH out of range");
   end
 
@@ -128,7 +129,7 @@ module banked_sram_ctrl #(
       assign cnt_queue_full[p] = !req_ready[p];
 
       req_fifo #(
-          .DATA_WIDTH (DATA_WIDTH + STROBE_WIDTH + ID_WIDTH + 1),
+          .DATA_WIDTH (DATA_WIDTH + ADDR_WIDTH + STROBE_WIDTH + ID_WIDTH + 1),
           .QUEUE_DEPTH(QUEUE_DEPTH)
       ) u_req_fifo (
           .clk(clk),
