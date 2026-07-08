@@ -6,7 +6,7 @@ task automatic run_backpressure();
   for (int i = 0; i < QUEUE_DEPTH * 4; i++) begin
     if (req_ready[0]) begin
       a = make_addr(0, 30 + (i % 10));
-      u_drv.send(0, a, DATA_WIDTH'(32'hDEAD_0000 + i), 1'b1, STROBE_WIDTH'('1),
+      u_drv.send(0, DATA_WIDTH'(32'hDEAD_0000 + i), a, 1'b1, STROBE_WIDTH'('1),
                  ID_WIDTH'(i % (1 << ID_WIDTH)));
     end else repeat (2) @(posedge clk);
     #1;
