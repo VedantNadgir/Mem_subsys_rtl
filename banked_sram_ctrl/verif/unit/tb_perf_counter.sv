@@ -22,9 +22,9 @@ module tb_perf_counter;
   // -------------------------------------------------------------------------
   // Parameters matching DUT defaults
   // -------------------------------------------------------------------------
-  localparam int NUM_REQ_PORTS = 4;
-  localparam int NUM_BANKS = 4;
-  localparam int ID_WIDTH = 4;
+  parameter int NUM_REQ_PORTS = 4;
+  parameter int NUM_BANKS = 4;
+  parameter int ID_WIDTH = 4;
   localparam int NUM_COUNTERS  = 2*NUM_REQ_PORTS +
                                   NUM_BANKS*NUM_REQ_PORTS +
                                   NUM_REQ_PORTS + NUM_BANKS; // 32

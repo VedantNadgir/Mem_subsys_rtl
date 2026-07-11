@@ -1,10 +1,19 @@
 `timescale 1ns / 1ps
-
-import verif_pkg::*;
-module scoreboard (
+module scoreboard #(
+    parameter int NUM_BANKS = 4,
+    parameter int BANK_DEPTH = 256,
+    parameter int DATA_WIDTH = 32,
+    parameter int ADDR_WIDTH = 10,
+    parameter int NUM_REQ_PORTS = 4,
+    parameter int QUEUE_DEPTH = 4,
+    parameter int ID_WIDTH = 4
+) (
     input logic clk,
     input logic rst_n
 );
+  localparam int STROBE_WIDTH = DATA_WIDTH / 8;
+  localparam int MAX_ADDR = (1 << ADDR_WIDTH) - 1;
+
   logic [DATA_WIDTH-1:0] gold_mem[0:MAX_ADDR];
   logic gold_init[0:MAX_ADDR];
   int error_count;

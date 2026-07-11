@@ -1,16 +1,66 @@
-# --- Parameter Regression Matrix -------------------------------
-# Format: <name>  NUM_BANKS  BANK_DEPTH  DATA_WIDTH  ADDR_WIDTH  NUM_REQ_PORTS  QUEUE_DEPTH  ID_WIDTH
-# ADDR_WIDTH must be >= clog2(NUM_BANKS)+clog2(BANK_DEPTH)
-REGRESS_COMBOS := \
-    cfg_minimal     2    16    8    5   2   2   1 \
-    cfg_small_8     2    64    8    7   2   2   2 \
-    cfg_small_16    2    64   16    7   2   2   2 \
-    cfg_small_32    2    64   32    7   2   2   2 \
-    cfg_dflt        4   256   32   10   4   4   4 \
-    cfg_deep        4  1024   32   12   4   4   4 \
-    cfg_narrow      4   256    8   10   4   4   4 \
-    cfg_wide        4   256  128   10   4   4   4 \
-    cfg_large_64    8   512   64   12   8   4   6 \
-    cfg_large_128   8   512  128   12   8   8   6 \
-    cfg_max_ports   8   256   32   11   8   8   4 \
-    cfg_min_ports   4   256   32   10   2   4   4
+make lint               # Run Verible lint on all RTL
+make format             # Format all RTL with Verible
+make fmt                # Same as format (alias)
+make unit TEST=bank_scheduler
+make unit TEST=banked_sram_ctrl
+make unit TEST=per_bank_arb
+make unit TEST=perf_counter
+make unit TEST=req_fifo
+make unit TEST=rsp_fifo
+make unit TEST=rsp_mux
+make unit TEST=sram_array
+make unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2 DATA_WIDTH=64 ADDR_WIDTH=12"
+make unit TEST=req_fifo PARAMS="NUM_BANKS=8 BANK_DEPTH=512 DATA_WIDTH=128 NUM_REQ_PORTS=8 QUEUE_DEPTH=8 ID_WIDTH=6"
+make unit TEST=rsp_mux PARAMS="NUM_BANKS=4 NUM_REQ_PORTS=2 DATA_WIDTH=8 ADDR_WIDTH=10"
+make unit TEST=per_bank_arb PARAMS="NUM_BANKS=16 NUM_REQ_PORTS=8"
+make unit TEST=sram_array PARAMS="BANK_DEPTH=1024 DATA_WIDTH=64"
+make unit TEST=bank_scheduler PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2 DATA_WIDTH=8 ADDR_WIDTH=5 QUEUE_DEPTH=2 ID_WIDTH=1"
+make unit TEST=perf_counter PARAMS="NUM_BANKS=8 NUM_REQ_PORTS=8 DATA_WIDTH=128 ID_WIDTH=8"
+make sys                # Runs all 5 test-tasks (smoke, conflict, backpressure, random, stress)
+make sys PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make sys PARAMS="NUM_BANKS=8 NUM_REQ_PORTS=8 DATA_WIDTH=64 ADDR_WIDTH=12"
+make sys PARAMS="NUM_BANKS=4 BANK_DEPTH=1024 DATA_WIDTH=128 ADDR_WIDTH=12 NUM_REQ_PORTS=4 QUEUE_DEPTH=8 ID_WIDTH=4"
+make sys PARAMS="NUM_BANKS=2 BANK_DEPTH=16 DATA_WIDTH=8 ADDR_WIDTH=5 NUM_REQ_PORTS=2 QUEUE_DEPTH=2 ID_WIDTH=1"
+make sys PARAMS="NUM_BANKS=8 BANK_DEPTH=512 DATA_WIDTH=32 ADDR_WIDTH=12 NUM_REQ_PORTS=8 QUEUE_DEPTH=4 ID_WIDTH=6"
+make regress            # Full sweep: 12 param combos × 8 unit tests + 12 × 1 system test = 108 runs
+make clean
+make help
+cd banked_sram_ctrl/sim
+make sim TEST_TYPE=unit TEST=bank_scheduler
+make sim TEST_TYPE=unit TEST=banked_sram_ctrl
+make sim TEST_TYPE=unit TEST=per_bank_arb
+make sim TEST_TYPE=unit TEST=perf_counter
+make sim TEST_TYPE=unit TEST=req_fifo
+make sim TEST_TYPE=unit TEST=rsp_fifo
+make sim TEST_TYPE=unit TEST=rsp_mux
+make sim TEST_TYPE=unit TEST=sram_array
+make sim TEST_TYPE=unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make sim TEST_TYPE=unit TEST=req_fifo PARAMS="NUM_BANKS=8 NUM_REQ_PORTS=8 DATA_WIDTH=64"
+make build TEST_TYPE=unit TEST=banked_sram_ctrl
+make build TEST_TYPE=unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make run TEST_TYPE=unit TEST=banked_sram_ctrl
+make run TEST_TYPE=unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make wave TEST_TYPE=unit TEST=banked_sram_ctrl
+make wave TEST_TYPE=unit TEST=banked_sram_ctrl PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make sim TEST_TYPE=system TEST=system_all
+make sim TEST_TYPE=system TEST=system_all PARAMS="NUM_BANKS=8 NUM_REQ_PORTS=8"
+make build TEST_TYPE=system TEST=system_all
+make run TEST_TYPE=system TEST=system_all
+make wave TEST_TYPE=system TEST=system_all
+make regress
+make clean
+make regress
+cd banked_sram_ctrl/verif/system
+make all                # Same as 'make sim'
+make sim                # Run full system TB (all 5 test-tasks)
+# Individual test-task names (convenience aliases — all run the same tb_sys)
+make smoke
+make conflict
+make backpressure
+make random
+make stress
+# With parameter overrides
+make sim PARAMS="NUM_BANKS=2 NUM_REQ_PORTS=2"
+make smoke PARAMS="NUM_BANKS=8 NUM_REQ_PORTS=8 DATA_WIDTH=64"
+make clean

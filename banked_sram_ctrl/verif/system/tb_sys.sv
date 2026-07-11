@@ -1,17 +1,34 @@
 `timescale 1ns / 1ps
-import verif_pkg::*;
 
-module tb_sys;
+// User-overridable parameters
+// Override via: verilator -GNUM_BANKS=2 -GNUM_REQ_PORTS=2 ...
+module tb_sys #(
+    parameter int NUM_BANKS = 4,
+    parameter int BANK_DEPTH = 256,
+    parameter int DATA_WIDTH = 32,
+    parameter int ADDR_WIDTH = 10,
+    parameter int NUM_REQ_PORTS = 4,
+    parameter int QUEUE_DEPTH = 4,
+    parameter int ID_WIDTH = 4
+) ();
+  localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);
+  localparam int BANK_ADDR_BITS = $clog2(BANK_DEPTH);
+  localparam int EFFECTIVE_ADDR_WIDTH =
+      (ADDR_WIDTH < (BANK_SEL_BITS + BANK_ADDR_BITS)) ? (BANK_SEL_BITS + BANK_ADDR_BITS) : ADDR_WIDTH;
+  localparam int STROBE_WIDTH = DATA_WIDTH / 8;
+  localparam int CSR_ADDR_W = $clog2(
+      2 * NUM_REQ_PORTS + NUM_BANKS * NUM_REQ_PORTS + NUM_REQ_PORTS + NUM_BANKS
+  );
   logic clk;
   logic rst_n;
   initial clk = 1'b0;
   always #5 clk = ~clk;
 
   logic [NUM_REQ_PORTS-1:0] req_valid, req_ready, req_we;
-  logic [NUM_REQ_PORTS-1:0][  ADDR_WIDTH-1:0] req_addr;
-  logic [NUM_REQ_PORTS-1:0][  DATA_WIDTH-1:0] req_data;
-  logic [NUM_REQ_PORTS-1:0][STROBE_WIDTH-1:0] req_strobe;
-  logic [NUM_REQ_PORTS-1:0][    ID_WIDTH-1:0] req_id;
+  logic [NUM_REQ_PORTS-1:0][EFFECTIVE_ADDR_WIDTH-1:0] req_addr;
+  logic [NUM_REQ_PORTS-1:0][          DATA_WIDTH-1:0] req_data;
+  logic [NUM_REQ_PORTS-1:0][        STROBE_WIDTH-1:0] req_strobe;
+  logic [NUM_REQ_PORTS-1:0][            ID_WIDTH-1:0] req_id;
   logic [NUM_REQ_PORTS-1:0] rsp_valid, rsp_ready, rsp_err;
   logic [NUM_REQ_PORTS-1:0][DATA_WIDTH-1:0] rsp_data;
   logic [NUM_REQ_PORTS-1:0][  ID_WIDTH-1:0] rsp_id;
@@ -24,7 +41,7 @@ module tb_sys;
       .NUM_BANKS(NUM_BANKS),
       .BANK_DEPTH(BANK_DEPTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .ADDR_WIDTH(ADDR_WIDTH),
+      .ADDR_WIDTH(EFFECTIVE_ADDR_WIDTH),
       .NUM_REQ_PORTS(NUM_REQ_PORTS),
       .QUEUE_DEPTH(QUEUE_DEPTH),
       .ID_WIDTH(ID_WIDTH)
@@ -49,7 +66,15 @@ module tb_sys;
       .csr_ack(csr_ack)
   );
 
-  env u_env (
+  env #(
+      .NUM_BANKS(NUM_BANKS),
+      .BANK_DEPTH(BANK_DEPTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .ADDR_WIDTH(EFFECTIVE_ADDR_WIDTH),
+      .NUM_REQ_PORTS(NUM_REQ_PORTS),
+      .QUEUE_DEPTH(QUEUE_DEPTH),
+      .ID_WIDTH(ID_WIDTH)
+  ) u_env (
       .clk(clk),
       .rst_n(rst_n),
       .req_valid(req_valid),

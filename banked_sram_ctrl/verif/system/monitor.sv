@@ -1,6 +1,13 @@
 `timescale 1ns / 1ps
-import verif_pkg::*;
-module monitor (
+module monitor #(
+    parameter int NUM_BANKS = 4,
+    parameter int BANK_DEPTH = 256,
+    parameter int DATA_WIDTH = 32,
+    parameter int ADDR_WIDTH = 10,
+    parameter int NUM_REQ_PORTS = 4,
+    parameter int QUEUE_DEPTH = 4,
+    parameter int ID_WIDTH = 4
+) (
     input  logic                                     clk,
     input  logic                                     rst_n,
     input  logic [NUM_REQ_PORTS-1:0]                 rsp_valid,
