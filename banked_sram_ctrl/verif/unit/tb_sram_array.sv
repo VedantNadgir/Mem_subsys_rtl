@@ -2,8 +2,8 @@
 `timescale 1ns / 1ps
 
 module tb_sram_array;
-  localparam int DEPTH = 256;
-  localparam int DATA_WIDTH = 32;
+  parameter int DEPTH = 256;
+  parameter int DATA_WIDTH = 32;
   localparam int ADDR_WIDTH = $clog2(DEPTH);
   logic                    clk;
   logic                    we;

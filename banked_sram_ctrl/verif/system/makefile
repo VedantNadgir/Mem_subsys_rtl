@@ -1,45 +1,37 @@
-RTL := ../../rtl
-VERIF := .
-TOP := tb_sys
-VL := verilator
-FLAGS := --cc --exe --main --build --timing -Wno-WIDTH -Wno-UNUSED -Wno-UNOPTFLAT \
-		 --top-module $(TOP)
+###############################################################################
+# System Test Catalog — Thin Layer
+#
+# Lists available system-level tests. Each target delegates to the
+# unified build engine in sim/makefile.
+#
+# Never defines SRCS, FLAGS, or simulator invocations.
+###############################################################################
 
-ifeq ($(WAVES),1)
-FLAGS += --trace
-endif
+SIM_DIR := ../../sim
 
-SRCS := $(RTL)/pkg/sram_ctrl_pkg.sv \
-		$(RTL)/sram_array.sv \
-		$(RTL)/req_fifo.sv \
-		$(RTL)/rsp_fifo.sv \
-		$(RTL)/per_bank_arb.sv \
-		$(RTL)/bank_scheduler.sv \
-		$(RTL)/rsp_mux.sv \
-		$(RTL)/perf_counter.sv \
-		$(RTL)/banked_sram_ctrl.sv \
-		$(VERIF)/verif_pkg.sv \
-		$(VERIF)/scoreboard.sv \
-		$(VERIF)/driver.sv \
-		$(VERIF)/monitor.sv \
-		$(VERIF)/env.sv \
-		$(VERIF)/tb_sys.sv
+# Default: run the full system TB (all 5 test-tasks: smoke, conflict, backpressure, random, stress)
+.PHONY: all sim smoke conflict backpressure random stress clean
 
-SIM := obj_dir/V$(TOP)
-.PHONY: sim regress lint clean smoke
+all: sim
 
-sim: $(SIM)
-	@mkdir -p waves
-	./$(SIM)
+sim:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all PARAMS="$(PARAMS)" || true
 
-$(SIM): $(SRCS)
-		$(VL) $(FLAGS) $(SRCS)
+# Individual test-task names (for convenience; all run in same simulation)
+smoke:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all
 
-regress: sim
-		@echo "Regression Complete"
+conflict:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all
 
-lint:
-	$(VL) --lint-only $(SRCS) -Wno-WIDTH -Wno-UNUSED
+backpressure:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all
 
-clean: 
-	rm -rf obj_dir waves
+random:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all
+
+stress:
+	@$(MAKE) -C $(SIM_DIR) sim TEST_TYPE=system TEST=system_all
+
+clean:
+	@$(MAKE) -C $(SIM_DIR) clean

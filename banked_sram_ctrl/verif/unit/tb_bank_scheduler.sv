@@ -16,14 +16,14 @@ module tb_bank_scheduler;
   end
 
   // Parameters (ADDR_WIDTH=12 to support OOB tests)
-  localparam int ADDR_WIDTH = 12;
-  localparam int BANK_SEL_BITS = 2;
-  localparam int BANK_ADDR_BITS = 8;
-  localparam int DATA_WIDTH = 32;
-  localparam int STROBE_WIDTH = 4;
-  localparam int TOTAL_ID_BITS = 6;
-  localparam int NUM_REQ_PORTS = 4;
-  localparam int PORT_ID_BITS = 2;
+  parameter int ADDR_WIDTH = 12;
+  parameter int BANK_SEL_BITS = 2;
+  parameter int BANK_ADDR_BITS = 8;
+  parameter int DATA_WIDTH = 32;
+  parameter int STROBE_WIDTH = 4;
+  parameter int TOTAL_ID_BITS = 6;
+  parameter int NUM_REQ_PORTS = 4;
+  parameter int PORT_ID_BITS = 2;
 
   // DUT signals
   logic                      clk;

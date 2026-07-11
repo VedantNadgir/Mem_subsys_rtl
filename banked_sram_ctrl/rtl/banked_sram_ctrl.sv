@@ -115,6 +115,10 @@ module banked_sram_ctrl #(
   logic [NUM_REQ_PORTS-1:0] cnt_queue_full;
 
   //Per port request queues
+  logic [NUM_REQ_PORTS-1:0] req_fifo_full;
+  logic [NUM_REQ_PORTS-1:0] req_fifo_empty;
+  logic [NUM_REQ_PORTS-1:0] rsp_fifo_empty;
+
   genvar p;
   generate
     for (p = 0; p < NUM_REQ_PORTS; p++) begin : g_req_ports
@@ -140,8 +144,8 @@ module banked_sram_ctrl #(
           .head_valid(req_fifo_head_valid[p]),
           .head_data(req_fifo_head_pkt[p]),
           .pop(req_fifo_pop[p]),
-          .full(),
-          .empty()
+          .full(req_fifo_full[p]),
+          .empty(req_fifo_empty[p])
       );
     end
   endgenerate
@@ -308,7 +312,7 @@ module banked_sram_ctrl #(
           .pop_ready (rsp_ready[p]),
           .pop_data  (pop_pkt),
           .full      (rsp_fifo_full[p]),
-          .empty     ()
+          .empty     (rsp_fifo_empty[p])
       );
 
       assign rsp_data[p] = pop_pkt.data;

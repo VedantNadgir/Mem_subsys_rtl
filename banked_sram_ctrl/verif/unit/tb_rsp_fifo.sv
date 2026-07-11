@@ -6,8 +6,8 @@ module tb_rsp_fifo;
   // ============================================================
   // Parameters
   // ============================================================
-  localparam int DATA_WIDTH = 64;
-  localparam int QUEUE_DEPTH = 4;
+  parameter int DATA_WIDTH = 64;
+  parameter int QUEUE_DEPTH = 4;
 
   // ============================================================
   // DUT signals

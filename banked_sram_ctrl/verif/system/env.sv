@@ -1,6 +1,13 @@
 `timescale 1ns / 1ps
-import verif_pkg::*;
-module env (
+module env #(
+    parameter int NUM_BANKS = 4,
+    parameter int BANK_DEPTH = 256,
+    parameter int DATA_WIDTH = 32,
+    parameter int ADDR_WIDTH = 10,
+    parameter int NUM_REQ_PORTS = 4,
+    parameter int QUEUE_DEPTH = 4,
+    parameter int ID_WIDTH = 4
+) (
     input  logic                                       clk,
     input  logic                                       rst_n,
     output logic [NUM_REQ_PORTS-1:0]                   req_valid,
@@ -20,6 +27,18 @@ module env (
     input  logic [             31:0]                   csr_rdata,
     input  logic                                       csr_ack
 );
+  localparam int STROBE_WIDTH = DATA_WIDTH / 8;
+  localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);
+  localparam int BANK_ADDR_BITS = $clog2(BANK_DEPTH);
+  localparam int CSR_ADDR_W = $clog2(
+      2 * NUM_REQ_PORTS + NUM_BANKS * NUM_REQ_PORTS + NUM_REQ_PORTS + NUM_BANKS
+  );
+  localparam int MAX_ADDR = (1 << ADDR_WIDTH) - 1;
+
+  function automatic logic [ADDR_WIDTH-1:0] make_addr(input int bank, input int row);
+    return ADDR_WIDTH'({row[BANK_ADDR_BITS-1:0], bank[BANK_SEL_BITS-1:0]});
+  endfunction
+
   logic [NUM_REQ_PORTS-1:0]                   drv_req_valid;
   logic [NUM_REQ_PORTS-1:0][  ADDR_WIDTH-1:0] drv_req_addr;
   logic [NUM_REQ_PORTS-1:0][  DATA_WIDTH-1:0] drv_req_data;
@@ -40,7 +59,15 @@ module env (
   assign csr_addr_out = drv_csr_addr;
   assign rsp_ready    = mon_rsp_ready;
 
-  driver u_drv (
+  driver #(
+      .NUM_BANKS(NUM_BANKS),
+      .BANK_DEPTH(BANK_DEPTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .NUM_REQ_PORTS(NUM_REQ_PORTS),
+      .QUEUE_DEPTH(QUEUE_DEPTH),
+      .ID_WIDTH(ID_WIDTH)
+  ) u_drv (
       .clk(clk),
       .rst_n(rst_n),
       .req_valid(drv_req_valid),
@@ -56,7 +83,15 @@ module env (
       .csr_ack(csr_ack)
   );
 
-  monitor u_mon (
+  monitor #(
+      .NUM_BANKS(NUM_BANKS),
+      .BANK_DEPTH(BANK_DEPTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .NUM_REQ_PORTS(NUM_REQ_PORTS),
+      .QUEUE_DEPTH(QUEUE_DEPTH),
+      .ID_WIDTH(ID_WIDTH)
+  ) u_mon (
       .clk(clk),
       .rst_n(rst_n),
       .rsp_valid(rsp_valid),
@@ -66,7 +101,15 @@ module env (
       .rsp_err(rsp_err)
   );
 
-  scoreboard u_sb (
+  scoreboard #(
+      .NUM_BANKS(NUM_BANKS),
+      .BANK_DEPTH(BANK_DEPTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .NUM_REQ_PORTS(NUM_REQ_PORTS),
+      .QUEUE_DEPTH(QUEUE_DEPTH),
+      .ID_WIDTH(ID_WIDTH)
+  ) u_sb (
       .clk  (clk),
       .rst_n(rst_n)
   );

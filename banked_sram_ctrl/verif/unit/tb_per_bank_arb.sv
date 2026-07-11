@@ -20,7 +20,7 @@ module tb_per_bank_arb;
   // -------------------------------------------------------------------------
   // 3. Parameters & DUT Signals
   // -------------------------------------------------------------------------
-  localparam int NUM_REQ_PORTS = 4;
+  parameter int NUM_REQ_PORTS = 4;
   localparam int PORT_WIDTH = $clog2(NUM_REQ_PORTS);
 
   logic                     clk;

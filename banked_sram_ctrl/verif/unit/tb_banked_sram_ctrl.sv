@@ -7,13 +7,13 @@ module tb_banked_sram_ctrl;
   //   DATA_WIDTH {8,16,32,64,128}, NUM_REQ_PORTS 2-8,
   //   QUEUE_DEPTH 2-16 pow2, ID_WIDTH 1-8, ADDR_WIDTH >= clog2(banks)+clog2(depth)
   // -----------------------------------------------------------
-  localparam int NUM_BANKS = 4;
-  localparam int BANK_DEPTH = 256;
-  localparam int DATA_WIDTH = 32;
-  localparam int ADDR_WIDTH = 10;
-  localparam int NUM_REQ_PORTS = 4;
-  localparam int QUEUE_DEPTH = 4;
-  localparam int ID_WIDTH = 4;
+  parameter int NUM_BANKS = 4;
+  parameter int BANK_DEPTH = 256;
+  parameter int DATA_WIDTH = 32;
+  parameter int ADDR_WIDTH = 10;
+  parameter int NUM_REQ_PORTS = 4;
+  parameter int QUEUE_DEPTH = 4;
+  parameter int ID_WIDTH = 4;
 
   // Derived — must match banked_sram_ctrl derivations exactly
   localparam int BANK_SEL_BITS = $clog2(NUM_BANKS);

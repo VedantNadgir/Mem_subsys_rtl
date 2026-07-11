@@ -1,4 +1,9 @@
 ../rtl/pkg/sram_ctrl_pkg.sv
+../verif/system/verif_pkg.sv
+../verif/system/driver.sv
+../verif/system/monitor.sv
+../verif/system/scoreboard.sv
+../verif/system/env.sv
 ../rtl/req_fifo.sv
 ../rtl/rsp_fifo.sv
 ../rtl/rsp_mux.sv

@@ -16,12 +16,12 @@ module tb_rsp_mux;
   end
 
   // Parameters (match DUT defaults)
-  localparam int NUM_BANKS = 4;
-  localparam int NUM_REQ_PORTS = 4;
-  localparam int DATA_WIDTH = 32;
-  localparam int ID_WIDTH = 4;
-  localparam int TOTAL_ID_BITS = 6;
-  localparam int PORT_ID_BITS = 2;
+  parameter int NUM_BANKS = 4;
+  parameter int NUM_REQ_PORTS = 4;
+  parameter int DATA_WIDTH = 32;
+  parameter int ID_WIDTH = 4;
+  parameter int TOTAL_ID_BITS = 6;
+  parameter int PORT_ID_BITS = 2;
 
   // DUT signals
   logic [    NUM_BANKS-1:0]                    pp1_valid;

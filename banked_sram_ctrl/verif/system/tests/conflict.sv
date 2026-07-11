@@ -8,12 +8,10 @@ task automatic run_conflict();
   do_write(1, a[1], DATA_WIDTH'(32'hBBBB_1111), STROBE_WIDTH'('1), ID_WIDTH'(0));
   do_read(0, a[0], ID_WIDTH'(1));
   do_read(1, a[1], ID_WIDTH'(1));
-  a[0] = make_addr(2, 20);
-  a[1] = make_addr(2, 21);
-  a[2] = make_addr(2, 22);
-  a[3] = make_addr(2, 23);
-  for (int p = 0; p < 4; p++)
+  for (int p = 0; p < NUM_REQ_PORTS; p++) begin
+    a[p] = make_addr(0, 20 + p);
     do_write(p, a[p], DATA_WIDTH'(32'hC000_0000 | p), STROBE_WIDTH'('1), ID_WIDTH'(2));
-  for (int p = 0; p < 4; p++) do_read(p, a[p], ID_WIDTH'(3));
+  end
+  for (int p = 0; p < NUM_REQ_PORTS; p++) do_read(p, a[p], ID_WIDTH'(3));
   $display("=== CONFLICT: done ===");
 endtask

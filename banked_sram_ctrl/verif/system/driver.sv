@@ -1,7 +1,13 @@
 `timescale 1ns / 1ps
-import verif_pkg::*;
-
-module driver (
+module driver #(
+    parameter int NUM_BANKS = 4,
+    parameter int BANK_DEPTH = 256,
+    parameter int DATA_WIDTH = 32,
+    parameter int ADDR_WIDTH = 10,
+    parameter int NUM_REQ_PORTS = 4,
+    parameter int QUEUE_DEPTH = 4,
+    parameter int ID_WIDTH = 4
+) (
     input  logic                                       clk,
     input  logic                                       rst_n,
     // Request outputs (to DUT)
@@ -18,6 +24,11 @@ module driver (
     input  logic [             31:0]                   csr_rdata,
     input  logic                                       csr_ack
 );
+  localparam int STROBE_WIDTH = DATA_WIDTH / 8;
+  localparam int CSR_ADDR_W = $clog2(
+      2 * NUM_REQ_PORTS + NUM_BANKS * NUM_REQ_PORTS + NUM_REQ_PORTS + NUM_BANKS
+  );
+
   initial begin
     req_valid = '0;
     req_we = '0;
