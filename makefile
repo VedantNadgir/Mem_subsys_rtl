@@ -93,6 +93,12 @@ regress:
 synth:
 	@$(MAKE) -C banked_sram_ctrl/synth synth
 
+.PHONY: synth_unit synth_all
+synth_unit:
+	@$(MAKE) -C banked_sram_ctrl/synth synth_unit
+synth_all:
+	@$(MAKE) -C banked_sram_ctrl/synth synth_all
+
 # --- Clean -----------------------------------------------------
 .PHONY: clean
 clean:

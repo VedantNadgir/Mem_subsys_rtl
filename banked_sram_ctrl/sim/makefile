@@ -37,9 +37,8 @@ endif
 
 COMBO_BUILD := $(abspath $(COMBO_DIR)/$(TEST_TYPE))
 EXECUTABLE  := $(COMBO_BUILD)/V$(TOP)
-LOG_FILE    := $(COMBO_BUILD)/$(TEST).log
-WAVE_FILE   := $(COMBO_BUILD)/$(TEST).vcd
-
+LOG_FILE    := $(COMBO_BUILD)/logs/$(TEST).log
+WAVE_FILE   := $(COMBO_BUILD)/waves/$(TEST).vcd
 # --- Unit test discovery ---------------------------------------
 UNIT_TBS    := $(wildcard $(TB_UNIT)/tb_*.sv)
 UNIT_TESTS  := $(patsubst tb_%.sv,%,$(notdir $(UNIT_TBS)))
