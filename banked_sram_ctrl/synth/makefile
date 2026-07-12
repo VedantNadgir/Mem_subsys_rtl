@@ -1,141 +1,208 @@
 ###############################################################################
-# Banked SRAM Controller — Synthesis + GLS
+# Banked SRAM Controller — Synthesis Build Engine
 #
-# Targets:
-#   make synth              Synthesize system top (banked_sram_ctrl)
-#   make synth_unit         Synthesize all unit modules
-#   make synth_unit MODULE=<name>   Synthesize one module
-#   make synth_all          Synthesize everything
-#   make report             Show summary report
-#   make report MODULE=<name>       Report one module
-#   make gls                 Gate-level sim of system
-#   make gls_unit MODULE=<name>    Gate-level sim of unit
-#   make clean              Remove all outputs
+# Called by:
+#   - Top makefile (ROOT/makefile) via 'make synth', 'make synth_all',
+#     'make synth_unit'
+#
+# Stage 3 scope:
+#   - synth.ys now emits stat checkpoints at HIERARCHY / PRE_OPT /
+#     POST_OPT / POST_TECHMAP.
+#   - 'report' target is real: runs parse_report.py against the log
+#     produced by 'synth' and writes reports/<module>_report.txt.
+#
+# Still NOT implemented (later stages):
+#   - synth_all / synth_unit looping over all modules   (Stage 4)
+#   - summary.txt / summary.csv                          (Stage 4)
+#   - gate-level simulation                               (Stage 5)
+#
+# Never invoked directly by the user with anything other than these
+# documented targets.
 ###############################################################################
 
 .DEFAULT_GOAL := help
+
 include config.mk
 
-# --- Internal vars ---------------------------------------------
-MODULE ?= banked_sram_ctrl
+MODULE ?= $(DEFAULT_MODULE)
 
-# --- Help ------------------------------------------------------
-.PHONY: help
+.PHONY: help check dirs clean synth synth_all synth_unit report gls
+
+# --- Help --------------------------------------------------------
 help:
 	@echo ""
 	@echo "===================================================="
-	@echo "  Synthesis & GLS"
+	@echo "  Synthesis Build Engine (Stage 3 — reports)"
 	@echo "===================================================="
 	@echo ""
-	@echo "Setup (run once):"
-	@echo "  bash setup_sky130.sh"
+	@echo "Environment:"
+	@echo "  make check                    Validate tools, liberty, RTL paths"
+	@echo "  make dirs                     Create generated/reports/logs/netlists/gls"
+	@echo "  make clean                    Remove all generated synthesis artifacts"
 	@echo ""
 	@echo "Synthesis:"
-	@echo "  make synth                    System top"
-	@echo "  make synth_unit               All 7 unit modules"
-	@echo "  make synth_unit MODULE=sram_array    Specific module"
-	@echo "  make synth_all                Everything"
+	@echo "  make synth MODULE=req_fifo    Generate .ys script + run Yosys (real)"
+	@echo "  make synth_unit               Placeholder — implemented in Stage 4"
+	@echo "  make synth_all                Placeholder — implemented in Stage 4"
 	@echo ""
-	@echo "Reports:"
-	@echo "  make report                   Full summary"
-	@echo "  make report MODULE=sram_array Single module"
+	@echo "Reporting:"
+	@echo "  make report MODULE=req_fifo   Parse log into reports/req_fifo_report.txt (real)"
 	@echo ""
-	@echo "Gate-Level Simulation:"
-	@echo "  make gls                      System with tb_sys"
-	@echo "  make gls_unit MODULE=sram_array      Unit GLS"
+	@echo "GLS (Stage 5 placeholder):"
+	@echo "  make gls MODULE=req_fifo      Run gate-level simulation"
 	@echo ""
-	@echo "Available modules:"
-	@for m in $(ALL_MODULES); do echo "    $$m"; done
-	@echo ""
-	@echo "Maintenance:"
-	@echo "  make clean"
-	@echo ""
+	@echo "Known modules:"
+	@echo "  $(MODULES)"
+	@echo "===================================================="
 
-# --- Directories -----------------------------------------------
-$(REPORT_DIR) $(NETLIST_DIR) $(LOG_DIR) $(GLS_DIR) $(SCRIPT_DIR):
-	@mkdir -p $@
+# --- Environment check ---------------------------------------------
+check:
+	@echo "[CHECK] Verifying synthesis environment..."
 
-# --- Synthesis rule generator ----------------------------------
-define SYNTH_RULE
-$(REPORT_DIR)/$(1)_tech.rpt: $$(RTL_$(1)) $(LIBERTY) | $(REPORT_DIR) $(NETLIST_DIR) $(LOG_DIR)
-	@echo ""
-	@echo "[SYNTH] $(1)"
-	@echo "  Liberty: $(LIBERTY)"
-	@$(YOSYS) -p " \
-		read_verilog -sv $$(RTL_$(1)); \
-		hierarchy -check -top $(1); \
-		tee -o $(REPORT_DIR)/$(1)_pre.rpt stat; \
-		proc; fsm; memory; opt_clean; \
-		tee -o $(REPORT_DIR)/$(1)_opt.rpt stat; \
-		techmap; dfflibmap -liberty $(LIBERTY); \
-		abc -liberty $(LIBERTY) -D $(CLK_PERIOD_PS); \
-		opt_clean; \
-		tee -o $(REPORT_DIR)/$(1)_tech.rpt stat -liberty $(LIBERTY); \
-		tee -o $(REPORT_DIR)/$(1)_sta.rpt sta -liberty $(LIBERTY); \
-		write_verilog -noattr -decimal $(NETLIST_DIR)/$(1)_sky130.v \
-	" -l $(LOG_DIR)/$(1).log 2>&1
-	@echo "[DONE] $(1)"
-endef
+	@command -v $(YOSYS) >/dev/null 2>&1 || \
+		{ echo "[ERROR] yosys not found on PATH."; \
+		  echo "        Run top-level 'make setup' first."; \
+		  exit 1; }
+	@echo "[PASS] yosys found: $$(command -v $(YOSYS))"
 
-$(foreach mod,$(ALL_MODULES),$(eval $(call SYNTH_RULE,$(mod))))
+	@command -v $(IVERILOG) >/dev/null 2>&1 || \
+		{ echo "[ERROR] iverilog not found on PATH."; \
+		  echo "        Install Icarus Verilog first."; \
+		  exit 1; }
+	@echo "[PASS] iverilog found: $$(command -v $(IVERILOG))"
 
-# --- Synthesis targets -----------------------------------------
-.PHONY: synth synth_unit synth_all
+	@command -v $(PYTHON3) >/dev/null 2>&1 || \
+		{ echo "[ERROR] python3 not found on PATH."; \
+		  echo "        parse_report.py requires python3 to run."; \
+		  exit 1; }
+	@echo "[PASS] python3 found: $$(command -v $(PYTHON3))"
 
-synth: $(REPORT_DIR)/banked_sram_ctrl_tech.rpt
+	@test -d $(RTL_DIR) || \
+		{ echo "[ERROR] RTL directory not found: $(RTL_DIR)"; \
+		  exit 1; }
+	@echo "[PASS] RTL directory found: $(RTL_DIR)"
 
-synth_unit: $(foreach m,$(UNIT_MODULES),$(REPORT_DIR)/$(m)_tech.rpt)
+	@test -f $(LIBERTY_FILE) || \
+		{ echo "[ERROR] Sky130 liberty file not found:"; \
+		  echo "        $(LIBERTY_FILE)"; \
+		  echo "        Run top-level 'make setup' to generate it via setup_sky130.sh"; \
+		  exit 1; }
+	@echo "[PASS] Liberty file found: $(LIBERTY_FILE)"
 
-synth_all: $(foreach m,$(ALL_MODULES),$(REPORT_DIR)/$(m)_tech.rpt)
-	@echo ""
-	@echo "[DONE] All modules synthesized"
-	@echo "  Reports : $(REPORT_DIR)/"
-	@echo "  Netlists: $(NETLIST_DIR)/"
-	@echo "  Logs    : $(LOG_DIR)/"
+	@$(MAKE) --no-print-directory dirs
 
-# --- Report parsing --------------------------------------------
-.PHONY: report
-report: $(SCRIPT_DIR)/parse_report.py | $(REPORT_DIR)
-	@echo ""
-ifeq ($(MODULE),banked_sram_ctrl)
-	@python3 $(SCRIPT_DIR)/parse_report.py $(REPORT_DIR) "$(ALL_MODULES)"
-else
-	@python3 $(SCRIPT_DIR)/parse_report.py $(REPORT_DIR) "$(MODULE)"
-endif
-
-$(SCRIPT_DIR)/parse_report.py: | $(SCRIPT_DIR)
-	@echo "[GEN] Report parser script"
-
-# --- Gate-Level Simulation ------------------------------------
-$(GLS_DIR)/sky130_cells.f: $(LIBERTY) | $(GLS_DIR)
-	@echo "[GEN] Sky130 cell file list"
-	@echo "$(CELL_VERILOG)" | tr ' ' '\n' > $@
-
-.PHONY: gls gls_unit
-
-gls: $(NETLIST_DIR)/banked_sram_ctrl_sky130.v $(GLS_DIR)/sky130_cells.f | $(GLS_DIR)
-	@echo ""
-	@echo "[GLS] banked_sram_ctrl (system)"
-	@cd $(GLS_DIR) && $(IVERILOG) -g2012 -o banked_sram_ctrl_gls.vvp \
-		-f sky130_cells.f \
-		../$(NETLIST_DIR)/banked_sram_ctrl_sky130.v \
-		../verif/system/tb_sys.sv \
-		2>&1 | tee banked_sram_ctrl_gls.log
-	@cd $(GLS_DIR) && $(VVP) banked_sram_ctrl_gls.vvp 2>&1 | tee -a banked_sram_ctrl_gls.log
-
-gls_unit: $(NETLIST_DIR)/$(MODULE)_sky130.v $(GLS_DIR)/sky130_cells.f | $(GLS_DIR)
-	@echo ""
-	@echo "[GLS] $(MODULE)"
-	@cd $(GLS_DIR) && $(IVERILOG) -g2012 -o $(MODULE)_gls.vvp \
-		-f sky130_cells.f \
-		../$(NETLIST_DIR)/$(MODULE)_sky130.v \
-		../verif/unit/tb_$(MODULE).sv \
-		2>&1 | tee $(MODULE)_gls.log
-	@cd $(GLS_DIR) && $(VVP) $(MODULE)_gls.vvp 2>&1 | tee -a $(MODULE)_gls.log
+# --- Directory contract ---------------------------------------------
+dirs:
+	@mkdir -p $(GEN_DIR)
+	@mkdir -p $(REPORT_DIR)
+	@mkdir -p $(LOG_DIR)
+	@mkdir -p $(NETLIST_DIR)
+	@mkdir -p $(GLS_DIR)
+	@echo "[PASS] output directories ready:"
+	@echo "        $(GEN_DIR)"
+	@echo "        $(REPORT_DIR)"
+	@echo "        $(LOG_DIR)"
+	@echo "        $(NETLIST_DIR)"
+	@echo "        $(GLS_DIR)"
 
 # --- Clean -----------------------------------------------------
-.PHONY: clean
 clean:
-	@echo "[CLEAN] Removing synthesis outputs..."
-	@rm -rf $(REPORT_DIR) $(NETLIST_DIR) $(LOG_DIR) $(GLS_DIR) $(SCRIPT_DIR)
+	@echo "[CLEAN] Removing generated synthesis artifacts..."
+	@rm -rf $(GEN_DIR) $(REPORT_DIR) $(LOG_DIR) $(NETLIST_DIR) $(GLS_DIR)
 	@echo "[DONE]"
+
+# --- Module name validation helper ------------------------------
+# Not a target: used inline by synth/report/gls via $(call ...)
+define require_module
+	@if [ -z "$(MODULE)" ]; then \
+		echo "[ERROR] MODULE not specified. Usage: make $(1) MODULE=req_fifo"; \
+		exit 1; \
+	fi
+	@case " $(MODULES) " in \
+		*" $(MODULE) "*) ;; \
+		*) echo "[ERROR] Unknown module: $(MODULE)"; \
+		   echo "        Known modules: $(MODULES)"; \
+		   exit 1 ;; \
+	esac
+endef
+
+# --- Synthesis: single module (real implementation) ------------------
+synth: check
+	$(call require_module,synth)
+	@test -f synth.ys || \
+		{ echo "[ERROR] Synthesis template not found: synth.ys"; \
+		  echo "        Expected at: $(ROOT_DIR)synth.ys"; \
+		  exit 1; }
+	@echo ""
+	@echo "=== Generating Yosys script for $(MODULE) ==="
+	@sed \
+		-e 's#@MODULE@#$(MODULE)#g' \
+		-e 's#@LIBERTY@#$(LIBERTY_FILE)#g' \
+		-e 's#@NETLIST@#$(NETLIST_DIR)/$(MODULE)_netlist.v#g' \
+		synth.ys > $(GEN_DIR)/synth_$(MODULE).ys
+	@echo "  Wrote: $(GEN_DIR)/synth_$(MODULE).ys"
+	@echo ""
+	@echo "=== Running Yosys synthesis for $(MODULE) ==="
+	@$(YOSYS) -s $(GEN_DIR)/synth_$(MODULE).ys > $(LOG_DIR)/$(MODULE).log 2>&1; \
+		EXIT_CODE=$$?; \
+		if [ $$EXIT_CODE -ne 0 ]; then \
+			echo "[ERROR] Yosys synthesis failed for $(MODULE) (exit code $$EXIT_CODE)."; \
+			echo "        Log: $(LOG_DIR)/$(MODULE).log"; \
+			echo "        Last 20 lines of log:"; \
+			tail -n 20 $(LOG_DIR)/$(MODULE).log; \
+			exit 1; \
+		fi
+	@test -s $(NETLIST_DIR)/$(MODULE)_netlist.v || \
+		{ echo "[ERROR] Yosys reported success but no netlist was produced:"; \
+		  echo "        $(NETLIST_DIR)/$(MODULE)_netlist.v"; \
+		  echo "        Check log: $(LOG_DIR)/$(MODULE).log"; \
+		  exit 1; }
+	@echo "Result: SYNTHESIS OK"
+	@echo "  Netlist: $(NETLIST_DIR)/$(MODULE)_netlist.v"
+	@echo "  Log:     $(LOG_DIR)/$(MODULE).log"
+
+# --- Synthesis: all/unit sweeps (Stage 4 placeholder) ---------------
+synth_unit: check
+	@echo "[INFO] Environment validated for unit-level synthesis."
+	@echo "[INFO] Per-module synthesis loop is implemented in Stage 4."
+	@echo "[INFO] Until then, use: make synth MODULE=<module_name>"
+
+synth_all: check
+	@echo "[INFO] Environment validated for full synthesis sweep."
+	@echo "[INFO] Full synthesis loop is implemented in Stage 4."
+	@echo "[INFO] Until then, use: make synth MODULE=<module_name>"
+
+# --- Report (real implementation) -------------------------------
+report: check
+	$(call require_module,report)
+	@test -f $(NETLIST_DIR)/$(MODULE)_netlist.v || \
+		{ echo "[ERROR] Netlist not found: $(NETLIST_DIR)/$(MODULE)_netlist.v"; \
+		  echo "        Run 'make synth MODULE=$(MODULE)' first."; \
+		  exit 1; }
+	@test -f $(LOG_DIR)/$(MODULE).log || \
+		{ echo "[ERROR] Log not found: $(LOG_DIR)/$(MODULE).log"; \
+		  echo "        Run 'make synth MODULE=$(MODULE)' first."; \
+		  exit 1; }
+	@test -f $(PARSE_SCRIPT) || \
+		{ echo "[ERROR] parse_report.py not found: $(PARSE_SCRIPT)"; \
+		  exit 1; }
+	@echo ""
+	@echo "=== Parsing report for $(MODULE) ==="
+	@$(PYTHON3) $(PARSE_SCRIPT) \
+		--module $(MODULE) \
+		--log $(LOG_DIR)/$(MODULE).log \
+		--netlist $(NETLIST_DIR)/$(MODULE)_netlist.v \
+		--report-out $(REPORT_DIR)/$(MODULE)_report.txt
+	@echo ""
+	@echo "Result: REPORT OK"
+	@echo "  Report: $(REPORT_DIR)/$(MODULE)_report.txt"
+
+# --- GLS (Stage 5 placeholder) -----------------------------------
+gls: check
+	$(call require_module,gls)
+	@test -f $(NETLIST_DIR)/$(MODULE)_netlist.v || \
+		{ echo "[ERROR] Netlist not found: $(NETLIST_DIR)/$(MODULE)_netlist.v"; \
+		  echo "        Run 'make synth MODULE=$(MODULE)' first."; \
+		  exit 1; }
+	@echo "[INFO] Netlist found: $(NETLIST_DIR)/$(MODULE)_netlist.v"
+	@echo "[INFO] Gate-level simulation is implemented in Stage 5."

@@ -1,237 +1,629 @@
 #!/usr/bin/env python3
-"""
-Parse Yosys synthesis reports and generate formatted summary.
-Usage: python3 parse_report.py <report_dir> [module_names...]
-"""
+###############################################################################
+# parse_report.py
+#
+# Reads a raw Yosys synthesis log (produced by banked_sram_ctrl/synth/makefile
+# target 'synth', using the synth.ys template) and writes a human-readable
+# per-module report.
+#
+# The log is expected to contain four sentinel-marked 'stat' checkpoints,
+# written by synth.ys via the Yosys 'log' command:
+#
+#   ==STAGE:HIERARCHY==     stat right after hierarchy -check
+#   ==STAGE:PRE_OPT==       stat after proc/memory/fsm, before opt
+#   ==STAGE:POST_OPT==      stat after opt, before techmap
+#   ==STAGE:POST_TECHMAP==  stat -liberty after dfflibmap/abc/cleanup
+#
+# This script does not invent any metric. If a checkpoint or a specific
+# number inside it cannot be found, the corresponding report field is
+# printed as "Unavailable before place-and-route" (for timing metrics)
+# or "Unavailable - not found in log" (for a structural metric that was
+# expected but missing, which indicates a log/template mismatch rather
+# than a genuine synthesis limitation).
+#
+# Usage:
+#   python3 parse_report.py \
+#       --module req_fifo \
+#       --log logs/req_fifo.log \
+#       --netlist netlists/req_fifo_netlist.v \
+#       --report-out reports/req_fifo_report.txt
+###############################################################################
 
-import sys
-import os
+import argparse
 import re
-import glob
+import sys
+
+UNAVAILABLE_TIMING = "Unavailable before place-and-route"
+UNAVAILABLE_MISSING = "Unavailable - not found in log"
+
+# Sequential cell name fragments, taken directly from the Sky130 HD
+# standard cell library cell directory (banked_sram_ctrl/../pdk/
+# sky130_fd_sc_hd/cells/). Any cell whose name contains one of these
+# fragments is classified as sequential (flip-flop or latch). Every
+# other cell is classified as combinational.
+SEQUENTIAL_CELL_MARKERS = (
+    "dfstp", "sdfrbp", "dlrtn", "dfbbp", "dfrtn", "dlxtn", "sdfbbn",
+    "dfsbp", "dfxbp", "dlxbp", "sdfrtp", "dfrbp", "dfxtp", "sdfxtp",
+    "dlxbn", "dlrbp", "dfbbn", "sdfsbp", "dlrtp", "sdfstp", "sdfbbp",
+    "sdfrtn", "edfxtp", "edfxbp", "sedfxtp", "sedfxbp",
+)
+
+STAGE_MARKERS = ["HIERARCHY", "PRE_OPT", "POST_OPT", "POST_TECHMAP"]
 
 
-def parse_stat_file(path):
-    """Parse a Yosys 'stat' or 'stat -liberty' report."""
-    data = {
-        "num_wires": 0, "wire_bits": 0, "num_cells": 0,
-        "area": 0.0, "cells": {}, "has_area": False
+def fail(message):
+    sys.stderr.write("[ERROR] " + message + "\n")
+    sys.exit(1)
+
+
+def read_log(log_path):
+    try:
+        with open(log_path, "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        fail("Log file not found: " + log_path)
+    except OSError as exc:
+        fail("Could not read log file " + log_path + ": " + str(exc))
+
+
+def extract_stage_sections(log_text):
+    """
+    Split the log into named sections using the ==STAGE:NAME== sentinels.
+    Returns a dict: stage_name -> section text (everything between this
+    sentinel and the next one, or end of file).
+    """
+    marker_pattern = re.compile(r"^==STAGE:(\w+)==\s*$", re.MULTILINE)
+    matches = list(marker_pattern.finditer(log_text))
+
+    sections = {}
+    for i, match in enumerate(matches):
+        stage_name = match.group(1)
+        start = match.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(log_text)
+        sections[stage_name] = log_text[start:end]
+
+    return sections
+
+
+def parse_stat_block(section_text):
+    """
+    Parse a single Yosys 'stat' block into structured data.
+    Handles both the verbose format (Number of wires: 56) and the compact
+    tree format (56 wires, 490 9.22E+03 cells, 3   $add, etc.).
+    Returns a dict with keys: wires, wire_bits, cells_total,
+    cell_breakdown (dict name->count), area (float or None).
+    Any field that cannot be found is left as None / empty.
+    """
+    result = {
+        "wires": None,
+        "wire_bits": None,
+        "cells_total": None,
+        "cell_breakdown": {},
+        "area": None,
     }
-    if not os.path.exists(path):
-        return data
-    with open(path) as f:
-        text = f.read()
 
-    # Wire counts
-    m = re.search(r"Number of wires:\s+(\d+)", text)
-    if m:
-        data["num_wires"] = int(m.group(1))
-    m = re.search(r"Number of wire bits:\s+(\d+)", text)
-    if m:
-        data["wire_bits"] = int(m.group(1))
+    # Wires: try verbose format first, then compact format
+    wires_match = re.search(r"Number of wires:\s+(\d+)", section_text)
+    if not wires_match:
+        wires_match = re.search(
+            r"^\s*(\d+)(?:\s+[\d.E+-]+)?\s+wires\s*$", section_text, re.MULTILINE
+        )
+    if wires_match:
+        result["wires"] = int(wires_match.group(1))
 
-    # Cell count (total)
-    m = re.search(r"Number of cells:\s+(\d+)", text)
-    if m:
-        data["num_cells"] = int(m.group(1))
+    # Wire bits: try verbose format first, then compact format
+    wire_bits_match = re.search(r"Number of wire bits:\s+(\d+)", section_text)
+    if not wire_bits_match:
+        wire_bits_match = re.search(
+            r"^\s*(\d+)(?:\s+[\d.E+-]+)?\s+wire bits\s*$", section_text, re.MULTILINE
+        )
+    if wire_bits_match:
+        result["wire_bits"] = int(wire_bits_match.group(1))
 
-    # Individual cells
-    for line in text.splitlines():
-        m = re.match(r"\s+(sky130_\S+)\s+(\d+)", line)
-        if m:
-            data["cells"][m.group(1)] = int(m.group(2))
+    # Cells total: try verbose format first, then compact format
+    cells_match = re.search(r"Number of cells:\s+(\d+)", section_text)
+    if not cells_match:
+        cells_match = re.search(
+            r"^\s*(\d+)(?:\s+[\d.E+-]+)?\s+cells\s*$", section_text, re.MULTILINE
+        )
+    if cells_match:
+        result["cells_total"] = int(cells_match.group(1))
 
-    # Chip area
-    m = re.search(r"Chip area for module.*?:\s+([\d.]+)", text)
-    if not m:
-        m = re.search(r"Area of cell.*?:\s+([\d.]+)", text)
-    if m:
-        data["area"] = float(m.group(1))
-        data["has_area"] = True
-
-    return data
-
-
-def parse_sta_file(path):
-    """Parse Yosys 'sta -liberty' timing report."""
-    timing = {"delay": None, "path": None}
-    if not os.path.exists(path):
-        return timing
-    with open(path) as f:
-        text = f.read()
-
-    # Look for delay line
-    m = re.search(r"delay\s*=\s*([\d.]+)\s*(\w+)", text)
-    if m:
-        val, unit = float(m.group(1)), m.group(2)
-        # Normalize to ns
-        if unit.startswith("p"):
-            val /= 1000.0
-        elif unit.startswith("u"):
-            val *= 1000.0
-        timing["delay"] = val
-
-    # Path
-    m = re.search(r"(?:path|Endpoint):\s*(.+)", text)
-    if m:
-        timing["path"] = m.group(1).strip()
-
-    return timing
-
-
-def parse_log_depth(log_path):
-    """Try to extract logic depth from abc output in yosys log."""
-    depth = None
-    if not os.path.exists(log_path):
-        return depth
-    with open(log_path) as f:
-        text = f.read()
-    # abc reports: "lev = N" for logic levels
-    m = re.search(r"lev\s*=\s*(\d+)", text)
-    if m:
-        depth = int(m.group(1))
-    return depth
-
-
-def estimate_power(num_cells, cell_counts):
-    """Rough power estimate from cell counts (uW @ tt_025C_1v80)."""
-    # Typical dynamic power per gate type (uW/MHz) — ballpark from Sky130 docs
-    power_table = {
-        "dfrtp": 0.15, "dfxtp": 0.12,  # DFFs
-        "inv": 0.03, "buf": 0.04,
-        "nand2": 0.04, "nor2": 0.04,
-        "and2": 0.05, "or2": 0.05,
-        "xor2": 0.07, "xnor2": 0.07,
-        "mux2": 0.06, "mux4": 0.10,
-        "o21ai": 0.05, "a21oi": 0.05,
-        "o211ai": 0.06, "a211oi": 0.06,
-        "a22oi": 0.06, "o22ai": 0.06,
-        "fa": 0.12, "ha": 0.08,
-        "dlxtp": 0.08, "dlclkp": 0.06,
-    }
-    total_dyn = 0.0
-    for cell, count in cell_counts.items():
-        # Extract cell base name (e.g., sky130_fd_sc_hd__nand2_2 → nand2)
-        base = cell.split("__")[-1].rsplit("_", 1)[0] if "__" in cell else cell
-        matched = False
-        for key, pwr in power_table.items():
-            if key in base:
-                total_dyn += count * pwr
-                matched = True
+        # Cell breakdown lines immediately follow the "cells" line.
+        # Pre-techmap compact:  "     3   $add"
+        # Post-techmap compact:  "     1    5.005   sky130_fd_sc_hd__a21oi_1"
+        after_cells_text = section_text[cells_match.end() :]
+        breakdown_pattern = re.compile(r"^\s*(\d+)(?:\s+[\d.E+-]+)?\s+(\S+)\s*$")
+        for line in after_cells_text.splitlines():
+            line = line.rstrip()
+            if not line:
+                continue
+            line_match = breakdown_pattern.match(line)
+            if not line_match:
                 break
-        if not matched:
-            total_dyn += count * 0.05  # default 50nW/MHz
+            cell_count = int(line_match.group(1))
+            cell_name = line_match.group(2)
+            # Guard against accidentally matching the "cells" line itself
+            # or other metric lines that start with a number.
+            if cell_name in (
+                "cells",
+                "wires",
+                "wire",
+                "bits",
+                "processes",
+                "ports",
+                "port",
+            ):
+                break
+            result["cell_breakdown"][cell_name] = cell_count
 
-    leakage = num_cells * 0.003  # ~3nW per cell leakage ballpark
-    return total_dyn, leakage
+    # Area (only present in post-techmap / stat -liberty)
+    area_match = re.search(
+        r"Chip area for module[^:]*:\s*([\d.E+-]+)", section_text
+    )
+    if area_match:
+        result["area"] = float(area_match.group(1))
+
+    return result
 
 
-def report_module(rpt_dir, mod):
-    """Generate formatted report for one module."""
-    pre = parse_stat_file(os.path.join(rpt_dir, f"{mod}_pre.rpt"))
-    opt = parse_stat_file(os.path.join(rpt_dir, f"{mod}_opt.rpt"))
-    tech = parse_stat_file(os.path.join(rpt_dir, f"{mod}_tech.rpt"))
-    sta = parse_sta_file(os.path.join(rpt_dir, f"{mod}_sta.rpt"))
-    depth = parse_log_depth(os.path.join(rpt_dir, f"../logs/{mod}.log"))
+def classify_cells(cell_breakdown):
+    """
+    Split a cell_breakdown dict into (sequential_count, combinational_count)
+    using SEQUENTIAL_CELL_MARKERS. A cell is sequential if any marker
+    fragment appears in its name.
+    """
+    sequential_count = 0
+    combinational_count = 0
 
+    for cell_name, count in cell_breakdown.items():
+        cell_name_lower = cell_name.lower()
+        is_sequential = any(
+            marker in cell_name_lower
+            for marker in SEQUENTIAL_CELL_MARKERS
+        )
+        if is_sequential:
+            sequential_count += count
+        else:
+            combinational_count += count
+
+    return sequential_count, combinational_count
+
+
+def format_cell_breakdown(cell_breakdown):
+    if not cell_breakdown:
+        return "  " + UNAVAILABLE_MISSING
     lines = []
-    lines.append("=" * 80)
-    lines.append(f"  Synthesis Report: {mod}")
-    lines.append("=" * 80)
-
-    # Optimization snapshots
-    lines.append("\n  OPTIMIZATION SNAPSHOTS")
-    lines.append("  " + "-" * 60)
-    lines.append(f"  {'Phase':<18} {'Gate Count':>12} {'Area (um²)':>14} {'Wires':>10}")
-    lines.append("  " + "-" * 60)
-    lines.append(f"  {'Pre-Opt':<18} {pre['num_cells']:>12} {'N/A':>14} {pre['num_wires']:>10}")
-    lines.append(f"  {'Post-Opt':<18} {opt['num_cells']:>12} {'N/A':>14} {opt['num_wires']:>10}")
-    area_str = f"{tech['area']:.3f}" if tech["has_area"] else "N/A"
-    lines.append(f"  {'Post-Tech':<18} {tech['num_cells']:>12} {area_str:>14} {tech['num_wires']:>10}")
-    lines.append("  " + "-" * 60)
-
-    # Reduction
-    if pre["num_cells"] > 0 and tech["num_cells"] > 0:
-        red = (1.0 - tech["num_cells"] / pre["num_cells"]) * 100
-        lines.append(f"  Reduction: {red:+.1f}% (pre-opt → post-tech)")
-        lines.append("")
-
-    # Logic depth
-    if depth:
-        lines.append(f"  LOGIC DEPTH: {depth} levels")
-        lines.append("")
-
-    # Timing
-    lines.append("  TIMING ESTIMATE")
-    lines.append("  " + "-" * 60)
-    if sta["delay"]:
-        lines.append(f"  Critical Path Delay:  {sta['delay']:.3f} ns")
-        freq = 1000.0 / sta["delay"] if sta["delay"] > 0 else 0
-        lines.append(f"  Max Frequency:        {freq:.1f} MHz (estimate)")
-    else:
-        lines.append("  Critical Path Delay:  N/A (run 'sta' manually)")
-    if sta["path"]:
-        lines.append(f"  Endpoint:             {sta['path']}")
-    lines.append("")
-
-    # Cell breakdown (top 10)
-    if tech["cells"]:
-        lines.append("  CELL BREAKDOWN (top 10)")
-        lines.append("  " + "-" * 60)
-        sorted_cells = sorted(tech["cells"].items(), key=lambda x: -x[1])[:10]
-        for cell, count in sorted_cells:
-            lines.append(f"  {cell:<45} {count:>8}")
-        lines.append("")
-
-    # Power estimate
-    if tech["num_cells"] > 0:
-        dyn, leak = estimate_power(tech["num_cells"], tech["cells"])
-        lines.append("  POWER ESTIMATE (rough, @ tt_025C_1v80, 100MHz toggle rate)")
-        lines.append("  " + "-" * 60)
-        lines.append(f"  Dynamic Power:    ~{dyn:.3f} uW/MHz  →  ~{dyn:.3f} mW @ 100MHz")
-        lines.append(f"  Leakage Power:    ~{leak:.3f} uW")
-        lines.append("")
-
-    lines.append("  NETLIST")
-    lines.append("  " + "-" * 60)
-    net_path = os.path.join(rpt_dir, "../netlists", f"{mod}_sky130.v")
-    exists = "EXISTS" if os.path.exists(net_path) else "NOT FOUND"
-    lines.append(f"  Output: {net_path}  [{exists}]")
-    lines.append("=" * 80)
+    for cell_name in sorted(cell_breakdown.keys()):
+        lines.append("  {:<40} {}".format(cell_name, cell_breakdown[cell_name]))
     return "\n".join(lines)
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 parse_report.py <report_dir> [module ...]")
-        sys.exit(1)
+def format_value(value, unit=""):
+    if value is None:
+        return UNAVAILABLE_MISSING
+    return "{}{}".format(value, unit)
 
-    rpt_dir = sys.argv[1]
-    if len(sys.argv) > 2:
-        modules = sys.argv[2].split()
+
+def build_report(module, log_path, netlist_path, report_path, sections):
+    for stage in STAGE_MARKERS:
+        if stage not in sections:
+            fail(
+                "Expected checkpoint '==STAGE:{}==' not found in log: {}\n"
+                "        This means synth.ys did not run to completion, or "
+                "the template was modified.\n"
+                "        Re-run 'make synth MODULE={}' and check the log "
+                "for errors.".format(stage, log_path, module)
+            )
+
+    hierarchy_stat = parse_stat_block(sections["HIERARCHY"])
+    pre_opt_stat = parse_stat_block(sections["PRE_OPT"])
+    post_opt_stat = parse_stat_block(sections["POST_OPT"])
+    post_techmap_stat = parse_stat_block(sections["POST_TECHMAP"])
+
+    seq_count, comb_count = classify_cells(post_techmap_stat["cell_breakdown"])
+
+    pre_opt_cells = pre_opt_stat["cells_total"]
+    post_opt_cells = post_opt_stat["cells_total"]
+
+    if pre_opt_cells is not None and post_opt_cells is not None and pre_opt_cells > 0:
+        reduction_pct = 100.0 * (pre_opt_cells - post_opt_cells) / pre_opt_cells
+        reduction_str = "{:.2f}%".format(reduction_pct)
     else:
-        # Auto-discover
-        modules = []
-        for p in sorted(glob.glob(os.path.join(rpt_dir, "*_tech.rpt"))):
-            mod = os.path.basename(p).replace("_tech.rpt", "")
-            modules.append(mod)
+        reduction_str = UNAVAILABLE_MISSING
 
-    if not modules:
-        print("No reports found.")
-        sys.exit(1)
+    lines = []
+    lines.append("=" * 70)
+    lines.append("Synthesis Report — module: {}".format(module))
+    lines.append("=" * 70)
+    lines.append("")
 
-    full_report = []
-    for mod in modules:
-        full_report.append(report_module(rpt_dir, mod))
+    lines.append("--- Hierarchy Report (post-elaboration, pre-processing) ---")
+    lines.append("Wire count       : {}".format(format_value(hierarchy_stat["wires"])))
+    lines.append("Wire bits        : {}".format(format_value(hierarchy_stat["wire_bits"])))
+    lines.append("Cell count       : {}".format(format_value(hierarchy_stat["cells_total"])))
+    lines.append("Cell breakdown   :")
+    lines.append(format_cell_breakdown(hierarchy_stat["cell_breakdown"]))
+    lines.append("")
 
-    output = "\n\n".join(full_report)
-    print(output)
+    lines.append("--- Pre-Optimization Report ---")
+    lines.append("Wire count       : {}".format(format_value(pre_opt_stat["wires"])))
+    lines.append("Wire bits        : {}".format(format_value(pre_opt_stat["wire_bits"])))
+    lines.append("Cell count       : {}".format(format_value(pre_opt_stat["cells_total"])))
+    lines.append("Cell breakdown   :")
+    lines.append(format_cell_breakdown(pre_opt_stat["cell_breakdown"]))
+    lines.append("")
 
-    # Write summary file
-    summary_path = os.path.join(rpt_dir, "summary.txt")
-    with open(summary_path, "w") as f:
-        f.write(output)
-    print(f"\n[WROTE] {summary_path}")
+    lines.append("--- Post-Optimization Report ---")
+    lines.append("Wire count       : {}".format(format_value(post_opt_stat["wires"])))
+    lines.append("Wire bits        : {}".format(format_value(post_opt_stat["wire_bits"])))
+    lines.append("Cell count       : {}".format(format_value(post_opt_stat["cells_total"])))
+    lines.append("Cell breakdown   :")
+    lines.append(format_cell_breakdown(post_opt_stat["cell_breakdown"]))
+    lines.append("")
+
+    lines.append("--- Optimization Summary ---")
+    lines.append("Pre-optimization cell count  : {}".format(format_value(pre_opt_cells)))
+    lines.append("Post-optimization cell count : {}".format(format_value(post_opt_cells)))
+    lines.append("Reduction %                  : {}".format(reduction_str))
+    lines.append("")
+
+    lines.append("--- Technology-Mapped Report (final, Sky130 HD) ---")
+    lines.append("Gate count (total cells)     : {}".format(format_value(post_techmap_stat["cells_total"])))
+    lines.append("Cell count                   : {}".format(format_value(post_techmap_stat["cells_total"])))
+    lines.append("Sequential cell count         : {}".format(format_value(seq_count)))
+    lines.append("Combinational cell count      : {}".format(format_value(comb_count)))
+    lines.append("Wire count                   : {}".format(format_value(post_techmap_stat["wires"])))
+    lines.append("Wire bits                    : {}".format(format_value(post_techmap_stat["wire_bits"])))
+    lines.append(
+        "Area (liberty units, from stat -liberty) : {}".format(
+            format_value(post_techmap_stat["area"])
+        )
+    )
+    lines.append("Cell breakdown                :")
+    lines.append(format_cell_breakdown(post_techmap_stat["cell_breakdown"]))
+    lines.append("")
+
+    lines.append("--- Timing Report ---")
+    lines.append("Critical path estimate   : {}".format(UNAVAILABLE_TIMING))
+    lines.append("Maximum frequency estimate: {}".format(UNAVAILABLE_TIMING))
+    lines.append("Logic depth              : {}".format(UNAVAILABLE_TIMING))
+    lines.append(
+        "Note: Yosys without a place-and-route / STA tool does not"
+    )
+    lines.append(
+        "produce reliable timing numbers. These fields are intentionally"
+    )
+    lines.append("left unavailable rather than estimated.")
+    lines.append("")
+
+    lines.append("--- Artifact Paths ---")
+    lines.append("Generated netlist path : {}".format(netlist_path))
+    lines.append("Generated log path     : {}".format(log_path))
+    lines.append("Generated report path  : {}".format(report_path))
+    lines.append("")
+    lines.append("=" * 70)
+
+    return "\n".join(lines) + "\n"
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Parse a Yosys synthesis log into a report.")
+    parser.add_argument("--module", required=True, help="Module name (e.g. req_fifo)")
+    parser.add_argument("--log", required=True, help="Path to the Yosys log file")
+    parser.add_argument("--netlist", required=True, help="Path to the generated netlist")
+    parser.add_argument("--report-out", required=True, help="Path to write the report file")
+    args = parser.parse_args()
+
+    log_text = read_log(args.log)
+    warning_count = len(re.findall(r"^Warning:", log_text, re.MULTILINE))
+    sections = extract_stage_sections(log_text)
+    report_text = build_report(args.module, args.log, args.netlist, args.report_out, sections)
+
+    try:
+        with open(args.report_out, "w") as f:
+            f.write(report_text)
+    except OSError as exc:
+        fail("Could not write report file " + args.report_out + ": " + str(exc))
+
+    print("[PASS] Report written: " + args.report_out)
 
 
 if __name__ == "__main__":
     main()
+# #!/usr/bin/env python3
+# ###############################################################################
+# # parse_report.py
+# #
+# # Reads a raw Yosys synthesis log (produced by banked_sram_ctrl/synth/makefile
+# # target 'synth', using the synth.ys template) and writes a human-readable
+# # per-module report.
+# #
+# # The log is expected to contain four sentinel-marked 'stat' checkpoints,
+# # written by synth.ys via the Yosys 'log' command:
+# #
+# #   ==STAGE:HIERARCHY==     stat right after hierarchy -check
+# #   ==STAGE:PRE_OPT==       stat after proc/memory/fsm, before opt
+# #   ==STAGE:POST_OPT==      stat after opt, before techmap
+# #   ==STAGE:POST_TECHMAP==  stat -liberty after dfflibmap/abc/cleanup
+# #
+# # This script does not invent any metric. If a checkpoint or a specific
+# # number inside it cannot be found, the corresponding report field is
+# # printed as "Unavailable before place-and-route" (for timing metrics)
+# # or "Unavailable - not found in log" (for a structural metric that was
+# # expected but missing, which indicates a log/template mismatch rather
+# # than a genuine synthesis limitation).
+# #
+# # Usage:
+# #   python3 parse_report.py \
+# #       --module req_fifo \
+# #       --log logs/req_fifo.log \
+# #       --netlist netlists/req_fifo_netlist.v \
+# #       --report-out reports/req_fifo_report.txt
+# ###############################################################################
+
+# import argparse
+# import re
+# import sys
+
+
+# UNAVAILABLE_TIMING = "Unavailable before place-and-route"
+# UNAVAILABLE_MISSING = "Unavailable - not found in log"
+
+# # Sequential cell name fragments, taken directly from the Sky130 HD
+# # standard cell library cell directory (banked_sram_ctrl/../pdk/
+# # sky130_fd_sc_hd/cells/). Any cell whose name contains one of these
+# # fragments is classified as sequential (flip-flop or latch). Every
+# # other cell is classified as combinational.
+# SEQUENTIAL_CELL_MARKERS = [
+#     "dfstp", "sdfrbp", "dlrtn", "dfbbp", "dfrtn", "dlxtn", "sdfbbn",
+#     "dfsbp", "dfxbp", "dlxbp", "sdfrtp", "dfrbp", "dfxtp", "sdfxtp",
+#     "dlxbn", "dlrbp", "dfbbn", "sdfsbp", "dlrtp", "sdfstp", "sdfbbp",
+#     "sdfrtn", "edfxtp", "edfxbp", "sedfxtp", "sedfxbp",
+# ]
+
+# STAGE_MARKERS = ["HIERARCHY", "PRE_OPT", "POST_OPT", "POST_TECHMAP"]
+
+
+# def fail(message):
+#     sys.stderr.write("[ERROR] " + message + "\n")
+#     sys.exit(1)
+
+
+# def read_log(log_path):
+#     try:
+#         with open(log_path, "r") as f:
+#             return f.read()
+#     except FileNotFoundError:
+#         fail("Log file not found: " + log_path)
+#     except OSError as exc:
+#         fail("Could not read log file " + log_path + ": " + str(exc))
+
+
+# def extract_stage_sections(log_text):
+#     """
+#     Split the log into named sections using the ==STAGE:NAME== sentinels.
+#     Returns a dict: stage_name -> section text (everything between this
+#     sentinel and the next one, or end of file).
+#     """
+#     marker_pattern = re.compile(r"^==STAGE:(\w+)==\s*$", re.MULTILINE)
+#     matches = list(marker_pattern.finditer(log_text))
+
+#     sections = {}
+#     for i, match in enumerate(matches):
+#         stage_name = match.group(1)
+#         start = match.end()
+#         end = matches[i + 1].start() if i + 1 < len(matches) else len(log_text)
+#         sections[stage_name] = log_text[start:end]
+
+#     return sections
+
+
+# def parse_stat_block(section_text):
+#     """
+#     Parse a single Yosys 'stat' block into structured data.
+#     Returns a dict with keys: wires, wire_bits, cells_total,
+#     cell_breakdown (dict name->count), area (float or None).
+#     Any field that cannot be found is left as None / empty.
+#     """
+#     result = {
+#         "wires": None,
+#         "wire_bits": None,
+#         "cells_total": None,
+#         "cell_breakdown": {},
+#         "area": None,
+#     }
+
+#     wires_match = re.search(r"Number of wires:\s+(\d+)", section_text)
+#     if wires_match:
+#         result["wires"] = int(wires_match.group(1))
+
+#     wire_bits_match = re.search(r"Number of wire bits:\s+(\d+)", section_text)
+#     if wire_bits_match:
+#         result["wire_bits"] = int(wire_bits_match.group(1))
+
+#     cells_match = re.search(r"Number of cells:\s+(\d+)", section_text)
+#     if cells_match:
+#         result["cells_total"] = int(cells_match.group(1))
+
+#         # Cell breakdown lines immediately follow "Number of cells:" and
+#         # look like:  "     sky130_fd_sc_hd__dfxtp_1        8"
+#         # Stop at the first line that doesn't match "<name> <int>".
+#         after_cells_text = section_text[cells_match.end():]
+#         breakdown_pattern = re.compile(r"^\s+(\S+)\s+(\d+)\s*$", re.MULTILINE)
+#         for line in after_cells_text.splitlines():
+#             line_match = breakdown_pattern.match(line)
+#             if not line_match:
+#                 if line.strip() == "":
+#                     continue
+#                 break
+#             cell_name = line_match.group(1)
+#             cell_count = int(line_match.group(2))
+#             result["cell_breakdown"][cell_name] = cell_count
+
+#     area_match = re.search(r"Chip area for module[^:]*:\s*([\d.]+)", section_text)
+#     if area_match:
+#         result["area"] = float(area_match.group(1))
+
+#     return result
+
+
+# def classify_cells(cell_breakdown):
+#     """
+#     Split a cell_breakdown dict into (sequential_count, combinational_count)
+#     using SEQUENTIAL_CELL_MARKERS. A cell is sequential if any marker
+#     fragment appears in its name.
+#     """
+#     sequential_count = 0
+#     combinational_count = 0
+
+#     for cell_name, count in cell_breakdown.items():
+#         is_sequential = any(marker in cell_name for marker in SEQUENTIAL_CELL_MARKERS)
+#         if is_sequential:
+#             sequential_count += count
+#         else:
+#             combinational_count += count
+
+#     return sequential_count, combinational_count
+
+
+# def format_cell_breakdown(cell_breakdown):
+#     if not cell_breakdown:
+#         return "  " + UNAVAILABLE_MISSING
+#     lines = []
+#     for cell_name in sorted(cell_breakdown.keys()):
+#         lines.append("  {:<40} {}".format(cell_name, cell_breakdown[cell_name]))
+#     return "\n".join(lines)
+
+
+# def format_value(value, unit=""):
+#     if value is None:
+#         return UNAVAILABLE_MISSING
+#     return "{}{}".format(value, unit)
+
+
+# def build_report(module, log_path, netlist_path, report_path, sections):
+#     for stage in STAGE_MARKERS:
+#         if stage not in sections:
+#             fail(
+#                 "Expected checkpoint '==STAGE:{}==' not found in log: {}\n"
+#                 "        This means synth.ys did not run to completion, or "
+#                 "the template was modified.\n"
+#                 "        Re-run 'make synth MODULE={}' and check the log "
+#                 "for errors.".format(stage, log_path, module)
+#             )
+
+#     hierarchy_stat = parse_stat_block(sections["HIERARCHY"])
+#     pre_opt_stat = parse_stat_block(sections["PRE_OPT"])
+#     post_opt_stat = parse_stat_block(sections["POST_OPT"])
+#     post_techmap_stat = parse_stat_block(sections["POST_TECHMAP"])
+
+#     seq_count, comb_count = classify_cells(post_techmap_stat["cell_breakdown"])
+
+#     pre_opt_cells = pre_opt_stat["cells_total"]
+#     post_opt_cells = post_opt_stat["cells_total"]
+
+#     if pre_opt_cells is not None and post_opt_cells is not None and pre_opt_cells > 0:
+#         reduction_pct = 100.0 * (pre_opt_cells - post_opt_cells) / pre_opt_cells
+#         reduction_str = "{:.2f}%".format(reduction_pct)
+#     else:
+#         reduction_str = UNAVAILABLE_MISSING
+
+#     lines = []
+#     lines.append("=" * 70)
+#     lines.append("Synthesis Report — module: {}".format(module))
+#     lines.append("=" * 70)
+#     lines.append("")
+
+#     lines.append("--- Hierarchy Report (post-elaboration, pre-processing) ---")
+#     lines.append("Wire count       : {}".format(format_value(hierarchy_stat["wires"])))
+#     lines.append("Wire bits        : {}".format(format_value(hierarchy_stat["wire_bits"])))
+#     lines.append("Cell count       : {}".format(format_value(hierarchy_stat["cells_total"])))
+#     lines.append("Cell breakdown   :")
+#     lines.append(format_cell_breakdown(hierarchy_stat["cell_breakdown"]))
+#     lines.append("")
+
+#     lines.append("--- Pre-Optimization Report ---")
+#     lines.append("Wire count       : {}".format(format_value(pre_opt_stat["wires"])))
+#     lines.append("Wire bits        : {}".format(format_value(pre_opt_stat["wire_bits"])))
+#     lines.append("Cell count       : {}".format(format_value(pre_opt_stat["cells_total"])))
+#     lines.append("Cell breakdown   :")
+#     lines.append(format_cell_breakdown(pre_opt_stat["cell_breakdown"]))
+#     lines.append("")
+
+#     lines.append("--- Post-Optimization Report ---")
+#     lines.append("Wire count       : {}".format(format_value(post_opt_stat["wires"])))
+#     lines.append("Wire bits        : {}".format(format_value(post_opt_stat["wire_bits"])))
+#     lines.append("Cell count       : {}".format(format_value(post_opt_stat["cells_total"])))
+#     lines.append("Cell breakdown   :")
+#     lines.append(format_cell_breakdown(post_opt_stat["cell_breakdown"]))
+#     lines.append("")
+
+#     lines.append("--- Optimization Summary ---")
+#     lines.append("Pre-optimization cell count  : {}".format(format_value(pre_opt_cells)))
+#     lines.append("Post-optimization cell count : {}".format(format_value(post_opt_cells)))
+#     lines.append("Reduction %                  : {}".format(reduction_str))
+#     lines.append("")
+
+#     lines.append("--- Technology-Mapped Report (final, Sky130 HD) ---")
+#     lines.append("Gate count (total cells)     : {}".format(format_value(post_techmap_stat["cells_total"])))
+#     lines.append("Cell count                   : {}".format(format_value(post_techmap_stat["cells_total"])))
+#     lines.append("Sequential cell count         : {}".format(format_value(seq_count)))
+#     lines.append("Combinational cell count      : {}".format(format_value(comb_count)))
+#     lines.append("Wire count                   : {}".format(format_value(post_techmap_stat["wires"])))
+#     lines.append("Wire bits                    : {}".format(format_value(post_techmap_stat["wire_bits"])))
+#     lines.append(
+#         "Area (liberty units, from stat -liberty) : {}".format(
+#             format_value(post_techmap_stat["area"])
+#         )
+#     )
+#     lines.append("Cell breakdown                :")
+#     lines.append(format_cell_breakdown(post_techmap_stat["cell_breakdown"]))
+#     lines.append("")
+
+#     lines.append("--- Timing Report ---")
+#     lines.append("Critical path estimate   : {}".format(UNAVAILABLE_TIMING))
+#     lines.append("Maximum frequency estimate: {}".format(UNAVAILABLE_TIMING))
+#     lines.append("Logic depth              : {}".format(UNAVAILABLE_TIMING))
+#     lines.append(
+#         "Note: Yosys without a place-and-route / STA tool does not"
+#     )
+#     lines.append(
+#         "produce reliable timing numbers. These fields are intentionally"
+#     )
+#     lines.append("left unavailable rather than estimated.")
+#     lines.append("")
+
+#     lines.append("--- Artifact Paths ---")
+#     lines.append("Generated netlist path : {}".format(netlist_path))
+#     lines.append("Generated log path     : {}".format(log_path))
+#     lines.append("Generated report path  : {}".format(report_path))
+#     lines.append("")
+#     lines.append("=" * 70)
+
+#     return "\n".join(lines) + "\n"
+
+
+# def main():
+#     parser = argparse.ArgumentParser(description="Parse a Yosys synthesis log into a report.")
+#     parser.add_argument("--module", required=True, help="Module name (e.g. req_fifo)")
+#     parser.add_argument("--log", required=True, help="Path to the Yosys log file")
+#     parser.add_argument("--netlist", required=True, help="Path to the generated netlist")
+#     parser.add_argument("--report-out", required=True, help="Path to write the report file")
+#     args = parser.parse_args()
+
+#     log_text = read_log(args.log)
+#     sections = extract_stage_sections(log_text)
+#     report_text = build_report(args.module, args.log, args.netlist, args.report_out, sections)
+
+#     try:
+#         with open(args.report_out, "w") as f:
+#             f.write(report_text)
+#     except OSError as exc:
+#         fail("Could not write report file " + args.report_out + ": " + str(exc))
+
+#     print("[PASS] Report written: " + args.report_out)
+
+
+# if __name__ == "__main__":
+#     main()
