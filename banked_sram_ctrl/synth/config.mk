@@ -30,9 +30,13 @@ LIBERTY_FILE := $(REPO_ROOT)pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__
 # --- Modules -------------------------------------------------------
 # Single source of truth for every synthesizable RTL module.
 # Add new modules here only; nothing else should hardcode this list.
-MODULES := \
+#
+# UNIT_MODULES   - individually synthesizable sub-blocks
+# SYSTEM_MODULE  - the fully integrated top-level design
+# MODULES        - union of both, used for MODULE= validation on the
+#                   single-module synth/report/gls targets
+UNIT_MODULES := \
     bank_scheduler \
-    banked_sram_ctrl \
     per_bank_arb \
     perf_counter \
     req_fifo \
@@ -40,5 +44,7 @@ MODULES := \
     rsp_mux \
     sram_array
 
+SYSTEM_MODULE := banked_sram_ctrl
+MODULES := $(UNIT_MODULES) $(SYSTEM_MODULE)
 # --- Default module (used when MODULE is not specified) ------------
 DEFAULT_MODULE := banked_sram_ctrl

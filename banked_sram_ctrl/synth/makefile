@@ -5,16 +5,14 @@
 #   - Top makefile (ROOT/makefile) via 'make synth', 'make synth_all',
 #     'make synth_unit'
 #
-# Stage 3 scope:
-#   - synth.ys now emits stat checkpoints at HIERARCHY / PRE_OPT /
-#     POST_OPT / POST_TECHMAP.
-#   - 'report' target is real: runs parse_report.py against the log
-#     produced by 'synth' and writes reports/<module>_report.txt.
+# Stage 4 scope:
+#   - synth_unit  : real. Loops synth+report over UNIT_MODULES.
+#   - synth_all   : real. Loops synth+report over MODULES (unit + system).
+#   - Both regenerate reports/summary.txt and reports/summary.csv from
+#     whatever per-module reports exist in reports/ afterward.
 #
 # Still NOT implemented (later stages):
-#   - synth_all / synth_unit looping over all modules   (Stage 4)
-#   - summary.txt / summary.csv                          (Stage 4)
-#   - gate-level simulation                               (Stage 5)
+#   - gate-level simulation (Stage 5)
 #
 # Never invoked directly by the user with anything other than these
 # documented targets.
@@ -32,7 +30,7 @@ MODULE ?= $(DEFAULT_MODULE)
 help:
 	@echo ""
 	@echo "===================================================="
-	@echo "  Synthesis Build Engine (Stage 3 — reports)"
+	@echo "  Synthesis Build Engine (Stage 4 — full sweeps + summary)"
 	@echo "===================================================="
 	@echo ""
 	@echo "Environment:"
@@ -41,18 +39,20 @@ help:
 	@echo "  make clean                    Remove all generated synthesis artifacts"
 	@echo ""
 	@echo "Synthesis:"
-	@echo "  make synth MODULE=req_fifo    Generate .ys script + run Yosys (real)"
-	@echo "  make synth_unit               Placeholder — implemented in Stage 4"
-	@echo "  make synth_all                Placeholder — implemented in Stage 4"
+	@echo "  make synth MODULE=req_fifo    Generate .ys script + run Yosys for one module"
+	@echo "  make synth_unit               Synthesize + report all unit sub-modules"
+	@echo "  make synth_all                Synthesize + report every module (unit + system)"
 	@echo ""
 	@echo "Reporting:"
-	@echo "  make report MODULE=req_fifo   Parse log into reports/req_fifo_report.txt (real)"
+	@echo "  make report MODULE=req_fifo   Parse log into reports/req_fifo_report.txt"
 	@echo ""
 	@echo "GLS (Stage 5 placeholder):"
 	@echo "  make gls MODULE=req_fifo      Run gate-level simulation"
 	@echo ""
-	@echo "Known modules:"
-	@echo "  $(MODULES)"
+	@echo "Unit modules:"
+	@echo "  $(UNIT_MODULES)"
+	@echo "System module:"
+	@echo "  $(SYSTEM_MODULE)"
 	@echo "===================================================="
 
 # --- Environment check ---------------------------------------------
@@ -161,16 +161,81 @@ synth: check
 	@echo "  Netlist: $(NETLIST_DIR)/$(MODULE)_netlist.v"
 	@echo "  Log:     $(LOG_DIR)/$(MODULE).log"
 
-# --- Synthesis: all/unit sweeps (Stage 4 placeholder) ---------------
+# --- Synthesis: unit sweep (real implementation) ---------------------
 synth_unit: check
-	@echo "[INFO] Environment validated for unit-level synthesis."
-	@echo "[INFO] Per-module synthesis loop is implemented in Stage 4."
-	@echo "[INFO] Until then, use: make synth MODULE=<module_name>"
+	@echo ""
+	@echo "=================================================="
+	@echo "  Synthesizing UNIT modules: $(UNIT_MODULES)"
+	@echo "=================================================="
+	@PASS_COUNT=0; FAIL_COUNT=0; \
+	for m in $(UNIT_MODULES); do \
+		echo ""; \
+		echo "--- Module: $$m ---"; \
+		if $(MAKE) --no-print-directory -C $(ROOT_DIR) synth MODULE=$$m; then \
+			if $(MAKE) --no-print-directory -C $(ROOT_DIR) report MODULE=$$m; then \
+				PASS_COUNT=$$((PASS_COUNT + 1)); \
+			else \
+				echo "[FAIL] report generation failed for $$m"; \
+				FAIL_COUNT=$$((FAIL_COUNT + 1)); \
+			fi; \
+		else \
+			echo "[FAIL] synthesis failed for $$m"; \
+			FAIL_COUNT=$$((FAIL_COUNT + 1)); \
+		fi; \
+	done; \
+	echo ""; \
+	echo "=== Unit synthesis sweep complete: $$PASS_COUNT passed, $$FAIL_COUNT failed ==="; \
+	if [ $$FAIL_COUNT -gt 0 ]; then \
+		echo "[ERROR] One or more modules failed. Summary not regenerated."; \
+		exit 1; \
+	fi
+	@echo ""
+	@echo "=== Generating summary from reports/ ==="
+	@$(PYTHON3) $(PARSE_SCRIPT) summarize \
+		--report-dir $(REPORT_DIR) \
+		--csv-out $(REPORT_DIR)/summary.csv \
+		--txt-out $(REPORT_DIR)/summary.txt
+	@echo "Result: SYNTH_UNIT OK"
+	@echo "  Summary: $(REPORT_DIR)/summary.txt"
+	@echo "           $(REPORT_DIR)/summary.csv"
 
+# --- Synthesis: full sweep (real implementation) ----------------------
 synth_all: check
-	@echo "[INFO] Environment validated for full synthesis sweep."
-	@echo "[INFO] Full synthesis loop is implemented in Stage 4."
-	@echo "[INFO] Until then, use: make synth MODULE=<module_name>"
+	@echo ""
+	@echo "=================================================="
+	@echo "  Synthesizing ALL modules: $(MODULES)"
+	@echo "=================================================="
+	@PASS_COUNT=0; FAIL_COUNT=0; \
+	for m in $(MODULES); do \
+		echo ""; \
+		echo "--- Module: $$m ---"; \
+		if $(MAKE) --no-print-directory -C $(ROOT_DIR) synth MODULE=$$m; then \
+			if $(MAKE) --no-print-directory -C $(ROOT_DIR) report MODULE=$$m; then \
+				PASS_COUNT=$$((PASS_COUNT + 1)); \
+			else \
+				echo "[FAIL] report generation failed for $$m"; \
+				FAIL_COUNT=$$((FAIL_COUNT + 1)); \
+			fi; \
+		else \
+			echo "[FAIL] synthesis failed for $$m"; \
+			FAIL_COUNT=$$((FAIL_COUNT + 1)); \
+		fi; \
+	done; \
+	echo ""; \
+	echo "=== Full synthesis sweep complete: $$PASS_COUNT passed, $$FAIL_COUNT failed ==="; \
+	if [ $$FAIL_COUNT -gt 0 ]; then \
+		echo "[ERROR] One or more modules failed. Summary not regenerated."; \
+		exit 1; \
+	fi
+	@echo ""
+	@echo "=== Generating summary from reports/ ==="
+	@$(PYTHON3) $(PARSE_SCRIPT) summarize \
+		--report-dir $(REPORT_DIR) \
+		--csv-out $(REPORT_DIR)/summary.csv \
+		--txt-out $(REPORT_DIR)/summary.txt
+	@echo "Result: SYNTH_ALL OK"
+	@echo "  Summary: $(REPORT_DIR)/summary.txt"
+	@echo "           $(REPORT_DIR)/summary.csv"
 
 # --- Report (real implementation) -------------------------------
 report: check
@@ -188,7 +253,7 @@ report: check
 		  exit 1; }
 	@echo ""
 	@echo "=== Parsing report for $(MODULE) ==="
-	@$(PYTHON3) $(PARSE_SCRIPT) \
+	@$(PYTHON3) $(PARSE_SCRIPT) report \
 		--module $(MODULE) \
 		--log $(LOG_DIR)/$(MODULE).log \
 		--netlist $(NETLIST_DIR)/$(MODULE)_netlist.v \
