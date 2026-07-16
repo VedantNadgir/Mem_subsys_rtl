@@ -1,0 +1,80 @@
+# ==================================================================
+# Yosys synthesis template
+#
+# This file is NOT run directly. It is substituted per module by
+# banked_sram_ctrl/synth/makefile (target: synth) into
+#   generated/synth_<module>.ys
+# which is what actually gets passed to `yosys -s`.
+#
+# Placeholders substituted via sed in the makefile:
+#   req_fifo    - top module name to synthesize (e.g. req_fifo)
+#   /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib   - absolute path to the sky130 liberty file
+#   /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/req_fifo_netlist.v   - absolute path to the output gate-level netlist
+#
+# Do not hand-edit files under generated/ — edit this file instead
+# and re-run `make synth MODULE=<name>`.
+#
+# Paths below are relative to banked_sram_ctrl/synth/, which is the
+# working directory make runs this from.
+#
+# The `log ==STAGE:...==` lines below are sentinels used only so
+# parse_report.py can slice the log file into sections. They have
+# no effect on synthesis itself.
+# ==================================================================
+
+# --- Read RTL sources (package first, then modules) ---------------
+read_verilog -sv ../rtl/pkg/sram_ctrl_pkg.sv
+read_verilog -sv ../rtl/bank_scheduler.sv
+read_verilog -sv ../rtl/banked_sram_ctrl.sv
+read_verilog -sv ../rtl/per_bank_arb.sv
+read_verilog -sv ../rtl/perf_counter.sv
+read_verilog -sv ../rtl/req_fifo.sv
+read_verilog -sv ../rtl/rsp_fifo.sv
+read_verilog -sv ../rtl/rsp_mux.sv
+read_verilog -sv ../rtl/sram_array.sv
+
+# --- Elaborate only the requested top module -----------------------
+hierarchy -top req_fifo -check
+
+# --- Hierarchy checkpoint: module/cell structure before processing --
+log ==STAGE:HIERARCHY==
+stat
+
+# --- Process behavioral constructs (always/if/case -> RTL cells) ---
+proc
+
+# --- Infer and handle memories --------------------------------------
+memory
+
+# --- Extract and map finite state machines --------------------------
+fsm
+
+# --- Pre-optimization checkpoint -------------------------------------
+log ==STAGE:PRE_OPT==
+stat
+
+# --- Generic pre-techmap optimization --------------------------------
+opt
+
+# --- Post-optimization checkpoint -------------------------------------
+log ==STAGE:POST_OPT==
+stat
+
+# --- Technology-independent mapping to standard gate primitives -----
+techmap
+
+# --- Map flip-flops onto Sky130 HD sequential cells -----------------
+dfflibmap -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# --- ABC logic optimization and Sky130 HD cell mapping ---------------
+abc -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# --- Final cleanup (remove unused wires/cells) -----------------------
+opt_clean -purge
+
+# --- Post-technology-mapping checkpoint (includes liberty area) -----
+log ==STAGE:POST_TECHMAP==
+stat -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# --- Emit the gate-level netlist --------------------------------------
+write_verilog -noattr /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/req_fifo_netlist.v

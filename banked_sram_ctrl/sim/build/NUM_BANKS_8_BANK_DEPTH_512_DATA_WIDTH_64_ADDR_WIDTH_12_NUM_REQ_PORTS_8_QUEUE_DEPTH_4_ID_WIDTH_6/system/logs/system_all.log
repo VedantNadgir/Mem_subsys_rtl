@@ -1,0 +1,306 @@
+[ENV] Reset released at 76000
+
+=== SMOKE: Basic R/W all banks ===
+[SB OK] Write ACK id=0
+[SB OK] Write ACK id=1
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=3
+[SB OK] Write ACK id=4
+[SB OK] Write ACK id=5
+[SB OK] Write ACK id=6
+[SB OK] Write ACK id=7
+[SB OK] Read addr=8 data=a0000000 id=4
+[SB OK] Read addr=9 data=a0000001 id=5
+[SB OK] Read addr=a data=a0000002 id=6
+[SB OK] Read addr=b data=a0000003 id=7
+[SB OK] Read addr=c data=a0000004 id=8
+[SB OK] Read addr=d data=a0000005 id=9
+[SB OK] Read addr=e data=a0000006 id=a
+[SB OK] Read addr=f data=a0000007 id=b
+=== SMOKE: done ===
+
+=== CONFLICT: Bank arbitration ===
+[SB OK] Write ACK id=0
+[SB OK] Write ACK id=0
+[SB OK] Read addr=50 data=aaaa0000 id=1
+[SB OK] Read addr=58 data=bbbb1111 id=1
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=2
+[SB OK] Read addr=c0 data=c0000004 id=3
+[SB OK] Read addr=c8 data=c0000005 id=3
+[SB OK] Read addr=d0 data=c0000006 id=3
+[SB OK] Read addr=d8 data=c0000007 id=3
+[SB OK] Read addr=c0 data=c0000004 id=3
+[SB OK] Read addr=c8 data=c0000005 id=3
+[SB OK] Read addr=d0 data=c0000006 id=3
+[SB OK] Read addr=d8 data=c0000007 id=3
+=== CONFLICT: done ===
+
+=== BACKPRESSURE: FIFO stall chain ===
+[BP OK]  req_ready[0]=0 (stall chain working)
+[SB OK] Write ACK id=0
+[SB OK] Read addr=191 data=cccccccc id=1
+[BP OK]  Port 1 unaffected
+=== BACKPRESSURE: done ===
+
+=== RANDOM: 40 transactions ===
+[SB OK] Write ACK id=0
+[SB OK] Write ACK id=1
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=3
+[SB OK] Write ACK id=4
+[SB OK] Write ACK id=5
+[SB OK] Write ACK id=6
+[SB OK] Write ACK id=7
+[SB OK] Write ACK id=8
+[SB OK] Write ACK id=9
+[SB OK] Write ACK id=a
+[SB OK] Write ACK id=b
+[SB OK] Write ACK id=c
+[SB OK] Write ACK id=d
+[SB OK] Write ACK id=e
+[SB OK] Write ACK id=f
+[SB OK] Write ACK id=10
+[SB OK] Write ACK id=11
+[SB OK] Write ACK id=12
+[SB OK] Write ACK id=13
+[SB OK] Write ACK id=14
+[SB OK] Write ACK id=15
+[SB OK] Write ACK id=16
+[SB OK] Write ACK id=17
+[SB OK] Write ACK id=18
+[SB OK] Write ACK id=19
+[SB OK] Write ACK id=1a
+[SB OK] Write ACK id=1b
+[SB OK] Write ACK id=1c
+[SB OK] Write ACK id=1d
+[SB OK] Write ACK id=1e
+[SB OK] Write ACK id=1f
+[SB OK] Write ACK id=20
+[SB OK] Write ACK id=21
+[SB OK] Write ACK id=22
+[SB OK] Write ACK id=23
+[SB OK] Write ACK id=24
+[SB OK] Write ACK id=25
+[SB OK] Write ACK id=26
+[SB OK] Write ACK id=27
+=== RANDOM: done ===
+
+=== STRESS: 100 W + 100 R ===
+[SB OK] Write ACK id=0
+[SB OK] Write ACK id=1
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=3
+[SB OK] Write ACK id=4
+[SB OK] Write ACK id=5
+[SB OK] Write ACK id=6
+[SB OK] Write ACK id=7
+[SB OK] Write ACK id=8
+[SB OK] Write ACK id=9
+[SB OK] Write ACK id=a
+[SB OK] Write ACK id=b
+[SB OK] Write ACK id=c
+[SB OK] Write ACK id=d
+[SB OK] Write ACK id=e
+[SB OK] Write ACK id=f
+[SB OK] Write ACK id=10
+[SB OK] Write ACK id=11
+[SB OK] Write ACK id=12
+[SB OK] Write ACK id=13
+[SB OK] Write ACK id=14
+[SB OK] Write ACK id=15
+[SB OK] Write ACK id=16
+[SB OK] Write ACK id=17
+[SB OK] Write ACK id=18
+[SB OK] Write ACK id=19
+[SB OK] Write ACK id=1a
+[SB OK] Write ACK id=1b
+[SB OK] Write ACK id=1c
+[SB OK] Write ACK id=1d
+[SB OK] Write ACK id=1e
+[SB OK] Write ACK id=1f
+[SB OK] Write ACK id=20
+[SB OK] Write ACK id=21
+[SB OK] Write ACK id=22
+[SB OK] Write ACK id=23
+[SB OK] Write ACK id=24
+[SB OK] Write ACK id=25
+[SB OK] Write ACK id=26
+[SB OK] Write ACK id=27
+[SB OK] Write ACK id=28
+[SB OK] Write ACK id=29
+[SB OK] Write ACK id=2a
+[SB OK] Write ACK id=2b
+[SB OK] Write ACK id=2c
+[SB OK] Write ACK id=2d
+[SB OK] Write ACK id=2e
+[SB OK] Write ACK id=2f
+[SB OK] Write ACK id=30
+[SB OK] Write ACK id=31
+[SB OK] Write ACK id=32
+[SB OK] Write ACK id=33
+[SB OK] Write ACK id=34
+[SB OK] Write ACK id=35
+[SB OK] Write ACK id=36
+[SB OK] Write ACK id=37
+[SB OK] Write ACK id=38
+[SB OK] Write ACK id=39
+[SB OK] Write ACK id=3a
+[SB OK] Write ACK id=3b
+[SB OK] Write ACK id=3c
+[SB OK] Write ACK id=3d
+[SB OK] Write ACK id=3e
+[SB OK] Write ACK id=3f
+[SB OK] Write ACK id=0
+[SB OK] Write ACK id=1
+[SB OK] Write ACK id=2
+[SB OK] Write ACK id=3
+[SB OK] Write ACK id=4
+[SB OK] Write ACK id=5
+[SB OK] Write ACK id=6
+[SB OK] Write ACK id=7
+[SB OK] Write ACK id=8
+[SB OK] Write ACK id=9
+[SB OK] Write ACK id=a
+[SB OK] Write ACK id=b
+[SB OK] Write ACK id=c
+[SB OK] Write ACK id=d
+[SB OK] Write ACK id=e
+[SB OK] Write ACK id=f
+[SB OK] Write ACK id=10
+[SB OK] Write ACK id=11
+[SB OK] Write ACK id=12
+[SB OK] Write ACK id=13
+[SB OK] Write ACK id=14
+[SB OK] Write ACK id=15
+[SB OK] Write ACK id=16
+[SB OK] Write ACK id=17
+[SB OK] Write ACK id=18
+[SB OK] Write ACK id=19
+[SB OK] Write ACK id=1a
+[SB OK] Write ACK id=1b
+[SB OK] Write ACK id=1c
+[SB OK] Write ACK id=1d
+[SB OK] Write ACK id=1e
+[SB OK] Write ACK id=1f
+[SB OK] Write ACK id=20
+[SB OK] Write ACK id=21
+[SB OK] Write ACK id=22
+[SB OK] Write ACK id=23
+[SB OK] Read addr=410 data=f0000000 id=0
+[SB OK] Read addr=419 data=f0000101 id=1
+[SB OK] Read addr=422 data=f0000202 id=2
+[SB OK] Read addr=42b data=f0000303 id=3
+[SB OK] Read addr=434 data=f0000404 id=4
+[SB OK] Read addr=43d data=f0000505 id=5
+[SB OK] Read addr=446 data=f0000606 id=6
+[SB OK] Read addr=44f data=f0000707 id=7
+[SB OK] Read addr=450 data=f0000808 id=8
+[SB OK] Read addr=459 data=f0000909 id=9
+[SB OK] Read addr=462 data=f0000a0a id=a
+[SB OK] Read addr=46b data=f0000b0b id=b
+[SB OK] Read addr=474 data=f0000c0c id=c
+[SB OK] Read addr=47d data=f0000d0d id=d
+[SB OK] Read addr=486 data=f0000e0e id=e
+[SB OK] Read addr=48f data=f0000f0f id=f
+[SB OK] Read addr=490 data=f0001010 id=10
+[SB OK] Read addr=499 data=f0001111 id=11
+[SB OK] Read addr=4a2 data=f0001212 id=12
+[SB OK] Read addr=4ab data=f0001313 id=13
+[SB OK] Read addr=4b4 data=f0001414 id=14
+[SB OK] Read addr=4bd data=f0001515 id=15
+[SB OK] Read addr=4c6 data=f0001616 id=16
+[SB OK] Read addr=4cf data=f0001717 id=17
+[SB OK] Read addr=4d0 data=f0001818 id=18
+[SB OK] Read addr=4d9 data=f0001919 id=19
+[SB OK] Read addr=4e2 data=f0001a1a id=1a
+[SB OK] Read addr=4eb data=f0001b1b id=1b
+[SB OK] Read addr=4f4 data=f0001c1c id=1c
+[SB OK] Read addr=4fd data=f0001d1d id=1d
+[SB OK] Read addr=506 data=f0001e1e id=1e
+[SB OK] Read addr=50f data=f0001f1f id=1f
+[SB OK] Read addr=510 data=f0002020 id=20
+[SB OK] Read addr=519 data=f0002121 id=21
+[SB OK] Read addr=522 data=f0002222 id=22
+[SB OK] Read addr=52b data=f0002323 id=23
+[SB OK] Read addr=534 data=f0002424 id=24
+[SB OK] Read addr=53d data=f0002525 id=25
+[SB OK] Read addr=546 data=f0002626 id=26
+[SB OK] Read addr=54f data=f0002727 id=27
+[SB OK] Read addr=550 data=f0002828 id=28
+[SB OK] Read addr=559 data=f0002929 id=29
+[SB OK] Read addr=562 data=f0002a2a id=2a
+[SB OK] Read addr=56b data=f0002b2b id=2b
+[SB OK] Read addr=574 data=f0002c2c id=2c
+[SB OK] Read addr=57d data=f0002d2d id=2d
+[SB OK] Read addr=586 data=f0002e2e id=2e
+[SB OK] Read addr=58f data=f0002f2f id=2f
+[SB OK] Read addr=590 data=f0003030 id=30
+[SB OK] Read addr=599 data=f0003131 id=31
+[SB OK] Read addr=5a2 data=f0003232 id=32
+[SB OK] Read addr=5ab data=f0003333 id=33
+[SB OK] Read addr=5b4 data=f0003434 id=34
+[SB OK] Read addr=5bd data=f0003535 id=35
+[SB OK] Read addr=5c6 data=f0003636 id=36
+[SB OK] Read addr=5cf data=f0003737 id=37
+[SB OK] Read addr=5d0 data=f0003838 id=38
+[SB OK] Read addr=5d9 data=f0003939 id=39
+[SB OK] Read addr=5e2 data=f0003a3a id=3a
+[SB OK] Read addr=5eb data=f0003b3b id=3b
+[SB OK] Read addr=5f4 data=f0003c3c id=3c
+[SB OK] Read addr=5fd data=f0003d3d id=3d
+[SB OK] Read addr=606 data=f0003e3e id=3e
+[SB OK] Read addr=60f data=f0003f3f id=3f
+[SB OK] Read addr=610 data=f0004040 id=0
+[SB OK] Read addr=619 data=f0004141 id=1
+[SB OK] Read addr=622 data=f0004242 id=2
+[SB OK] Read addr=62b data=f0004343 id=3
+[SB OK] Read addr=634 data=f0004444 id=4
+[SB OK] Read addr=63d data=f0004545 id=5
+[SB OK] Read addr=646 data=f0004646 id=6
+[SB OK] Read addr=64f data=f0004747 id=7
+[SB OK] Read addr=650 data=f0004848 id=8
+[SB OK] Read addr=659 data=f0004949 id=9
+[SB OK] Read addr=662 data=f0004a4a id=a
+[SB OK] Read addr=66b data=f0004b4b id=b
+[SB OK] Read addr=674 data=f0004c4c id=c
+[SB OK] Read addr=67d data=f0004d4d id=d
+[SB OK] Read addr=686 data=f0004e4e id=e
+[SB OK] Read addr=68f data=f0004f4f id=f
+[SB OK] Read addr=690 data=f0005050 id=10
+[SB OK] Read addr=699 data=f0005151 id=11
+[SB OK] Read addr=6a2 data=f0005252 id=12
+[SB OK] Read addr=6ab data=f0005353 id=13
+[SB OK] Read addr=6b4 data=f0005454 id=14
+[SB OK] Read addr=6bd data=f0005555 id=15
+[SB OK] Read addr=6c6 data=f0005656 id=16
+[SB OK] Read addr=6cf data=f0005757 id=17
+[SB OK] Read addr=6d0 data=f0005858 id=18
+[SB OK] Read addr=6d9 data=f0005959 id=19
+[SB OK] Read addr=6e2 data=f0005a5a id=1a
+[SB OK] Read addr=6eb data=f0005b5b id=1b
+[SB OK] Read addr=6f4 data=f0005c5c id=1c
+[SB OK] Read addr=6fd data=f0005d5d id=1d
+[SB OK] Read addr=706 data=f0005e5e id=1e
+[SB OK] Read addr=70f data=f0005f5f id=1f
+[SB OK] Read addr=710 data=f0006060 id=20
+[SB OK] Read addr=719 data=f0006161 id=21
+[SB OK] Read addr=722 data=f0006262 id=22
+[SB OK] Read addr=72b data=f0006363 id=23
+=== STRESS: done ===
+[SCOREBOARD] Total checks: 278  Errors: 0
+
+========================================
+  RESULT: ALL PASSED
+========================================
+
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/system/tb_sys.sv:113: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 15us; walltime 0.003 s; speed 5.527 ms/s
+- Verilator: cpu 0.003 s on 1 threads; allocated 2 MB

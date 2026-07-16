@@ -1,0 +1,115 @@
+======================================================================
+Synthesis Report — module: rsp_mux
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 349
+Wire bits        : 6498
+Cell count       : 208
+Cell breakdown   :
+  $and                                     16
+  $eq                                      16
+  $logic_and                               48
+  $logic_not                               20
+  $mul                                     8
+  $mux                                     4
+  $neg                                     32
+  $not                                     16
+  $or                                      16
+  $shift                                   32
+
+--- Pre-Optimization Report ---
+Wire count       : 234
+Wire bits        : 4218
+Cell count       : 232
+Cell breakdown   :
+  $and                                     12
+  $eq                                      12
+  $logic_and                               44
+  $logic_not                               16
+  $mul                                     8
+  $mux                                     60
+  $neg                                     28
+  $not                                     12
+  $or                                      12
+  $shift                                   28
+
+--- Post-Optimization Report ---
+Wire count       : 196
+Wire bits        : 3693
+Cell count       : 194
+Cell breakdown   :
+  $and                                     12
+  $eq                                      12
+  $logic_and                               44
+  $logic_not                               16
+  $mux                                     55
+  $neg                                     12
+  $not                                     9
+  $or                                      12
+  $shift                                   22
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 232
+Post-optimization cell count : 194
+Reduction %                  : 16.38%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 650
+Cell count                   : 650
+Sequential cell count         : 0
+Combinational cell count      : 650
+Wire count                   : 505
+Wire bits                    : 818
+Area (liberty units, from stat -liberty) : 4317.8912
+Cell breakdown                :
+  sky130_fd_sc_hd__a211oi_1                1
+  sky130_fd_sc_hd__a21oi_1                 1
+  sky130_fd_sc_hd__a221o_1                 22
+  sky130_fd_sc_hd__a221oi_1                4
+  sky130_fd_sc_hd__a222oi_1                5
+  sky130_fd_sc_hd__a22oi_1                 28
+  sky130_fd_sc_hd__a311o_1                 1
+  sky130_fd_sc_hd__a32o_1                  22
+  sky130_fd_sc_hd__a32oi_1                 89
+  sky130_fd_sc_hd__and3_1                  3
+  sky130_fd_sc_hd__and3b_1                 2
+  sky130_fd_sc_hd__and4_1                  4
+  sky130_fd_sc_hd__and4b_1                 2
+  sky130_fd_sc_hd__clkinv_1                4
+  sky130_fd_sc_hd__lpflow_inputiso1p_1     1
+  sky130_fd_sc_hd__lpflow_isobufsrc_1      100
+  sky130_fd_sc_hd__nand2_1                 135
+  sky130_fd_sc_hd__nand2b_1                29
+  sky130_fd_sc_hd__nand3_1                 36
+  sky130_fd_sc_hd__nand3b_1                29
+  sky130_fd_sc_hd__nand4b_1                3
+  sky130_fd_sc_hd__nand4bb_1               1
+  sky130_fd_sc_hd__nor2_1                  15
+  sky130_fd_sc_hd__nor3_1                  2
+  sky130_fd_sc_hd__nor3b_1                 2
+  sky130_fd_sc_hd__nor4_1                  5
+  sky130_fd_sc_hd__nor4b_1                 1
+  sky130_fd_sc_hd__nor4bb_1                2
+  sky130_fd_sc_hd__o2111ai_1               5
+  sky130_fd_sc_hd__o211a_1                 2
+  sky130_fd_sc_hd__o211ai_1                87
+  sky130_fd_sc_hd__o32ai_1                 4
+  sky130_fd_sc_hd__or3b_1                  1
+  sky130_fd_sc_hd__or4_1                   1
+  sky130_fd_sc_hd__xor2_1                  1
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/rsp_mux_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/rsp_mux.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/rsp_mux_report.txt
+
+======================================================================

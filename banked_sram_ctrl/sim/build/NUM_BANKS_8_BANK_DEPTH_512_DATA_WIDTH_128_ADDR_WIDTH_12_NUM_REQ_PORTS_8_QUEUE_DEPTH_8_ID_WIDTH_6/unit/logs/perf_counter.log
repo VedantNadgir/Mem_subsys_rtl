@@ -1,0 +1,290 @@
+TB START
+
+=== Test 1: Reset ===
+[OK]    Test 1: counter[0] should be 0 after reset @ time 55000
+[OK]    Test 1: csr_ack should be 1 for read of addr 0 @ time 55000
+[OK]    Test 1: counter[1] should be 0 after reset @ time 95000
+[OK]    Test 1: csr_ack should be 1 for read of addr 1 @ time 95000
+[OK]    Test 1: counter[2] should be 0 after reset @ time 135000
+[OK]    Test 1: csr_ack should be 1 for read of addr 2 @ time 135000
+[OK]    Test 1: counter[3] should be 0 after reset @ time 175000
+[OK]    Test 1: csr_ack should be 1 for read of addr 3 @ time 175000
+[OK]    Test 1: counter[4] should be 0 after reset @ time 215000
+[OK]    Test 1: csr_ack should be 1 for read of addr 4 @ time 215000
+[OK]    Test 1: counter[5] should be 0 after reset @ time 255000
+[OK]    Test 1: csr_ack should be 1 for read of addr 5 @ time 255000
+[OK]    Test 1: counter[6] should be 0 after reset @ time 295000
+[OK]    Test 1: csr_ack should be 1 for read of addr 6 @ time 295000
+[OK]    Test 1: counter[7] should be 0 after reset @ time 335000
+[OK]    Test 1: csr_ack should be 1 for read of addr 7 @ time 335000
+[OK]    Test 1: counter[8] should be 0 after reset @ time 375000
+[OK]    Test 1: csr_ack should be 1 for read of addr 8 @ time 375000
+[OK]    Test 1: counter[9] should be 0 after reset @ time 415000
+[OK]    Test 1: csr_ack should be 1 for read of addr 9 @ time 415000
+[OK]    Test 1: counter[10] should be 0 after reset @ time 455000
+[OK]    Test 1: csr_ack should be 1 for read of addr 10 @ time 455000
+[OK]    Test 1: counter[11] should be 0 after reset @ time 495000
+[OK]    Test 1: csr_ack should be 1 for read of addr 11 @ time 495000
+[OK]    Test 1: counter[12] should be 0 after reset @ time 535000
+[OK]    Test 1: csr_ack should be 1 for read of addr 12 @ time 535000
+[OK]    Test 1: counter[13] should be 0 after reset @ time 575000
+[OK]    Test 1: csr_ack should be 1 for read of addr 13 @ time 575000
+[OK]    Test 1: counter[14] should be 0 after reset @ time 615000
+[OK]    Test 1: csr_ack should be 1 for read of addr 14 @ time 615000
+[OK]    Test 1: counter[15] should be 0 after reset @ time 655000
+[OK]    Test 1: csr_ack should be 1 for read of addr 15 @ time 655000
+[OK]    Test 1: counter[16] should be 0 after reset @ time 695000
+[OK]    Test 1: csr_ack should be 1 for read of addr 16 @ time 695000
+[OK]    Test 1: counter[17] should be 0 after reset @ time 735000
+[OK]    Test 1: csr_ack should be 1 for read of addr 17 @ time 735000
+[OK]    Test 1: counter[18] should be 0 after reset @ time 775000
+[OK]    Test 1: csr_ack should be 1 for read of addr 18 @ time 775000
+[OK]    Test 1: counter[19] should be 0 after reset @ time 815000
+[OK]    Test 1: csr_ack should be 1 for read of addr 19 @ time 815000
+[OK]    Test 1: counter[20] should be 0 after reset @ time 855000
+[OK]    Test 1: csr_ack should be 1 for read of addr 20 @ time 855000
+[OK]    Test 1: counter[21] should be 0 after reset @ time 895000
+[OK]    Test 1: csr_ack should be 1 for read of addr 21 @ time 895000
+[OK]    Test 1: counter[22] should be 0 after reset @ time 935000
+[OK]    Test 1: csr_ack should be 1 for read of addr 22 @ time 935000
+[OK]    Test 1: counter[23] should be 0 after reset @ time 975000
+[OK]    Test 1: csr_ack should be 1 for read of addr 23 @ time 975000
+[OK]    Test 1: counter[24] should be 0 after reset @ time 1015000
+[OK]    Test 1: csr_ack should be 1 for read of addr 24 @ time 1015000
+[OK]    Test 1: counter[25] should be 0 after reset @ time 1055000
+[OK]    Test 1: csr_ack should be 1 for read of addr 25 @ time 1055000
+[OK]    Test 1: counter[26] should be 0 after reset @ time 1095000
+[OK]    Test 1: csr_ack should be 1 for read of addr 26 @ time 1095000
+[OK]    Test 1: counter[27] should be 0 after reset @ time 1135000
+[OK]    Test 1: csr_ack should be 1 for read of addr 27 @ time 1135000
+[OK]    Test 1: counter[28] should be 0 after reset @ time 1175000
+[OK]    Test 1: csr_ack should be 1 for read of addr 28 @ time 1175000
+[OK]    Test 1: counter[29] should be 0 after reset @ time 1215000
+[OK]    Test 1: csr_ack should be 1 for read of addr 29 @ time 1215000
+[OK]    Test 1: counter[30] should be 0 after reset @ time 1255000
+[OK]    Test 1: csr_ack should be 1 for read of addr 30 @ time 1255000
+[OK]    Test 1: counter[31] should be 0 after reset @ time 1295000
+[OK]    Test 1: csr_ack should be 1 for read of addr 31 @ time 1295000
+
+=== Test 2: req_count ===
+[OK]    Test 2: counter[0] should be 0 @ time 1425000
+[OK]    Test 2: counter[1] should be 0 @ time 1465000
+[OK]    Test 2: counter[2] should be 3 @ time 1505000
+[OK]    Test 2: counter[3] should be 0 @ time 1545000
+[OK]    Test 2: counter[4] should be 0 @ time 1585000
+[OK]    Test 2: counter[5] should be 0 @ time 1625000
+[OK]    Test 2: counter[6] should be 0 @ time 1665000
+[OK]    Test 2: counter[7] should be 0 @ time 1705000
+[OK]    Test 2: counter[8] should be 0 @ time 1745000
+[OK]    Test 2: counter[9] should be 0 @ time 1785000
+[OK]    Test 2: counter[10] should be 0 @ time 1825000
+[OK]    Test 2: counter[11] should be 0 @ time 1865000
+[OK]    Test 2: counter[12] should be 0 @ time 1905000
+[OK]    Test 2: counter[13] should be 0 @ time 1945000
+[OK]    Test 2: counter[14] should be 0 @ time 1985000
+[OK]    Test 2: counter[15] should be 0 @ time 2025000
+[OK]    Test 2: counter[16] should be 0 @ time 2065000
+[OK]    Test 2: counter[17] should be 0 @ time 2105000
+[OK]    Test 2: counter[18] should be 0 @ time 2145000
+[OK]    Test 2: counter[19] should be 0 @ time 2185000
+[OK]    Test 2: counter[20] should be 0 @ time 2225000
+[OK]    Test 2: counter[21] should be 0 @ time 2265000
+[OK]    Test 2: counter[22] should be 0 @ time 2305000
+[OK]    Test 2: counter[23] should be 0 @ time 2345000
+[OK]    Test 2: counter[24] should be 0 @ time 2385000
+[OK]    Test 2: counter[25] should be 0 @ time 2425000
+[OK]    Test 2: counter[26] should be 0 @ time 2465000
+[OK]    Test 2: counter[27] should be 0 @ time 2505000
+[OK]    Test 2: counter[28] should be 0 @ time 2545000
+[OK]    Test 2: counter[29] should be 0 @ time 2585000
+[OK]    Test 2: counter[30] should be 0 @ time 2625000
+[OK]    Test 2: counter[31] should be 0 @ time 2665000
+
+=== Test 3: rsp_count ===
+[OK]    Test 3: counter[4] (OFF_RSP+0) should be 0 @ time 2815000
+[OK]    Test 3: counter[5] (OFF_RSP+1) should be 5 @ time 2855000
+[OK]    Test 3: counter[1] (req_count[1]) should be untouched @ time 2895000
+
+=== Test 4: conflict_count ===
+[OK]    Test 4: counter[19] (conflict[2][3]) should be 4 @ time 3035000
+[OK]    Test 4: counter[0] should be 0 after stimulus A @ time 3075000
+[OK]    Test 4: counter[1] should be 0 after stimulus A @ time 3115000
+[OK]    Test 4: counter[2] should be 0 after stimulus A @ time 3155000
+[OK]    Test 4: counter[3] should be 0 after stimulus A @ time 3195000
+[OK]    Test 4: counter[4] should be 0 after stimulus A @ time 3235000
+[OK]    Test 4: counter[5] should be 0 after stimulus A @ time 3275000
+[OK]    Test 4: counter[6] should be 0 after stimulus A @ time 3315000
+[OK]    Test 4: counter[7] should be 0 after stimulus A @ time 3355000
+[OK]    Test 4: counter[8] should be 0 after stimulus A @ time 3395000
+[OK]    Test 4: counter[9] should be 0 after stimulus A @ time 3435000
+[OK]    Test 4: counter[10] should be 0 after stimulus A @ time 3475000
+[OK]    Test 4: counter[11] should be 0 after stimulus A @ time 3515000
+[OK]    Test 4: counter[12] should be 0 after stimulus A @ time 3555000
+[OK]    Test 4: counter[13] should be 0 after stimulus A @ time 3595000
+[OK]    Test 4: counter[14] should be 0 after stimulus A @ time 3635000
+[OK]    Test 4: counter[15] should be 0 after stimulus A @ time 3675000
+[OK]    Test 4: counter[16] should be 0 after stimulus A @ time 3715000
+[OK]    Test 4: counter[17] should be 0 after stimulus A @ time 3755000
+[OK]    Test 4: counter[18] should be 0 after stimulus A @ time 3795000
+[OK]    Test 4: counter[20] should be 0 after stimulus A @ time 3835000
+[OK]    Test 4: counter[21] should be 0 after stimulus A @ time 3875000
+[OK]    Test 4: counter[22] should be 0 after stimulus A @ time 3915000
+[OK]    Test 4: counter[23] should be 0 after stimulus A @ time 3955000
+[OK]    Test 4: counter[24] should be 0 after stimulus A @ time 3995000
+[OK]    Test 4: counter[25] should be 0 after stimulus A @ time 4035000
+[OK]    Test 4: counter[26] should be 0 after stimulus A @ time 4075000
+[OK]    Test 4: counter[27] should be 0 after stimulus A @ time 4115000
+[OK]    Test 4: counter[28] should be 0 after stimulus A @ time 4155000
+[OK]    Test 4: counter[29] should be 0 after stimulus A @ time 4195000
+[OK]    Test 4: counter[30] should be 0 after stimulus A @ time 4235000
+[OK]    Test 4: counter[31] should be 0 after stimulus A @ time 4275000
+[OK]    Test 4: counter[8] (conflict[0][0]) should be 2 @ time 4355000
+[OK]    Test 4: counter[19] should still be 4 @ time 4395000
+[OK]    Test 4: counter[0] should be 0 after stimulus B @ time 4435000
+[OK]    Test 4: counter[1] should be 0 after stimulus B @ time 4475000
+[OK]    Test 4: counter[2] should be 0 after stimulus B @ time 4515000
+[OK]    Test 4: counter[3] should be 0 after stimulus B @ time 4555000
+[OK]    Test 4: counter[4] should be 0 after stimulus B @ time 4595000
+[OK]    Test 4: counter[5] should be 0 after stimulus B @ time 4635000
+[OK]    Test 4: counter[6] should be 0 after stimulus B @ time 4675000
+[OK]    Test 4: counter[7] should be 0 after stimulus B @ time 4715000
+[OK]    Test 4: counter[9] should be 0 after stimulus B @ time 4755000
+[OK]    Test 4: counter[10] should be 0 after stimulus B @ time 4795000
+[OK]    Test 4: counter[11] should be 0 after stimulus B @ time 4835000
+[OK]    Test 4: counter[12] should be 0 after stimulus B @ time 4875000
+[OK]    Test 4: counter[13] should be 0 after stimulus B @ time 4915000
+[OK]    Test 4: counter[14] should be 0 after stimulus B @ time 4955000
+[OK]    Test 4: counter[15] should be 0 after stimulus B @ time 4995000
+[OK]    Test 4: counter[16] should be 0 after stimulus B @ time 5035000
+[OK]    Test 4: counter[17] should be 0 after stimulus B @ time 5075000
+[OK]    Test 4: counter[18] should be 0 after stimulus B @ time 5115000
+[OK]    Test 4: counter[20] should be 0 after stimulus B @ time 5155000
+[OK]    Test 4: counter[21] should be 0 after stimulus B @ time 5195000
+[OK]    Test 4: counter[22] should be 0 after stimulus B @ time 5235000
+[OK]    Test 4: counter[23] should be 0 after stimulus B @ time 5275000
+[OK]    Test 4: counter[24] should be 0 after stimulus B @ time 5315000
+[OK]    Test 4: counter[25] should be 0 after stimulus B @ time 5355000
+[OK]    Test 4: counter[26] should be 0 after stimulus B @ time 5395000
+[OK]    Test 4: counter[27] should be 0 after stimulus B @ time 5435000
+[OK]    Test 4: counter[28] should be 0 after stimulus B @ time 5475000
+[OK]    Test 4: counter[29] should be 0 after stimulus B @ time 5515000
+[OK]    Test 4: counter[30] should be 0 after stimulus B @ time 5555000
+[OK]    Test 4: counter[31] should be 0 after stimulus B @ time 5595000
+
+=== Test 5: queue_full_count ===
+[OK]    Test 5: counter[24] (OFF_QF+0) should be 7 @ time 5765000
+[OK]    Test 5: counter[0] (req_count[0]) should be 0 @ time 5805000
+
+=== Test 6: idle_count ===
+[OK]    Test 6: counter[31] (OFF_IDLE+3) should be 6 @ time 5965000
+[OK]    Test 6: counter[28] should be 0 @ time 6005000
+[OK]    Test 6: counter[29] should be 0 @ time 6045000
+[OK]    Test 6: counter[30] should be 0 @ time 6085000
+
+=== Test 7: CSR Read Timing ===
+[INFO] Backdoor preloading counter[5] with 0xCAFE_BABE...
+[INFO] Preload complete.
+[OK]    Test 7: csr_ack should be 0 on cycle T @ time 6165000
+[OK]    Test 7: csr_ack should be 1 on cycle T+1 @ time 6175000
+[OK]    Test 7: csr_rdata should be 0xCAFE_BABE on cycle T+1 @ time 6175000
+[OK]    Test 7: csr_ack should be 0 on cycle T+2 after req dropped @ time 6185000
+
+=== Test 8: CSR Boundary ===
+[OK]    Test 8: counter[0] (first addr) should be 1 @ time 6295000
+[OK]    Test 8: counter[31] (last addr) should be 1 @ time 6335000
+
+=== Test 9: Saturation ===
+[INFO] Backdoor preloading counter[0] to 0xFFFF_FFFE...
+[INFO] Preload complete.
+[OK]    Test 9: counter[0] should be 0xFFFF_FFFE @ time 6425000
+[OK]    Test 9: counter[0] should be 0xFFFF_FFFF after first extra pulse @ time 6495000
+[OK]    Test 9: counter[0] should stay 0xFFFF_FFFF (no wrap) @ time 6565000
+
+=== Test 10: All Events Simultaneous ===
+[OK]    Test 10: counter[0] should be 1 @ time 6675000
+[OK]    Test 10: counter[1] should be 1 @ time 6715000
+[OK]    Test 10: counter[2] should be 1 @ time 6755000
+[OK]    Test 10: counter[3] should be 1 @ time 6795000
+[OK]    Test 10: counter[4] should be 1 @ time 6835000
+[OK]    Test 10: counter[5] should be 1 @ time 6875000
+[OK]    Test 10: counter[6] should be 1 @ time 6915000
+[OK]    Test 10: counter[7] should be 1 @ time 6955000
+[OK]    Test 10: counter[8] should be 1 @ time 6995000
+[OK]    Test 10: counter[9] should be 1 @ time 7035000
+[OK]    Test 10: counter[10] should be 1 @ time 7075000
+[OK]    Test 10: counter[11] should be 1 @ time 7115000
+[OK]    Test 10: counter[12] should be 1 @ time 7155000
+[OK]    Test 10: counter[13] should be 1 @ time 7195000
+[OK]    Test 10: counter[14] should be 1 @ time 7235000
+[OK]    Test 10: counter[15] should be 1 @ time 7275000
+[OK]    Test 10: counter[16] should be 1 @ time 7315000
+[OK]    Test 10: counter[17] should be 1 @ time 7355000
+[OK]    Test 10: counter[18] should be 1 @ time 7395000
+[OK]    Test 10: counter[19] should be 1 @ time 7435000
+[OK]    Test 10: counter[20] should be 1 @ time 7475000
+[OK]    Test 10: counter[21] should be 1 @ time 7515000
+[OK]    Test 10: counter[22] should be 1 @ time 7555000
+[OK]    Test 10: counter[23] should be 1 @ time 7595000
+[OK]    Test 10: counter[24] should be 1 @ time 7635000
+[OK]    Test 10: counter[25] should be 1 @ time 7675000
+[OK]    Test 10: counter[26] should be 1 @ time 7715000
+[OK]    Test 10: counter[27] should be 1 @ time 7755000
+[OK]    Test 10: counter[28] should be 1 @ time 7795000
+[OK]    Test 10: counter[29] should be 1 @ time 7835000
+[OK]    Test 10: counter[30] should be 1 @ time 7875000
+[OK]    Test 10: counter[31] should be 1 @ time 7915000
+
+=== Test 11: No Events ===
+[OK]    Test 11: counter[0] should still be 1 after 10 idle cycles @ time 8115000
+[OK]    Test 11: counter[1] should still be 1 after 10 idle cycles @ time 8155000
+[OK]    Test 11: counter[2] should still be 1 after 10 idle cycles @ time 8195000
+[OK]    Test 11: counter[3] should still be 1 after 10 idle cycles @ time 8235000
+[OK]    Test 11: counter[4] should still be 1 after 10 idle cycles @ time 8275000
+[OK]    Test 11: counter[5] should still be 1 after 10 idle cycles @ time 8315000
+[OK]    Test 11: counter[6] should still be 1 after 10 idle cycles @ time 8355000
+[OK]    Test 11: counter[7] should still be 1 after 10 idle cycles @ time 8395000
+[OK]    Test 11: counter[8] should still be 1 after 10 idle cycles @ time 8435000
+[OK]    Test 11: counter[9] should still be 1 after 10 idle cycles @ time 8475000
+[OK]    Test 11: counter[10] should still be 1 after 10 idle cycles @ time 8515000
+[OK]    Test 11: counter[11] should still be 1 after 10 idle cycles @ time 8555000
+[OK]    Test 11: counter[12] should still be 1 after 10 idle cycles @ time 8595000
+[OK]    Test 11: counter[13] should still be 1 after 10 idle cycles @ time 8635000
+[OK]    Test 11: counter[14] should still be 1 after 10 idle cycles @ time 8675000
+[OK]    Test 11: counter[15] should still be 1 after 10 idle cycles @ time 8715000
+[OK]    Test 11: counter[16] should still be 1 after 10 idle cycles @ time 8755000
+[OK]    Test 11: counter[17] should still be 1 after 10 idle cycles @ time 8795000
+[OK]    Test 11: counter[18] should still be 1 after 10 idle cycles @ time 8835000
+[OK]    Test 11: counter[19] should still be 1 after 10 idle cycles @ time 8875000
+[OK]    Test 11: counter[20] should still be 1 after 10 idle cycles @ time 8915000
+[OK]    Test 11: counter[21] should still be 1 after 10 idle cycles @ time 8955000
+[OK]    Test 11: counter[22] should still be 1 after 10 idle cycles @ time 8995000
+[OK]    Test 11: counter[23] should still be 1 after 10 idle cycles @ time 9035000
+[OK]    Test 11: counter[24] should still be 1 after 10 idle cycles @ time 9075000
+[OK]    Test 11: counter[25] should still be 1 after 10 idle cycles @ time 9115000
+[OK]    Test 11: counter[26] should still be 1 after 10 idle cycles @ time 9155000
+[OK]    Test 11: counter[27] should still be 1 after 10 idle cycles @ time 9195000
+[OK]    Test 11: counter[28] should still be 1 after 10 idle cycles @ time 9235000
+[OK]    Test 11: counter[29] should still be 1 after 10 idle cycles @ time 9275000
+[OK]    Test 11: counter[30] should still be 1 after 10 idle cycles @ time 9315000
+[OK]    Test 11: counter[31] should still be 1 after 10 idle cycles @ time 9355000
+
+=== Test 12: CSR Non-Intrusive ===
+[OK]    Test 12: csr_rdata should be 100 during consecutive reads @ time 10455000
+[OK]    Test 12: csr_ack should be 1 during consecutive reads @ time 10455000
+[OK]    Test 12: csr_rdata should be 100 during consecutive reads @ time 10465000
+[OK]    Test 12: csr_ack should be 1 during consecutive reads @ time 10465000
+[OK]    Test 12: csr_rdata should be 100 during consecutive reads @ time 10475000
+[OK]    Test 12: csr_ack should be 1 during consecutive reads @ time 10475000
+[OK]    Test 12: csr_rdata should be 100 during consecutive reads @ time 10485000
+[OK]    Test 12: csr_ack should be 1 during consecutive reads @ time 10485000
+[OK]    Test 12: csr_rdata should be 100 during consecutive reads @ time 10495000
+[OK]    Test 12: csr_ack should be 1 during consecutive reads @ time 10495000
+[OK]    Test 12: counter[8] should be 101 after one more event (reads did not clear) @ time 10555000
+[OK]    Test 12: counter[8] should still be 101 on follow-up read @ time 10595000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_perf_counter.sv:558: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 11us; walltime 0.002 s; speed 6.111 ms/s
+- Verilator: cpu 0.002 s on 1 threads; allocated 2 MB

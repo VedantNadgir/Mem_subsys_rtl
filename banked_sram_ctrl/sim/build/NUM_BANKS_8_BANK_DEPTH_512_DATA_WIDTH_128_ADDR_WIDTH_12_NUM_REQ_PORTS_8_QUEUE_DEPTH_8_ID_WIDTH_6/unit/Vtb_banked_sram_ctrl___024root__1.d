@@ -1,0 +1,14 @@
+Vtb_banked_sram_ctrl___024root__1.o: \
+  /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/build/NUM_BANKS_8_BANK_DEPTH_512_DATA_WIDTH_128_ADDR_WIDTH_12_NUM_REQ_PORTS_8_QUEUE_DEPTH_8_ID_WIDTH_6/unit/Vtb_banked_sram_ctrl__pch.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_config.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilatedos.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_types.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_funcs.h \
+  /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/build/NUM_BANKS_8_BANK_DEPTH_512_DATA_WIDTH_128_ADDR_WIDTH_12_NUM_REQ_PORTS_8_QUEUE_DEPTH_8_ID_WIDTH_6/unit/Vtb_banked_sram_ctrl__Syms.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_vcd_c.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_trace.h \
+  /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/build/NUM_BANKS_8_BANK_DEPTH_512_DATA_WIDTH_128_ADDR_WIDTH_12_NUM_REQ_PORTS_8_QUEUE_DEPTH_8_ID_WIDTH_6/unit/Vtb_banked_sram_ctrl.h \
+  /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/build/NUM_BANKS_8_BANK_DEPTH_512_DATA_WIDTH_128_ADDR_WIDTH_12_NUM_REQ_PORTS_8_QUEUE_DEPTH_8_ID_WIDTH_6/unit/Vtb_banked_sram_ctrl___024root.h \
+  /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_timing.h \
+  Vtb_banked_sram_ctrl___024root__1.cpp Vtb_banked_sram_ctrl__pch.h

@@ -1,0 +1,94 @@
+
+=== TC_RSP_01: Reset State Correctness ===
+[OK]    Test 1: push_ready should be 1 after reset @ time 26000
+[OK]    Test 1: pop_valid should be 0 after reset @ time 26000
+[OK]    Test 1: full should be 0 after reset @ time 26000
+[OK]    Test 1: empty should be 1 after reset @ time 26000
+
+=== TC_RSP_02: push_ready COMBINATIONAL Deassert ===
+[OK]    Test 2: push_ready should be 1 before 4th push @ time 76000
+[OK]    Test 2: push_ready should still be 1 before 4th push edge @ time 77000
+[OK]    Test 2: push_ready should deassert immediately after 4th push edge @ time 86000
+[OK]    Test 2: full should assert after 4th push @ time 86000
+
+=== TC_RSP_03: push_ready COMBINATIONAL Recovery ===
+[OK]    Test 3: FIFO should be full before pop @ time 146000
+[OK]    Test 3: push_ready should be 0 while full @ time 146000
+[OK]    Test 3: push_ready should recover immediately after pop from full @ time 156000
+[OK]    Test 3: full should deassert after pop from full @ time 156000
+
+=== TC_RSP_04: Push Blocked When Full ===
+[OK]    Test 4: FIFO should be full before blocked push @ time 216000
+[OK]    Test 4: push_ready should be 0 when full @ time 216000
+[OK]    Test 4: blocked push should see push_ready low @ time 217000
+[OK]    Test 4: First drained entry should remain 0x10 @ time 266000
+[OK]    Test 4: Second drained entry should remain 0x20 @ time 266000
+[OK]    Test 4: Third drained entry should remain 0x30 @ time 266000
+[OK]    Test 4: Fourth drained entry should remain 0x40 @ time 266000
+
+=== TC_RSP_05: Single Push -> pop_valid Next Cycle ===
+[OK]    Test 5: pop_valid should assert after one push @ time 296000
+[OK]    Test 5: pop_data should match pushed value @ time 296000
+[OK]    Test 5: push_ready should remain high with one entry @ time 296000
+
+=== TC_RSP_06: pop_valid Deassert After Last Pop ===
+[OK]    Test 6: pop_valid should be 1 with one entry @ time 326000
+[OK]    Test 6: pop_valid should still be 1 before pop edge @ time 327000
+[OK]    Test 6: pop_valid should deassert after last pop @ time 336000
+[OK]    Test 6: empty should assert after last pop @ time 336000
+
+=== TC_RSP_07: pop_data Stable Until After Posedge ===
+[OK]    Test 7: pop_data should show A before pop @ time 376000
+[OK]    Test 7: pop_data should remain A before the pop edge @ time 377000
+[OK]    Test 7: pop_data should switch to B immediately after pop edge @ time 386000
+
+=== TC_RSP_08: Simultaneous Push+Pop ===
+[OK]    Test 8: pop_valid should be 1 before simultaneous push+pop @ time 416000
+[OK]    Test 8: pop_data should be A before simultaneous push+pop @ time 416000
+[OK]    Test 8: push_ready should be 1 before simultaneous push+pop @ time 416000
+[OK]    Test 8: pop_valid should remain 1 after simultaneous push+pop @ time 426000
+[OK]    Test 8: pop_data should advance to B after simultaneous push+pop @ time 426000
+[OK]    Test 8: push_ready should remain high @ time 426000
+
+=== TC_RSP_09: Simultaneous Attempt When Full ===
+[OK]    Test 9: FIFO should be full before simultaneous attempt @ time 486000
+[OK]    Test 9: push_ready should be low when full @ time 486000
+[OK]    Test 9: push remains blocked before the edge while full @ time 487000
+[OK]    Test 9: push_ready should become 1 after the pop frees a slot @ time 496000
+[OK]    Test 9: next visible head should be 0x20, proving 0xCC was not pushed @ time 496000
+[OK]    Test 9: full should deassert after only the pop fires @ time 496000
+
+=== TC_RSP_10: Pop When Empty ===
+[OK]    Test 10: empty should be 1 after reset @ time 516000
+[OK]    Test 10: pop_valid should be 0 when empty @ time 516000
+[OK]    Test 10: empty should remain 1 after pop on empty @ time 526000
+[OK]    Test 10: pop_valid should remain 0 after pop on empty @ time 526000
+[OK]    Test 10: empty should still remain 1 on second empty-pop cycle @ time 536000
+[OK]    Test 10: pop_valid should still remain 0 on second empty-pop cycle @ time 536000
+
+=== TC_RSP_11: FIFO In-Order Data Integrity ===
+[OK]    Test 11: 1st popped entry should be D0 @ time 636000
+[OK]    Test 11: 2nd popped entry should be D1 @ time 636000
+[OK]    Test 11: 3rd popped entry should be D2 @ time 636000
+[OK]    Test 11: 4th popped entry should be D3 @ time 636000
+[OK]    Test 11: FIFO should be empty after draining all entries @ time 636000
+[OK]    Test 11: pop_valid should be 0 when empty @ time 636000
+
+=== TC_RSP_12: Pointer Wrap-Around Integrity ===
+[OK]    Test 12: First drain item should be D0 @ time 736000
+[OK]    Test 12: First drain item should be D1 @ time 736000
+[OK]    Test 12: First drain item should be D2 @ time 736000
+[OK]    Test 12: First drain item should be D3 @ time 736000
+[OK]    Test 12: FIFO should be empty after first drain @ time 736000
+[OK]    Test 12: Second drain item should be D4 @ time 816000
+[OK]    Test 12: Second drain item should be D5 @ time 816000
+[OK]    Test 12: Second drain item should be D6 @ time 816000
+[OK]    Test 12: Second drain item should be D7 @ time 816000
+[OK]    Test 12: FIFO should be empty after second drain @ time 816000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_rsp_fifo.sv:560: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 816ns; walltime 0.001 s; speed 1.473 ms/s
+- Verilator: cpu 0.001 s on 1 threads; allocated 2 MB

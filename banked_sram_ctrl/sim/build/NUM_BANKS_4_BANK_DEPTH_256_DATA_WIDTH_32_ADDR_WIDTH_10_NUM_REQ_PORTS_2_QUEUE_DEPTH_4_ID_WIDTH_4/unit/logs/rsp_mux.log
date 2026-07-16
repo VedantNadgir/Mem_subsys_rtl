@@ -1,0 +1,117 @@
+TB START
+
+=== Test 1: All Banks Idle ===
+[OK]    Test 1 : rsp_valid all zero @ time 6000
+[OK]    Test 1 : rsp_data all zero @ time 6000
+[OK]    Test 1 : rsp_id all zero @ time 6000
+[OK]    Test 1 : rsp_err all zero @ time 6000
+[OK]    Test 1 : bank_pp1_ready all 1 (bubbles free) @ time 6000
+[OK]    Test 1 : bank_granted all zero @ time 6000
+
+=== Test 2: Single Bank Single Port ===
+[OK]    Test 2 : rsp_valid[1] asserted @ time 16000
+[OK]    Test 2 : rsp_data[1] = DEAD_BEEF @ time 16000
+[OK]    Test 2 : rsp_id[1] = txn_id 3 @ time 16000
+[OK]    Test 2 : rsp_err[1] = 0 @ time 16000
+[OK]    Test 2 : bank_pp1_ready[2] = 1 @ time 16000
+[OK]    Test 2 : bank_granted[2] = 1 @ time 16000
+[OK]    Test 2 : other rsp_valid zero @ time 16000
+[OK]    Test 2 : idle banks pp1_ready=1 @ time 16000
+
+=== Test 3: Write Response ===
+[OK]    Test 3 : rsp_valid[0] asserted for write @ time 26000
+[OK]    Test 3 : rsp_data[0] forced zero for write @ time 26000
+[OK]    Test 3 : rsp_id[0] = txn_id 5 @ time 26000
+[OK]    Test 3 : rsp_err[0] = 0 @ time 26000
+[OK]    Test 3 : bank_pp1_ready[0] = 1 @ time 26000
+[OK]    Test 3 : bank_granted[0] = 1 @ time 26000
+
+=== Test 4: ID Stripping ===
+[OK]    Test 4 : rsp_valid[3] asserted @ time 36000
+[OK]    Test 4 : rsp_id[3] = txn_id 0xA (prefix stripped) @ time 36000
+[OK]    Test 4 : bank_granted[1] = 1 @ time 36000
+[OK]    Test 4 : bank_pp1_ready[1] = 1 @ time 36000
+
+=== Test 5: Error Forwarded ===
+[OK]    Test 5 : rsp_err[2] = 1 @ time 46000
+[OK]    Test 5 : rsp_valid[2] asserted @ time 46000
+[OK]    Test 5 : rsp_data[2] = 0 @ time 46000
+[OK]    Test 5 : rsp_id[2] = 0 @ time 46000
+[OK]    Test 5 : bank_pp1_ready[3] = 1 @ time 46000
+[OK]    Test 5 : bank_granted[3] = 1 @ time 46000
+[OK]    Test 5 : other rsp_err zero @ time 46000
+
+=== Test 6: Collision Lowest Bank Wins ===
+[OK]    Test 6 : bank_granted[1] = 1 (lowest wins) @ time 56000
+[OK]    Test 6 : bank_granted[3] = 0 (stalled) @ time 56000
+[OK]    Test 6 : rsp_valid only port 0 @ time 56000
+[OK]    Test 6 : rsp_data[0] from bank 1 @ time 56000
+[OK]    Test 6 : bank_pp1_ready[1] = 1 @ time 56000
+[OK]    Test 6 : bank_pp1_ready[3] = 0 (stalled) @ time 56000
+
+=== Test 7: No Collision Both Granted ===
+[OK]    Test 7 : bank_granted[0] = 1 @ time 66000
+[OK]    Test 7 : bank_granted[2] = 1 @ time 66000
+[OK]    Test 7 : rsp_valid[1] = 1 (bank 0 → port 1) @ time 66000
+[OK]    Test 7 : rsp_valid[3] = 1 (bank 2 → port 3) @ time 66000
+[OK]    Test 7 : rsp_data[1] correct @ time 66000
+[OK]    Test 7 : rsp_data[3] correct @ time 66000
+[OK]    Test 7 : bank_pp1_ready[0] = 1 @ time 66000
+[OK]    Test 7 : bank_pp1_ready[2] = 1 @ time 66000
+[OK]    Test 7 : other rsp_valid zero @ time 66000
+
+=== Test 8: FIFO Full Blocks Bank ===
+[OK]    Test 8 : bank_granted[0] = 0 (FIFO full) @ time 76000
+[OK]    Test 8 : rsp_valid[2] = 0 @ time 76000
+[OK]    Test 8 : bank_pp1_ready[0] = 0 (stalled) @ time 76000
+
+=== Test 9: Bubble Banks Always Ready ===
+[OK]    Test 9 : bank_pp1_ready[0] = 1 (granted) @ time 86000
+[OK]    Test 9 : bank_pp1_ready[1] = 1 (bubble) @ time 86000
+[OK]    Test 9 : bank_pp1_ready[2] = 1 (bubble) @ time 86000
+[OK]    Test 9 : bank_pp1_ready[3] = 1 (bubble) @ time 86000
+
+=== Test 10: Peak Throughput ===
+[OK]    Test 10 : bank_granted all 1 @ time 96000
+[OK]    Test 10 : all rsp_valid asserted @ time 96000
+[OK]    Test 10 : all bank_pp1_ready 1 @ time 96000
+[OK]    Test 10 : rsp_data[0] correct @ time 96000
+[OK]    Test 10 : rsp_data[1] correct @ time 96000
+[OK]    Test 10 : rsp_data[2] correct @ time 96000
+[OK]    Test 10 : rsp_data[3] correct @ time 96000
+[OK]    Test 10 : rsp_id[0] = txn 1 @ time 96000
+[OK]    Test 10 : rsp_id[1] = txn 2 @ time 96000
+[OK]    Test 10 : rsp_id[2] = txn 3 @ time 96000
+[OK]    Test 10 : rsp_id[3] = txn 4 @ time 96000
+
+=== Test 11: All Banks Same Port ===
+[OK]    Test 11 : bank_granted[0] = 1 (only winner) @ time 106000
+[OK]    Test 11 : bank_granted[1] = 0 @ time 106000
+[OK]    Test 11 : bank_granted[2] = 0 @ time 106000
+[OK]    Test 11 : bank_granted[3] = 0 @ time 106000
+[OK]    Test 11 : rsp_valid[0] = 1 @ time 106000
+[OK]    Test 11 : rsp_data[0] from bank 0 @ time 106000
+[OK]    Test 11 : rsp_id[0] = txn 1 from bank 0 @ time 106000
+[OK]    Test 11 : bank_pp1_ready[0] = 1 @ time 106000
+[OK]    Test 11 : bank_pp1_ready[1] = 0 @ time 106000
+[OK]    Test 11 : bank_pp1_ready[2] = 0 @ time 106000
+[OK]    Test 11 : bank_pp1_ready[3] = 0 @ time 106000
+
+=== Test 12: Partial Ready Isolation ===
+[OK]    Test 12 : bank_granted[0] = 1 (port 0 ready) @ time 116000
+[OK]    Test 12 : bank_granted[1] = 0 (port 1 full) @ time 116000
+[OK]    Test 12 : bank_granted[2] = 1 (port 2 ready) @ time 116000
+[OK]    Test 12 : rsp_valid[0] = 1 @ time 116000
+[OK]    Test 12 : rsp_valid[1] = 0 @ time 116000
+[OK]    Test 12 : rsp_valid[2] = 1 @ time 116000
+[OK]    Test 12 : bank_pp1_ready[0] = 1 @ time 116000
+[OK]    Test 12 : bank_pp1_ready[1] = 0 @ time 116000
+[OK]    Test 12 : bank_pp1_ready[2] = 1 @ time 116000
+[OK]    Test 12 : bank_pp1_ready[3] = 1 (bubble) @ time 116000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_rsp_mux.sv:431: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 116ns; walltime 0.001 s; speed 154.461 us/s
+- Verilator: cpu 0.000 s on 1 threads; allocated 2 MB

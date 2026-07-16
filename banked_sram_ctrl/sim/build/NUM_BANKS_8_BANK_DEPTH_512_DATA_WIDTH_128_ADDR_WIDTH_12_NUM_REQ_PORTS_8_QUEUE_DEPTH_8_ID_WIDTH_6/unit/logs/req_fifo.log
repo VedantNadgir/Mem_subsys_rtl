@@ -1,0 +1,103 @@
+
+=== TC_RF_01: Reset State Correctness ===
+[OK]    Test 1: push_ready should be 1 after reset @ time 15000
+[OK]    Test 1: head_valid should be 0 after reset @ time 15000
+[OK]    Test 1: full should be 0 after reset @ time 15000
+[OK]    Test 1: empty should be 1 after reset @ time 15000
+
+=== TC_RF_02: Single Push ===
+[OK]    Test 2: head_valid should be 1 one cycle after push @ time 35000
+[OK]    Test 2: head_data should match pushed data @ time 35000
+[OK]    Test 2: push_ready should remain 1 with occupancy below full @ time 35000
+
+=== TC_RF_03: Fill to Full ===
+[OK]    Test 3: push_ready should be 1 during first push @ time 65000
+[OK]    Test 3: push_ready should be 1 during second push @ time 75000
+[OK]    Test 3: push_ready should be 1 during third push @ time 85000
+[OK]    Test 3: push_ready should be 0 on the last accepted push cycle @ time 95000
+[OK]    Test 3: full should be 1 one cycle after 4th push @ time 105000
+[OK]    Test 3: push_ready should deassert one cycle after queue becomes full @ time 105000
+
+=== TC_RF_04: Push Blocked When Full ===
+[OK]    Test 4: head_data should not be overwritten by blocked push @ time 125000
+
+=== TC_RF_05: Pop from Full ===
+[OK]    Test 5: FIFO should be full at start of TC_RF_05 @ time 125000
+[OK]    Test 5: push_ready should be 0 while full @ time 125000
+AFTER DEASSERT: pop=1 rd_ptr=1 head=0000000000000001
+AFTER DEASSERT: pop=0 rd_ptr=1 head=0000000000000001
+[OK]    Test 5: push_ready should remain 1 in the pop cycle from full @ time 135000
+[OK]    Test 5: push_ready should recover one cycle after pop @ time 145000
+
+=== TC_RF_06: head_data Combinational Fall-Through ===
+[OK]    Test 6: head_data should initially point to A @ time 205000
+[OK]    Test 6: head_data should switch combinationally to B when pop is asserted @ time 206000
+[OK]    Test 6: head_data should remain B after pop clock edge @ time 225000
+
+=== TC_RF_07: head_valid Deasserts One Cycle After Last Pop ===
+[OK]    Test 7: head_valid should be 1 with one entry present @ time 265000
+[OK]    Test 7: head_valid should still be 1 in same cycle as pop @ time 265000
+[OK]    Test 7: head_valid should deassert one cycle after last pop @ time 285000
+[OK]    Test 7: empty should be 1 after last pop @ time 285000
+
+=== TC_RF_08: Simultaneous Push+Pop at occupancy=1 ===
+[OK]    Test 8: head_data should be A before simultaneous push+pop @ time 325000
+[OK]    Test 8: head_data should switch combinationally to B in same cycle @ time 326000
+[OK]    Test 8: push_ready should stay 1 @ time 326000
+[OK]    Test 8: head_valid should remain 1 after simultaneous push+pop @ time 345000
+[OK]    Test 8: head_data should be B after the cycle @ time 345000
+
+=== TC_RF_09: Simultaneous Push+Pop Near-Full ===
+[OK]    Test 9: push_ready should remain 1 at occupancy=3 @ time 405000
+[OK]    Test 9: push_ready should not transiently deassert @ time 406000
+[OK]    Test 9: push_ready should remain 1 after simultaneous push+pop near-full @ time 425000
+[OK]    Test 9: full should remain 0 @ time 425000
+
+=== TC_RF_10: Pop When Empty ===
+[OK]    Test 10: empty should be 1 after reset @ time 445000
+[OK]    Test 10: empty should remain 1 after pop on empty @ time 465000
+[OK]    Test 10: head_valid should remain 0 after pop on empty @ time 465000
+
+=== TC_RF_11: Pointer Wrap-Around Integrity ===
+AFTER DEASSERT: pop=1 rd_ptr=1 head=0000000000000020
+AFTER DEASSERT: pop=0 rd_ptr=1 head=0000000000000020
+[OK]    Test 11: Pop order should preserve D1 @ time 555000
+AFTER DEASSERT: pop=1 rd_ptr=2 head=0000000000000030
+AFTER DEASSERT: pop=0 rd_ptr=2 head=0000000000000030
+[OK]    Test 11: Pop order should preserve D2 @ time 575000
+AFTER DEASSERT: pop=1 rd_ptr=3 head=0000000000000040
+AFTER DEASSERT: pop=0 rd_ptr=3 head=0000000000000040
+[OK]    Test 11: Pop order should preserve D3 @ time 595000
+AFTER DEASSERT: pop=1 rd_ptr=0 head=0000000000000010
+AFTER DEASSERT: pop=0 rd_ptr=0 head=0000000000000010
+[OK]    Test 11: FIFO should be empty after first 4 pops @ time 615000
+AFTER DEASSERT: pop=1 rd_ptr=1 head=0000000000000060
+AFTER DEASSERT: pop=0 rd_ptr=1 head=0000000000000060
+[OK]    Test 11: Wrap pop order should preserve D5 @ time 685000
+AFTER DEASSERT: pop=1 rd_ptr=2 head=0000000000000070
+AFTER DEASSERT: pop=0 rd_ptr=2 head=0000000000000070
+[OK]    Test 11: Wrap pop order should preserve D6 @ time 705000
+AFTER DEASSERT: pop=1 rd_ptr=3 head=0000000000000080
+AFTER DEASSERT: pop=0 rd_ptr=3 head=0000000000000080
+[OK]    Test 11: Wrap pop order should preserve D7 @ time 725000
+AFTER DEASSERT: pop=1 rd_ptr=0 head=0000000000000050
+AFTER DEASSERT: pop=0 rd_ptr=0 head=0000000000000050
+[OK]    Test 11: FIFO should be empty after second drain @ time 745000
+
+=== TC_RF_12: Last-Slot Critical Edge Case ===
+[OK]    Test 12: push_ready should still be 1 in the last-slot cycle @ time 805000
+[OK]    Test 12: full should assert one cycle after last-slot push @ time 825000
+[OK]    Test 12: first entry should not be lost @ time 825000
+
+=== TC_RF_13: No Combinational push_valid -> push_ready Dependency ===
+[OK]    Test 13: push_ready should start at 1 @ time 845000
+[OK]    Test 13: push_ready should not change combinationally when push_valid toggles high @ time 846000
+[OK]    Test 13: push_ready should not change combinationally when push_valid toggles low @ time 847000
+[OK]    Test 13: push_ready should only change on clock edges @ time 855000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_req_fifo.sv:497: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 855ns; walltime 0.001 s; speed 1.290 ms/s
+- Verilator: cpu 0.001 s on 1 threads; allocated 2 MB

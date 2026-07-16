@@ -1,0 +1,53 @@
+
+=== TC_SRAM_01: Full-Word Write and Read-Back ===
+[OK]    Test 1: Full-word write should read back correctly @ time 26000
+
+=== TC_SRAM_02: Registered Read 1-Cycle Latency ===
+[OK]    Test 2: Prime rdata to known value @ time 46000
+[OK]    Test 2: rdata must not change combinationally when addr changes @ time 57000
+[OK]    Test 2: rdata should update one cycle after read address is presented @ time 66000
+
+=== TC_SRAM_03: we=0 Prevents Write ===
+[OK]    Test 3: Memory should remain unchanged when we=0 @ time 96000
+
+=== TC_SRAM_04: Partial Write Byte Lane 0 Only ===
+[OK]    Test 4: Only byte lane 0 should update @ time 126000
+
+=== TC_SRAM_05: Each Byte Lane Independently ===
+[OK]    Test 5: Byte lane 1 should update independently @ time 156000
+[OK]    Test 5: Byte lane 2 should update independently @ time 176000
+[OK]    Test 5: Byte lane 3 should update independently @ time 196000
+
+=== TC_SRAM_06: bwe=0 With we=1 Causes No Write ===
+[OK]    Test 6: bwe=0 should suppress all byte writes @ time 226000
+
+=== TC_SRAM_07: Same-Address Read+Write Gives Old Data First ===
+[OK]    Test 7: New_Value should be seen due to combinational read @ time 246000
+[OK]    Test 7: New data should be visible on following read @ time 256000
+
+=== TC_SRAM_08: Different Addresses Are Independent ===
+[OK]    Test 8: Write to addr 0x01 must not affect addr 0x02 @ time 296000
+[OK]    Test 8: Updated addr 0x01 should hold new value @ time 306000
+
+=== TC_SRAM_09: Pipelined Read Address-to-rdata Lag ===
+[OK]    Test 9: Read of addr 0x60 should appear after one cycle @ time 346000
+[OK]    Test 9: Read of addr 0x61 should appear after one cycle @ time 356000
+[OK]    Test 9: Read of addr 0x62 should appear after one cycle @ time 366000
+
+=== TC_SRAM_10: Back-to-Back Writes Same Address ===
+[OK]    Test 10: Later write should overwrite earlier write @ time 396000
+
+=== TC_SRAM_11: Boundary Addresses ===
+[OK]    Test 11: Address 0 should read back correctly @ time 426000
+[OK]    Test 11: Address DEPTH-1 should read back correctly @ time 436000
+
+=== TC_SRAM_12: No Reset, Unwritten Read is Don't-Care ===
+[OK]    Test 12: Observed unwritten rdata = 0x00000000 (accepted as don't-care) @ time 446000
+[OK]    Test 12: Unwritten read resolved to a concrete value; also accepted as don't-care @ time 446000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_sram_array.sv:378: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 446ns; walltime 0.000 s; speed 1.715 ms/s
+- Verilator: cpu 0.000 s on 1 threads; allocated 2 MB

@@ -60,6 +60,7 @@ endif
 # Format: <name>  NUM_BANKS  BANK_DEPTH  DATA_WIDTH  ADDR_WIDTH  NUM_REQ_PORTS  QUEUE_DEPTH  ID_WIDTH
 # ADDR_WIDTH must be >= clog2(NUM_BANKS)+clog2(BANK_DEPTH)
 REGRESS_COMBOS := \
+    edge_case       2    16    8    5   2   4   4 \
     cfg_minimal     2    16    8    5   2   2   1 \
     cfg_small_8     2    64    8    7   2   2   2 \
     cfg_small_16    2    64   16    7   2   2   2 \
@@ -71,8 +72,7 @@ REGRESS_COMBOS := \
     cfg_large_64    8   512   64   12   8   4   6 \
     cfg_large_128   8   512  128   12   8   8   6 \
     cfg_max_ports   8   256   32   11   8   8   4 \
-    cfg_min_ports   4   256   32   10   2   4   4
-
+    cfg_min_ports   4   256   32   10   2   4   4  
 # Parse helpers: extract N-th field from combo definition
 # Usage: $(call get_field,1,cfg_dflt 4 256 32 10 4 4 4) → 4
 get_field = $(word $1,$2)

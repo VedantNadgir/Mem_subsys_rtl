@@ -70,6 +70,8 @@ build:
 		{ echo "[ERROR] Testbench not found: $(TB_FILE)"; exit 1; }
 
 	@mkdir -p $(COMBO_BUILD)
+	@mkdir -p $(COMBO_BUILD)/logs
+	@mkdir -p $(COMBO_BUILD)/waves
 
 	@echo ""
 	@echo "=== Building $(TEST_TYPE)/$(TEST) ==="

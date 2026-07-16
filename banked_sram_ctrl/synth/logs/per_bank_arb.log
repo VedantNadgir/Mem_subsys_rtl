@@ -1,0 +1,565 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+
+-- Executing script file `/Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/generated/synth_per_bank_arb.ys' --
+
+1. Executing Verilog-2005 frontend: ../rtl/pkg/sram_ctrl_pkg.sv
+Parsing SystemVerilog input from `../rtl/pkg/sram_ctrl_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: ../rtl/bank_scheduler.sv
+Parsing SystemVerilog input from `../rtl/bank_scheduler.sv' to AST representation.
+Generating RTLIL representation for module `\bank_scheduler'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: ../rtl/banked_sram_ctrl.sv
+Parsing SystemVerilog input from `../rtl/banked_sram_ctrl.sv' to AST representation.
+Generating RTLIL representation for module `\banked_sram_ctrl'.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[0].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[1].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[2].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[3].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: ../rtl/per_bank_arb.sv
+Parsing SystemVerilog input from `../rtl/per_bank_arb.sv' to AST representation.
+Generating RTLIL representation for module `\per_bank_arb'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: ../rtl/perf_counter.sv
+Parsing SystemVerilog input from `../rtl/perf_counter.sv' to AST representation.
+Generating RTLIL representation for module `\perf_counter'.
+Warning: Replacing memory \counter with list of registers. See ../rtl/perf_counter.sv:54
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: ../rtl/req_fifo.sv
+Parsing SystemVerilog input from `../rtl/req_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\req_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/req_fifo.sv:56
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: ../rtl/rsp_fifo.sv
+Parsing SystemVerilog input from `../rtl/rsp_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/rsp_fifo.sv:52
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: ../rtl/rsp_mux.sv
+Parsing SystemVerilog input from `../rtl/rsp_mux.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_mux'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: ../rtl/sram_array.sv
+Parsing SystemVerilog input from `../rtl/sram_array.sv' to AST representation.
+Generating RTLIL representation for module `\sram_array'.
+Successfully finished Verilog frontend.
+
+10. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1. Analyzing design hierarchy..
+Top module:  \per_bank_arb
+
+10.2. Analyzing design hierarchy..
+Top module:  \per_bank_arb
+Removing unused module `\sram_array'.
+Removing unused module `\rsp_mux'.
+Removing unused module `\rsp_fifo'.
+Removing unused module `\req_fifo'.
+Removing unused module `\perf_counter'.
+Removing unused module `\banked_sram_ctrl'.
+Removing unused module `\bank_scheduler'.
+Removed 7 unused modules.
+==STAGE:HIERARCHY==
+
+11. Printing statistics.
+
+=== per_bank_arb ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       57 wires
+      517 wire bits
+       14 public wires
+       37 public wire bits
+        7 ports
+       14 port bits
+        4 processes
+       31 cells
+        5   $add
+        2   $and
+        4   $eqx
+        1   $gt
+        3   $logic_and
+        1   $logic_not
+        1   $mod
+        2   $not
+        1   $reduce_or
+        5   $shl
+        5   $shr
+        1   $sub
+
+12. Executing PROC pass (convert processes to netlists).
+
+12.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$../rtl/per_bank_arb.sv:60$223 in module per_bank_arb.
+Marked 1 switch rules as full_case in process $proc$../rtl/per_bank_arb.sv:49$217 in module per_bank_arb.
+Marked 4 switch rules as full_case in process $proc$../rtl/per_bank_arb.sv:34$214 in module per_bank_arb.
+Removed a total of 0 dead cases.
+
+12.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 5 assignments to connections.
+
+12.4. Executing PROC_INIT pass (extract init attributes).
+
+12.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:49$217'.
+
+12.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~6 debug messages>
+
+12.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:60$223'.
+     1/1: $1\conflict_mask[3:0]
+Creating decoders for process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:49$217'.
+     1/1: $0\ptr[1:0]
+Creating decoders for process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:34$214'.
+     1/4: $4\grant_port[1:0]
+     2/4: $3\grant_port[1:0]
+     3/4: $2\grant_port[1:0]
+     4/4: $1\grant_port[1:0]
+Creating decoders for process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:20$191'.
+
+12.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\per_bank_arb.\conflict_mask' from process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:60$223'.
+No latch inferred for signal `\per_bank_arb.\grant_valid' from process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:34$214'.
+No latch inferred for signal `\per_bank_arb.\grant_port' from process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:34$214'.
+No latch inferred for signal `\per_bank_arb.\contention' from process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:20$191'.
+
+12.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\per_bank_arb.\ptr' using process `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:49$217'.
+  created $adff cell `$procdff$991' with positive edge clock and positive level reset.
+
+12.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:60$223'.
+Removing empty process `per_bank_arb.$proc$../rtl/per_bank_arb.sv:60$223'.
+Found and cleaned up 1 empty switch in `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:49$217'.
+Removing empty process `per_bank_arb.$proc$../rtl/per_bank_arb.sv:49$217'.
+Found and cleaned up 4 empty switches in `\per_bank_arb.$proc$../rtl/per_bank_arb.sv:34$214'.
+Removing empty process `per_bank_arb.$proc$../rtl/per_bank_arb.sv:34$214'.
+Removing empty process `per_bank_arb.$proc$../rtl/per_bank_arb.sv:20$191'.
+Cleaned up 6 empty switches.
+
+12.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module per_bank_arb.
+<suppressed ~10 debug messages>
+
+13. Executing MEMORY pass.
+
+13.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+13.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+13.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+13.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+13.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+13.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+Removed 2 unused cells and 35 unused wires.
+<suppressed ~3 debug messages>
+
+13.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+13.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+13.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+
+13.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+13.11. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+14. Executing FSM pass (extract and optimize FSM).
+
+14.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+14.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+14.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+
+14.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+14.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+14.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+==STAGE:PRE_OPT==
+
+15. Printing statistics.
+
+=== per_bank_arb ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       34 wires
+      382 wire bits
+       14 public wires
+       37 public wire bits
+        7 ports
+       14 port bits
+       28 cells
+        5   $add
+        1   $adff
+        2   $and
+        4   $eqx
+        1   $gt
+        3   $logic_and
+        1   $mod
+        5   $mux
+        2   $not
+        1   $reduce_or
+        1   $shl
+        1   $shr
+        1   $sub
+
+16. Executing OPT pass (performing simple optimizations).
+
+16.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module per_bank_arb.
+<suppressed ~3 debug messages>
+
+16.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\per_bank_arb'.
+Computing hashes of 27 cells of `\per_bank_arb'.
+Finding duplicate cells in `\per_bank_arb'.
+Removed a total of 0 cells.
+
+16.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \per_bank_arb..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~8 debug messages>
+
+16.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \per_bank_arb.
+Performed a total of 0 changes.
+
+16.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\per_bank_arb'.
+Computing hashes of 27 cells of `\per_bank_arb'.
+Finding duplicate cells in `\per_bank_arb'.
+Removed a total of 0 cells.
+
+16.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $procdff$991 ($adff) from module per_bank_arb (D = $mod$../rtl/per_bank_arb.sv:54$222_Y [1:0], Q = \ptr).
+
+16.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+Removed 1 unused cells and 3 unused wires.
+<suppressed ~3 debug messages>
+
+16.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module per_bank_arb.
+
+16.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+16.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \per_bank_arb..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~6 debug messages>
+
+16.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \per_bank_arb.
+Performed a total of 0 changes.
+
+16.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\per_bank_arb'.
+Computing hashes of 25 cells of `\per_bank_arb'.
+Finding duplicate cells in `\per_bank_arb'.
+Removed a total of 0 cells.
+
+16.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+16.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+
+16.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module per_bank_arb.
+
+16.16. Finished fast OPT passes. (There is nothing left to do.)
+==STAGE:POST_OPT==
+
+17. Printing statistics.
+
+=== per_bank_arb ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       31 wires
+      316 wire bits
+       14 public wires
+       37 public wire bits
+        7 ports
+       14 port bits
+       25 cells
+        4   $add
+        1   $adffe
+        2   $and
+        4   $eqx
+        1   $gt
+        3   $logic_and
+        4   $mux
+        2   $not
+        1   $reduce_or
+        1   $shl
+        1   $shr
+        1   $sub
+
+18. Executing TECHMAP pass (map to technology primitives).
+
+18.1. Executing Verilog-2005 frontend: /opt/homebrew/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/homebrew/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+18.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $adffe.
+Using extmapper simplemap for cells of type $eqx.
+Running "alumacc" on wrapper $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Running "alumacc" on wrapper $extern:wrap:$gt:Y_WIDTH=1:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$gt:Y_WIDTH=1:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$gt:Y_WIDTH=1:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $paramod$constmap:2a5e5b27c998cf8bbba4411f6053119c755a882b$paramod$983e787cfb618316b2ac54b3bce993f1d2bed0cf\_90_shift_ops_shr_shl_sshl_sshr for cells of type $shr.
+Running "alumacc" on wrapper $extern:wrap:$sub:Y_WIDTH=4:B_WIDTH=1:A_WIDTH=4:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$sub:Y_WIDTH=4:B_WIDTH=1:A_WIDTH=4:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$sub:Y_WIDTH=4:B_WIDTH=1:A_WIDTH=4:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $and.
+Using template $paramod$constmap:2a5e5b27c998cf8bbba4411f6053119c755a882b$paramod$ab9801f02ff0313664b279423188a6a2216a91f4\_90_shift_ops_shr_shl_sshl_sshr for cells of type $shl.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $logic_and.
+Using template $paramod$fbc7873bff55778c0b3173955b7e4bce1d9d6834\_90_alu for cells of type $alu.
+Using template $paramod$8742280fdebca84e1c87f2a86ed84f62d558f4cc\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100000 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000100000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000100 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000100 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~1551 debug messages>
+
+19. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+  cell sky130_fd_sc_hd__dfxtp_1 (noninv, pins=3, area=20.02) is a direct match for cell type $_DFF_P_.
+  cell sky130_fd_sc_hd__dfrtn_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_NN0_.
+  cell sky130_fd_sc_hd__dfrtp_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_PN0_.
+  cell sky130_fd_sc_hd__dfstp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN1_.
+  cell sky130_fd_sc_hd__edfxtp_1 (noninv, pins=4, area=30.03) is a direct match for cell type $_DFFE_PP_.
+  cell sky130_fd_sc_hd__dfbbn_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_NNN_.
+  cell sky130_fd_sc_hd__dfbbp_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_PNN_.
+  final dff cell mappings:
+    unmapped dff cell: $_DFF_N_
+    \sky130_fd_sc_hd__dfxtp_1 _DFF_P_ (.CLK( C), .D( D), .Q( Q));
+    \sky130_fd_sc_hd__dfrtn_1 _DFF_NN0_ (.CLK_N( C), .D( D), .Q( Q), .RESET_B( R));
+    unmapped dff cell: $_DFF_NN1_
+    unmapped dff cell: $_DFF_NP0_
+    unmapped dff cell: $_DFF_NP1_
+    \sky130_fd_sc_hd__dfrtp_1 _DFF_PN0_ (.CLK( C), .D( D), .Q( Q), .RESET_B( R));
+    \sky130_fd_sc_hd__dfstp_2 _DFF_PN1_ (.CLK( C), .D( D), .Q( Q), .SET_B( R));
+    unmapped dff cell: $_DFF_PP0_
+    unmapped dff cell: $_DFF_PP1_
+    unmapped dff cell: $_DFFE_NN_
+    unmapped dff cell: $_DFFE_NP_
+    unmapped dff cell: $_DFFE_PN_
+    \sky130_fd_sc_hd__edfxtp_1 _DFFE_PP_ (.CLK( C), .D( D), .DE( E), .Q( Q));
+    \sky130_fd_sc_hd__dfbbn_1 _DFFSR_NNN_ (.CLK_N( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_NNP_
+    unmapped dff cell: $_DFFSR_NPN_
+    unmapped dff cell: $_DFFSR_NPP_
+    \sky130_fd_sc_hd__dfbbp_1 _DFFSR_PNN_ (.CLK( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_PNP_
+    unmapped dff cell: $_DFFSR_PPN_
+    unmapped dff cell: $_DFFSR_PPP_
+
+19.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+<suppressed ~24 debug messages>
+Mapping DFF cells in module `\per_bank_arb':
+  mapped 2 $_DFF_PN0_ cells to \sky130_fd_sc_hd__dfrtp_1 cells.
+
+20. Executing ABC pass (technology mapping using ABC).
+
+20.1. Extracting gate netlist of module `\per_bank_arb' to `<abc-temp-dir>/input.blif'..
+ABC: using cached merged SCL: /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl (1 files)
+
+20.1.1. Executed ABC.
+Extracted 2147 gates and 2156 wires to a netlist network with 7 inputs and 9 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_scl /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl 
+ABC: Warning: Detected 9 multi-output cells (for example, "sky130_fd_sc_hd__fa_1").
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+20.1.2. Re-integrating ABC results.
+ABC RESULTS:   sky130_fd_sc_hd__a211oi_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__a311oi_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a31oi_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a41o_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a41oi_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__and2_0 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__and4_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__clkinv_1 cells:        6
+ABC RESULTS:   sky130_fd_sc_hd__lpflow_inputiso1p_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__mux2i_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__mux4_2 cells:        7
+ABC RESULTS:   sky130_fd_sc_hd__nand2_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__nand2b_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nand4_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nor2_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o21ai_0 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__o31ai_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or3b_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or4_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or4b_1 cells:        1
+ABC RESULTS:        internal signals:     2140
+ABC RESULTS:           input signals:        7
+ABC RESULTS:          output signals:        9
+Removing temp directory.
+Removing global temp directory.
+
+21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \per_bank_arb..
+Removed 0 unused cells and 892 unused wires.
+<suppressed ~7 debug messages>
+==STAGE:POST_TECHMAP==
+
+22. Printing statistics.
+
+=== per_bank_arb ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+       41        - wires
+       49        - wire bits
+        8        - public wires
+       16        - public wire bits
+        7        - ports
+       14        - port bits
+       42  410.394 cells
+        3   22.522   sky130_fd_sc_hd__a211oi_1
+        1    8.758   sky130_fd_sc_hd__a311oi_1
+        1    6.256   sky130_fd_sc_hd__a31oi_1
+        1    10.01   sky130_fd_sc_hd__a41o_1
+        1    8.758   sky130_fd_sc_hd__a41oi_1
+        3   18.768   sky130_fd_sc_hd__and2_0
+        1    8.758   sky130_fd_sc_hd__and4_1
+        6   22.522   sky130_fd_sc_hd__clkinv_1
+        2   50.048   sky130_fd_sc_hd__dfrtp_1
+        1    6.256   sky130_fd_sc_hd__lpflow_inputiso1p_1
+        1    10.01   sky130_fd_sc_hd__mux2i_1
+        7  157.651   sky130_fd_sc_hd__mux4_2
+        4   15.014   sky130_fd_sc_hd__nand2_1
+        1    6.256   sky130_fd_sc_hd__nand2b_1
+        1    6.256   sky130_fd_sc_hd__nand4_1
+        1    3.754   sky130_fd_sc_hd__nor2_1
+        3   15.014   sky130_fd_sc_hd__o21ai_0
+        1    7.507   sky130_fd_sc_hd__o31ai_1
+        1    8.758   sky130_fd_sc_hd__or3b_1
+        1    7.507   sky130_fd_sc_hd__or4_1
+        1    10.01   sky130_fd_sc_hd__or4b_1
+
+   Chip area for module '\per_bank_arb': 410.393600
+     of which used for sequential elements: 50.048000 (12.20%)
+
+23. Executing Verilog backend.
+
+23.1. Executing BMUXMAP pass.
+
+23.2. Executing DEMUXMAP pass.
+Dumping module `\per_bank_arb'.
+
+Warnings: 11 unique messages, 23 total
+End of script. Logfile hash: 37f46b97ab, time: 0.21s, user: 0.14s, system: 0.01s, MEM: 48.73 MB peak
+Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+Time spent: 34% 1x abc (0 sec), 22% 19x read_verilog (0 sec), ...

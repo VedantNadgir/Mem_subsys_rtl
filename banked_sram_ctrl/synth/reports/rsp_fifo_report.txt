@@ -1,0 +1,98 @@
+======================================================================
+Synthesis Report — module: rsp_fifo
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 49
+Wire bits        : 1139
+Cell count       : 13
+Cell breakdown   :
+  $add                                     3
+  $eq                                      2
+  $logic_and                               4
+  $logic_not                               1
+  $lt                                      1
+  $ne                                      1
+  $sub                                     1
+
+--- Pre-Optimization Report ---
+Wire count       : 50
+Wire bits        : 1198
+Cell count       : 45
+Cell breakdown   :
+  $add                                     3
+  $adff                                    3
+  $dff                                     4
+  $eq                                      9
+  $logic_and                               4
+  $logic_not                               3
+  $lt                                      1
+  $mux                                     14
+  $pmux                                    2
+  $reduce_bool                             1
+  $sub                                     1
+
+--- Post-Optimization Report ---
+Wire count       : 39
+Wire bits        : 429
+Cell count       : 34
+Cell breakdown   :
+  $add                                     3
+  $adffe                                   3
+  $dffe                                    4
+  $eq                                      9
+  $logic_and                               2
+  $logic_not                               3
+  $lt                                      1
+  $pmux                                    2
+  $reduce_and                              4
+  $reduce_bool                             2
+  $sub                                     1
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 45
+Post-optimization cell count : 34
+Reduction %                  : 24.44%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 488
+Cell count                   : 488
+Sequential cell count         : 256
+Combinational cell count      : 232
+Wire count                   : 174
+Wire bits                    : 556
+Area (liberty units, from stat -liberty) : 9187.5616
+Cell breakdown                :
+  sky130_fd_sc_hd__a211o_1                 1
+  sky130_fd_sc_hd__a222oi_1                64
+  sky130_fd_sc_hd__a22o_1                  1
+  sky130_fd_sc_hd__and2_0                  2
+  sky130_fd_sc_hd__clkinv_1                2
+  sky130_fd_sc_hd__dfrtp_1                 7
+  sky130_fd_sc_hd__edfxtp_1                256
+  sky130_fd_sc_hd__lpflow_isobufsrc_1      3
+  sky130_fd_sc_hd__nand2_1                 133
+  sky130_fd_sc_hd__nand2b_1                1
+  sky130_fd_sc_hd__nor2_1                  4
+  sky130_fd_sc_hd__nor3_1                  3
+  sky130_fd_sc_hd__nor3b_1                 2
+  sky130_fd_sc_hd__nor4_1                  1
+  sky130_fd_sc_hd__o211a_1                 1
+  sky130_fd_sc_hd__o31a_1                  1
+  sky130_fd_sc_hd__xnor2_1                 5
+  sky130_fd_sc_hd__xor2_1                  1
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/rsp_fifo_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/rsp_fifo.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/rsp_fifo_report.txt
+
+======================================================================

@@ -24,7 +24,7 @@ include config.mk
 
 MODULE ?= $(DEFAULT_MODULE)
 
-.PHONY: help check dirs clean synth synth_all synth_unit report gls
+.PHONY: help check dirs clean synth synth_all synth_unit report 
 
 # --- Help --------------------------------------------------------
 help:
@@ -35,7 +35,7 @@ help:
 	@echo ""
 	@echo "Environment:"
 	@echo "  make check                    Validate tools, liberty, RTL paths"
-	@echo "  make dirs                     Create generated/reports/logs/netlists/gls"
+	@echo "  make dirs                     Create generated/reports/logs/netlists"
 	@echo "  make clean                    Remove all generated synthesis artifacts"
 	@echo ""
 	@echo "Synthesis:"
@@ -45,9 +45,6 @@ help:
 	@echo ""
 	@echo "Reporting:"
 	@echo "  make report MODULE=req_fifo   Parse log into reports/req_fifo_report.txt"
-	@echo ""
-	@echo "GLS (Stage 5 placeholder):"
-	@echo "  make gls MODULE=req_fifo      Run gate-level simulation"
 	@echo ""
 	@echo "Unit modules:"
 	@echo "  $(UNIT_MODULES)"
@@ -97,22 +94,20 @@ dirs:
 	@mkdir -p $(REPORT_DIR)
 	@mkdir -p $(LOG_DIR)
 	@mkdir -p $(NETLIST_DIR)
-	@mkdir -p $(GLS_DIR)
 	@echo "[PASS] output directories ready:"
 	@echo "        $(GEN_DIR)"
 	@echo "        $(REPORT_DIR)"
 	@echo "        $(LOG_DIR)"
 	@echo "        $(NETLIST_DIR)"
-	@echo "        $(GLS_DIR)"
 
 # --- Clean -----------------------------------------------------
 clean:
 	@echo "[CLEAN] Removing generated synthesis artifacts..."
-	@rm -rf $(GEN_DIR) $(REPORT_DIR) $(LOG_DIR) $(NETLIST_DIR) $(GLS_DIR)
+	@rm -rf $(GEN_DIR) $(REPORT_DIR) $(LOG_DIR) $(NETLIST_DIR)
 	@echo "[DONE]"
 
 # --- Module name validation helper ------------------------------
-# Not a target: used inline by synth/report/gls via $(call ...)
+# Not a target: used inline by synth/report via $(call ...)
 define require_module
 	@if [ -z "$(MODULE)" ]; then \
 		echo "[ERROR] MODULE not specified. Usage: make $(1) MODULE=req_fifo"; \
@@ -261,13 +256,3 @@ report: check
 	@echo ""
 	@echo "Result: REPORT OK"
 	@echo "  Report: $(REPORT_DIR)/$(MODULE)_report.txt"
-
-# --- GLS (Stage 5 placeholder) -----------------------------------
-gls: check
-	$(call require_module,gls)
-	@test -f $(NETLIST_DIR)/$(MODULE)_netlist.v || \
-		{ echo "[ERROR] Netlist not found: $(NETLIST_DIR)/$(MODULE)_netlist.v"; \
-		  echo "        Run 'make synth MODULE=$(MODULE)' first."; \
-		  exit 1; }
-	@echo "[INFO] Netlist found: $(NETLIST_DIR)/$(MODULE)_netlist.v"
-	@echo "[INFO] Gate-level simulation is implemented in Stage 5."

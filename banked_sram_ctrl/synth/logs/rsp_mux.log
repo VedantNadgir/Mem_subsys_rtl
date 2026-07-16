@@ -1,0 +1,761 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+
+-- Executing script file `/Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/generated/synth_rsp_mux.ys' --
+
+1. Executing Verilog-2005 frontend: ../rtl/pkg/sram_ctrl_pkg.sv
+Parsing SystemVerilog input from `../rtl/pkg/sram_ctrl_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: ../rtl/bank_scheduler.sv
+Parsing SystemVerilog input from `../rtl/bank_scheduler.sv' to AST representation.
+Generating RTLIL representation for module `\bank_scheduler'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: ../rtl/banked_sram_ctrl.sv
+Parsing SystemVerilog input from `../rtl/banked_sram_ctrl.sv' to AST representation.
+Generating RTLIL representation for module `\banked_sram_ctrl'.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[0].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[1].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[2].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[3].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: ../rtl/per_bank_arb.sv
+Parsing SystemVerilog input from `../rtl/per_bank_arb.sv' to AST representation.
+Generating RTLIL representation for module `\per_bank_arb'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: ../rtl/perf_counter.sv
+Parsing SystemVerilog input from `../rtl/perf_counter.sv' to AST representation.
+Generating RTLIL representation for module `\perf_counter'.
+Warning: Replacing memory \counter with list of registers. See ../rtl/perf_counter.sv:54
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: ../rtl/req_fifo.sv
+Parsing SystemVerilog input from `../rtl/req_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\req_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/req_fifo.sv:56
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: ../rtl/rsp_fifo.sv
+Parsing SystemVerilog input from `../rtl/rsp_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/rsp_fifo.sv:52
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: ../rtl/rsp_mux.sv
+Parsing SystemVerilog input from `../rtl/rsp_mux.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_mux'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: ../rtl/sram_array.sv
+Parsing SystemVerilog input from `../rtl/sram_array.sv' to AST representation.
+Generating RTLIL representation for module `\sram_array'.
+Successfully finished Verilog frontend.
+
+10. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1. Analyzing design hierarchy..
+Top module:  \rsp_mux
+
+10.2. Analyzing design hierarchy..
+Top module:  \rsp_mux
+Removing unused module `\sram_array'.
+Removing unused module `\rsp_fifo'.
+Removing unused module `\req_fifo'.
+Removing unused module `\perf_counter'.
+Removing unused module `\per_bank_arb'.
+Removing unused module `\banked_sram_ctrl'.
+Removing unused module `\bank_scheduler'.
+Removed 7 unused modules.
+==STAGE:HIERARCHY==
+
+11. Printing statistics.
+
+=== rsp_mux ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      349 wires
+     6498 wire bits
+       16 public wires
+      371 public wire bits
+       11 ports
+      324 port bits
+        3 processes
+      208 cells
+       16   $and
+       16   $eq
+       48   $logic_and
+       20   $logic_not
+        8   $mul
+        4   $mux
+       32   $neg
+       16   $not
+       16   $or
+       32   $shift
+
+12. Executing PROC pass (convert processes to netlists).
+
+12.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$../rtl/rsp_mux.sv:75$919 in module rsp_mux.
+Marked 4 switch rules as full_case in process $proc$../rtl/rsp_mux.sv:57$761 in module rsp_mux.
+Marked 16 switch rules as full_case in process $proc$../rtl/rsp_mux.sv:42$675 in module rsp_mux.
+Removed a total of 0 dead cases.
+
+12.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 37 assignments to connections.
+
+12.4. Executing PROC_INIT pass (extract init attributes).
+
+12.5. Executing PROC_ARST pass (detect async resets in processes).
+
+12.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~28 debug messages>
+
+12.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\rsp_mux.$proc$../rtl/rsp_mux.sv:75$919'.
+     1/8: $8\bank_pp1_ready[3:3]
+     2/8: $7\bank_pp1_ready[3:3]
+     3/8: $6\bank_pp1_ready[2:2]
+     4/8: $5\bank_pp1_ready[2:2]
+     5/8: $4\bank_pp1_ready[1:1]
+     6/8: $3\bank_pp1_ready[1:1]
+     7/8: $2\bank_pp1_ready[0:0]
+     8/8: $1\bank_pp1_ready[0:0]
+Creating decoders for process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+     1/32: $4\rsp_id[15:0]
+     2/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:69$674[31:0]$887
+     3/32: $4\rsp_err[3:0]
+     4/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:68$673[1:0]$886
+     5/32: $4\rsp_data[127:0]
+     6/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:67$672[31:0]$885
+     7/32: $4\rsp_valid[3:0]
+     8/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:66$671[1:0]$884
+     9/32: $3\rsp_id[15:0]
+    10/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:69$670[31:0]$852
+    11/32: $3\rsp_err[3:0]
+    12/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:68$669[1:0]$851
+    13/32: $3\rsp_data[127:0]
+    14/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:67$668[31:0]$850
+    15/32: $3\rsp_valid[3:0]
+    16/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:66$667[1:0]$849
+    17/32: $2\rsp_id[15:0]
+    18/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:69$666[31:0]$817
+    19/32: $2\rsp_err[3:0]
+    20/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:68$665[1:0]$816
+    21/32: $2\rsp_data[127:0]
+    22/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:67$664[31:0]$815
+    23/32: $2\rsp_valid[3:0]
+    24/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:66$663[1:0]$814
+    25/32: $1\rsp_id[15:0]
+    26/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:69$662[31:0]$782
+    27/32: $1\rsp_err[3:0]
+    28/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:68$661[1:0]$781
+    29/32: $1\rsp_data[127:0]
+    30/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:67$660[31:0]$780
+    31/32: $1\rsp_valid[3:0]
+    32/32: $1$bitselwrite$pos$../rtl/rsp_mux.sv:66$659[1:0]$779
+Creating decoders for process `\rsp_mux.$proc$../rtl/rsp_mux.sv:42$675'.
+     1/32: $16\found[0:0]
+     2/32: $16\bank_granted[3:3]
+     3/32: $15\found[0:0]
+     4/32: $15\bank_granted[2:2]
+     5/32: $14\found[0:0]
+     6/32: $14\bank_granted[1:1]
+     7/32: $13\found[0:0]
+     8/32: $13\bank_granted[0:0]
+     9/32: $12\found[0:0]
+    10/32: $12\bank_granted[3:3]
+    11/32: $11\found[0:0]
+    12/32: $11\bank_granted[2:2]
+    13/32: $10\found[0:0]
+    14/32: $10\bank_granted[1:1]
+    15/32: $9\found[0:0]
+    16/32: $9\bank_granted[0:0]
+    17/32: $8\found[0:0]
+    18/32: $8\bank_granted[3:3]
+    19/32: $7\found[0:0]
+    20/32: $7\bank_granted[2:2]
+    21/32: $6\found[0:0]
+    22/32: $6\bank_granted[1:1]
+    23/32: $5\found[0:0]
+    24/32: $5\bank_granted[0:0]
+    25/32: $4\found[0:0]
+    26/32: $4\bank_granted[3:3]
+    27/32: $3\found[0:0]
+    28/32: $3\bank_granted[2:2]
+    29/32: $2\found[0:0]
+    30/32: $2\bank_granted[1:1]
+    31/32: $1\found[0:0]
+    32/32: $1\bank_granted[0:0]
+
+12.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\rsp_mux.\bank_pp1_ready' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:75$919'.
+No latch inferred for signal `\rsp_mux.\rsp_valid' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+No latch inferred for signal `\rsp_mux.\rsp_data' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+No latch inferred for signal `\rsp_mux.\rsp_id' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+No latch inferred for signal `\rsp_mux.\rsp_err' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+No latch inferred for signal `\rsp_mux.\p' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+No latch inferred for signal `\rsp_mux.\found' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:42$675'.
+No latch inferred for signal `\rsp_mux.\bank_granted' from process `\rsp_mux.$proc$../rtl/rsp_mux.sv:42$675'.
+
+12.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+12.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 8 empty switches in `\rsp_mux.$proc$../rtl/rsp_mux.sv:75$919'.
+Removing empty process `rsp_mux.$proc$../rtl/rsp_mux.sv:75$919'.
+Found and cleaned up 4 empty switches in `\rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+Removing empty process `rsp_mux.$proc$../rtl/rsp_mux.sv:57$761'.
+Found and cleaned up 16 empty switches in `\rsp_mux.$proc$../rtl/rsp_mux.sv:42$675'.
+Removing empty process `rsp_mux.$proc$../rtl/rsp_mux.sv:42$675'.
+Cleaned up 28 empty switches.
+
+12.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module rsp_mux.
+<suppressed ~28 debug messages>
+
+13. Executing MEMORY pass.
+
+13.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+13.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+13.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+13.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+13.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+13.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+Removed 36 unused cells and 267 unused wires.
+<suppressed ~38 debug messages>
+
+13.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+13.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+13.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+
+13.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+13.11. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+14. Executing FSM pass (extract and optimize FSM).
+
+14.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+14.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+14.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+
+14.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+14.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+14.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+==STAGE:PRE_OPT==
+
+15. Printing statistics.
+
+=== rsp_mux ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      234 wires
+     4218 wire bits
+       14 public wires
+      338 public wire bits
+       11 ports
+      324 port bits
+      232 cells
+       12   $and
+       12   $eq
+       44   $logic_and
+       16   $logic_not
+        8   $mul
+       60   $mux
+       28   $neg
+       12   $not
+       12   $or
+       28   $shift
+
+16. Executing OPT pass (performing simple optimizations).
+
+16.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module rsp_mux.
+<suppressed ~16 debug messages>
+
+16.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\rsp_mux'.
+Computing hashes of 224 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+Computing hashes of 208 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+Computing hashes of 202 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+Computing hashes of 199 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+<suppressed ~75 debug messages>
+Removed a total of 25 cells.
+
+16.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \rsp_mux..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1002.
+    dead port 2/2 on $mux $procmux$993.
+    dead port 2/2 on $mux $procmux$984.
+    dead port 2/2 on $mux $procmux$975.
+Removed 4 multiplexer ports.
+<suppressed ~100 debug messages>
+
+16.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \rsp_mux.
+Performed a total of 0 changes.
+
+16.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\rsp_mux'.
+Computing hashes of 195 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+Computing hashes of 194 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+16.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+16.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+Removed 0 unused cells and 38 unused wires.
+<suppressed ~1 debug messages>
+
+16.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module rsp_mux.
+
+16.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+16.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \rsp_mux..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~95 debug messages>
+
+16.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \rsp_mux.
+Performed a total of 0 changes.
+
+16.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\rsp_mux'.
+Computing hashes of 194 cells of `\rsp_mux'.
+Finding duplicate cells in `\rsp_mux'.
+Removed a total of 0 cells.
+
+16.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+16.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+
+16.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module rsp_mux.
+
+16.16. Finished fast OPT passes. (There is nothing left to do.)
+==STAGE:POST_OPT==
+
+17. Printing statistics.
+
+=== rsp_mux ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      196 wires
+     3693 wire bits
+       14 public wires
+      338 public wire bits
+       11 ports
+      324 port bits
+      194 cells
+       12   $and
+       12   $eq
+       44   $logic_and
+       16   $logic_not
+       55   $mux
+       12   $neg
+        9   $not
+       12   $or
+       22   $shift
+
+18. Executing TECHMAP pass (map to technology primitives).
+
+18.1. Executing Verilog-2005 frontend: /opt/homebrew/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/homebrew/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+18.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $logic_and.
+Using extmapper simplemap for cells of type $eq.
+Using template $paramod$constmap:d6fff7a1d5912e7277ff55b9a478b5115760128b$paramod$64b19f47ed5f126636dbd98d727ec46a7ec08d71\_90_shift_shiftx for cells of type $shift.
+Using extmapper simplemap for cells of type $mux.
+Running "alumacc" on wrapper $extern:wrap:$neg:Y_WIDTH=33:A_WIDTH=33:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$neg:Y_WIDTH=33:A_WIDTH=33:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$neg:Y_WIDTH=33:A_WIDTH=33:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $paramod$constmap:955d0138e4005201be30abf73272514f990d931f$paramod$ffd7c51a8e58f947c8584f942dd6e7533e5b9916\_90_shift_shiftx for cells of type $shift.
+Running "alumacc" on wrapper $extern:wrap:$neg:Y_WIDTH=3:A_WIDTH=3:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$neg:Y_WIDTH=3:A_WIDTH=3:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$neg:Y_WIDTH=3:A_WIDTH=3:A_SIGNED=1:394426c56d1a028ba8fdd5469b163e04011def47.
+Analyzing pattern of constant bits for this cell:
+Creating constmapped module `$paramod$constmap:29871e87ed06c2792a60d1175eea23369761d7f7$paramod$64b19f47ed5f126636dbd98d727ec46a7ec08d71\_90_shift_shiftx'.
+
+18.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$constmap:29871e87ed06c2792a60d1175eea23369761d7f7$paramod$64b19f47ed5f126636dbd98d727ec46a7ec08d71\_90_shift_shiftx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1461.
+    dead port 2/2 on $mux $procmux$1467.
+Removed 2 multiplexer ports.
+<suppressed ~706 debug messages>
+
+18.18. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$constmap:29871e87ed06c2792a60d1175eea23369761d7f7$paramod$64b19f47ed5f126636dbd98d727ec46a7ec08d71\_90_shift_shiftx.
+<suppressed ~2 debug messages>
+Removed 0 unused cells and 8 unused wires.
+Using template $paramod$constmap:29871e87ed06c2792a60d1175eea23369761d7f7$paramod$64b19f47ed5f126636dbd98d727ec46a7ec08d71\_90_shift_shiftx for cells of type $shift.
+Using template $paramod$constmap:553ccd96dad781cd3f719266cf6dde93a01bf0a6$paramod$e75ce91bde0aa284395087210f5ce35db4cf4f2c\_90_shift_shiftx for cells of type $shift.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $or.
+Analyzing pattern of constant bits for this cell:
+  Constant input on bit 0 of port A: 1'1
+  Constant input on bit 1 of port A: 1'1
+  Constant input on bit 2 of port A: 1'1
+  Constant input on bit 3 of port A: 1'1
+  Constant input on bit 4 of port A: 1'1
+  Constant input on bit 5 of port A: 1'1
+  Constant input on bit 6 of port A: 1'1
+  Constant input on bit 7 of port A: 1'1
+  Constant input on bit 8 of port A: 1'1
+  Constant input on bit 9 of port A: 1'1
+  Constant input on bit 10 of port A: 1'1
+  Constant input on bit 11 of port A: 1'1
+  Constant input on bit 12 of port A: 1'1
+  Constant input on bit 13 of port A: 1'1
+  Constant input on bit 14 of port A: 1'1
+  Constant input on bit 15 of port A: 1'1
+  Constant input on bit 16 of port A: 1'1
+  Constant input on bit 17 of port A: 1'1
+  Constant input on bit 18 of port A: 1'1
+  Constant input on bit 19 of port A: 1'1
+  Constant input on bit 20 of port A: 1'1
+  Constant input on bit 21 of port A: 1'1
+  Constant input on bit 22 of port A: 1'1
+  Constant input on bit 23 of port A: 1'1
+  Constant input on bit 24 of port A: 1'1
+  Constant input on bit 25 of port A: 1'1
+  Constant input on bit 26 of port A: 1'1
+  Constant input on bit 27 of port A: 1'1
+  Constant input on bit 28 of port A: 1'1
+  Constant input on bit 29 of port A: 1'1
+  Constant input on bit 30 of port A: 1'1
+  Constant input on bit 31 of port A: 1'1
+Creating constmapped module `$paramod$constmap:a4bb7eea1e03d7baa2124d4e67462fabaf306ddd$paramod$ffd7c51a8e58f947c8584f942dd6e7533e5b9916\_90_shift_shiftx'.
+
+18.24. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$constmap:a4bb7eea1e03d7baa2124d4e67462fabaf306ddd$paramod$ffd7c51a8e58f947c8584f942dd6e7533e5b9916\_90_shift_shiftx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1539.
+    dead port 2/2 on $mux $procmux$1545.
+    dead port 2/2 on $mux $procmux$1551.
+    dead port 2/2 on $mux $procmux$1557.
+    dead port 2/2 on $mux $procmux$1563.
+    dead port 2/2 on $mux $procmux$1569.
+    dead port 2/2 on $mux $procmux$1575.
+    dead port 2/2 on $mux $procmux$1581.
+Removed 8 multiplexer ports.
+<suppressed ~463 debug messages>
+
+18.25. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$constmap:a4bb7eea1e03d7baa2124d4e67462fabaf306ddd$paramod$ffd7c51a8e58f947c8584f942dd6e7533e5b9916\_90_shift_shiftx.
+<suppressed ~26 debug messages>
+Removed 0 unused cells and 13 unused wires.
+Using template $paramod$constmap:a4bb7eea1e03d7baa2124d4e67462fabaf306ddd$paramod$ffd7c51a8e58f947c8584f942dd6e7533e5b9916\_90_shift_shiftx for cells of type $shift.
+Using extmapper simplemap for cells of type $not.
+Analyzing pattern of constant bits for this cell:
+  Constant input on bit 0 of port A: 1'1
+  Constant input on bit 1 of port A: 1'1
+  Constant input on bit 2 of port A: 1'1
+  Constant input on bit 3 of port A: 1'1
+Creating constmapped module `$paramod$constmap:d694b9cce1d00447b6298a8e5694176ef2b61185$paramod$e75ce91bde0aa284395087210f5ce35db4cf4f2c\_90_shift_shiftx'.
+
+18.26. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$constmap:d694b9cce1d00447b6298a8e5694176ef2b61185$paramod$e75ce91bde0aa284395087210f5ce35db4cf4f2c\_90_shift_shiftx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1701.
+    dead port 2/2 on $mux $procmux$1707.
+    dead port 2/2 on $mux $procmux$1713.
+    dead port 2/2 on $mux $procmux$1719.
+    dead port 2/2 on $mux $procmux$1725.
+Removed 5 multiplexer ports.
+<suppressed ~111 debug messages>
+
+18.27. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$constmap:d694b9cce1d00447b6298a8e5694176ef2b61185$paramod$e75ce91bde0aa284395087210f5ce35db4cf4f2c\_90_shift_shiftx.
+<suppressed ~29 debug messages>
+Removed 0 unused cells and 10 unused wires.
+Using template $paramod$constmap:d694b9cce1d00447b6298a8e5694176ef2b61185$paramod$e75ce91bde0aa284395087210f5ce35db4cf4f2c\_90_shift_shiftx for cells of type $shift.
+Using template $paramod$7af24cf7f572852703f08ef7a936c59efa2c57af\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $ne.
+Using template $paramod$e3e2a2ae1e4d598b5e0e0be67cc1104653ecf8c1\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100001 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000100001 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~2584 debug messages>
+
+19. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+  cell sky130_fd_sc_hd__dfxtp_1 (noninv, pins=3, area=20.02) is a direct match for cell type $_DFF_P_.
+  cell sky130_fd_sc_hd__dfrtn_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_NN0_.
+  cell sky130_fd_sc_hd__dfrtp_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_PN0_.
+  cell sky130_fd_sc_hd__dfstp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN1_.
+  cell sky130_fd_sc_hd__edfxtp_1 (noninv, pins=4, area=30.03) is a direct match for cell type $_DFFE_PP_.
+  cell sky130_fd_sc_hd__dfbbn_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_NNN_.
+  cell sky130_fd_sc_hd__dfbbp_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_PNN_.
+  final dff cell mappings:
+    unmapped dff cell: $_DFF_N_
+    \sky130_fd_sc_hd__dfxtp_1 _DFF_P_ (.CLK( C), .D( D), .Q( Q));
+    \sky130_fd_sc_hd__dfrtn_1 _DFF_NN0_ (.CLK_N( C), .D( D), .Q( Q), .RESET_B( R));
+    unmapped dff cell: $_DFF_NN1_
+    unmapped dff cell: $_DFF_NP0_
+    unmapped dff cell: $_DFF_NP1_
+    \sky130_fd_sc_hd__dfrtp_1 _DFF_PN0_ (.CLK( C), .D( D), .Q( Q), .RESET_B( R));
+    \sky130_fd_sc_hd__dfstp_2 _DFF_PN1_ (.CLK( C), .D( D), .Q( Q), .SET_B( R));
+    unmapped dff cell: $_DFF_PP0_
+    unmapped dff cell: $_DFF_PP1_
+    unmapped dff cell: $_DFFE_NN_
+    unmapped dff cell: $_DFFE_NP_
+    unmapped dff cell: $_DFFE_PN_
+    \sky130_fd_sc_hd__edfxtp_1 _DFFE_PP_ (.CLK( C), .D( D), .DE( E), .Q( Q));
+    \sky130_fd_sc_hd__dfbbn_1 _DFFSR_NNN_ (.CLK_N( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_NNP_
+    unmapped dff cell: $_DFFSR_NPN_
+    unmapped dff cell: $_DFFSR_NPP_
+    \sky130_fd_sc_hd__dfbbp_1 _DFFSR_PNN_ (.CLK( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_PNP_
+    unmapped dff cell: $_DFFSR_PPN_
+    unmapped dff cell: $_DFFSR_PPP_
+
+19.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+<suppressed ~24 debug messages>
+Mapping DFF cells in module `\rsp_mux':
+
+20. Executing ABC pass (technology mapping using ABC).
+
+20.1. Extracting gate netlist of module `\rsp_mux' to `<abc-temp-dir>/input.blif'..
+ABC: using cached merged SCL: /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl (1 files)
+
+20.1.1. Executed ABC.
+Extracted 35759 gates and 35929 wires to a netlist network with 168 inputs and 156 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_scl /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl 
+ABC: Warning: Detected 9 multi-output cells (for example, "sky130_fd_sc_hd__fa_1").
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+20.1.2. Re-integrating ABC results.
+ABC RESULTS:   sky130_fd_sc_hd__a211oi_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a21oi_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a221o_1 cells:       22
+ABC RESULTS:   sky130_fd_sc_hd__a221oi_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__a222oi_1 cells:        5
+ABC RESULTS:   sky130_fd_sc_hd__a22oi_1 cells:       28
+ABC RESULTS:   sky130_fd_sc_hd__a311o_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a32o_1 cells:       22
+ABC RESULTS:   sky130_fd_sc_hd__a32oi_1 cells:       89
+ABC RESULTS:   sky130_fd_sc_hd__and3_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__and3b_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__and4_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__and4b_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__clkinv_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__lpflow_inputiso1p_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__lpflow_isobufsrc_1 cells:      100
+ABC RESULTS:   sky130_fd_sc_hd__nand2_1 cells:      135
+ABC RESULTS:   sky130_fd_sc_hd__nand2b_1 cells:       29
+ABC RESULTS:   sky130_fd_sc_hd__nand3_1 cells:       36
+ABC RESULTS:   sky130_fd_sc_hd__nand3b_1 cells:       29
+ABC RESULTS:   sky130_fd_sc_hd__nand4b_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__nand4bb_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nor2_1 cells:       15
+ABC RESULTS:   sky130_fd_sc_hd__nor3_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__nor3b_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__nor4_1 cells:        5
+ABC RESULTS:   sky130_fd_sc_hd__nor4b_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nor4bb_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__o2111ai_1 cells:        5
+ABC RESULTS:   sky130_fd_sc_hd__o211a_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__o211ai_1 cells:       87
+ABC RESULTS:   sky130_fd_sc_hd__o32ai_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__or3b_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or4_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__xor2_1 cells:        1
+ABC RESULTS:        internal signals:    35605
+ABC RESULTS:           input signals:      168
+ABC RESULTS:          output signals:      156
+Removing temp directory.
+Removing global temp directory.
+
+21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \rsp_mux..
+Removed 0 unused cells and 3289 unused wires.
+<suppressed ~4 debug messages>
+==STAGE:POST_TECHMAP==
+
+22. Printing statistics.
+
+=== rsp_mux ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+      505        - wires
+      818        - wire bits
+       11        - public wires
+      324        - public wire bits
+       11        - ports
+      324        - port bits
+      650 4.32E+03 cells
+        1    7.507   sky130_fd_sc_hd__a211oi_1
+        1    5.005   sky130_fd_sc_hd__a21oi_1
+       22  220.211   sky130_fd_sc_hd__a221o_1
+        4   35.034   sky130_fd_sc_hd__a221oi_1
+        5   50.048   sky130_fd_sc_hd__a222oi_1
+       28  210.202   sky130_fd_sc_hd__a22oi_1
+        1    10.01   sky130_fd_sc_hd__a311o_1
+       22  220.211   sky130_fd_sc_hd__a32o_1
+       89  779.498   sky130_fd_sc_hd__a32oi_1
+        3   18.768   sky130_fd_sc_hd__and3_1
+        2   17.517   sky130_fd_sc_hd__and3b_1
+        4   35.034   sky130_fd_sc_hd__and4_1
+        2   20.019   sky130_fd_sc_hd__and4b_1
+        4   15.014   sky130_fd_sc_hd__clkinv_1
+        1    6.256   sky130_fd_sc_hd__lpflow_inputiso1p_1
+      100    625.6   sky130_fd_sc_hd__lpflow_isobufsrc_1
+      135  506.736   sky130_fd_sc_hd__nand2_1
+       29  181.424   sky130_fd_sc_hd__nand2b_1
+       36  180.173   sky130_fd_sc_hd__nand3_1
+       29  217.709   sky130_fd_sc_hd__nand3b_1
+        3   26.275   sky130_fd_sc_hd__nand4b_1
+        1   11.261   sky130_fd_sc_hd__nand4bb_1
+       15   56.304   sky130_fd_sc_hd__nor2_1
+        2    10.01   sky130_fd_sc_hd__nor3_1
+        2   15.014   sky130_fd_sc_hd__nor3b_1
+        5    31.28   sky130_fd_sc_hd__nor4_1
+        1    8.758   sky130_fd_sc_hd__nor4b_1
+        2   20.019   sky130_fd_sc_hd__nor4bb_1
+        5   43.792   sky130_fd_sc_hd__o2111ai_1
+        2   20.019   sky130_fd_sc_hd__o211a_1
+       87  653.126   sky130_fd_sc_hd__o211ai_1
+        4   35.034   sky130_fd_sc_hd__o32ai_1
+        1    8.758   sky130_fd_sc_hd__or3b_1
+        1    7.507   sky130_fd_sc_hd__or4_1
+        1    8.758   sky130_fd_sc_hd__xor2_1
+
+   Chip area for module '\rsp_mux': 4317.891200
+     of which used for sequential elements: 0.000000 (0.00%)
+
+23. Executing Verilog backend.
+
+23.1. Executing BMUXMAP pass.
+
+23.2. Executing DEMUXMAP pass.
+Dumping module `\rsp_mux'.
+
+Warnings: 11 unique messages, 23 total
+End of script. Logfile hash: 67e41620b7, time: 0.52s, user: 0.38s, system: 0.03s, MEM: 112.56 MB peak
+Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+Time spent: 46% 1x abc (0 sec), 17% 1x techmap (0 sec), ...

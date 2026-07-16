@@ -1,0 +1,114 @@
+======================================================================
+Synthesis Report — module: perf_counter
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 510
+Wire bits        : 11872
+Cell count       : 66
+Cell breakdown   :
+  $add                                     32
+  $eq                                      32
+  $logic_not                               2
+
+--- Pre-Optimization Report ---
+Wire count       : 238
+Wire bits        : 5353
+Cell count       : 229
+Cell breakdown   :
+  $add                                     32
+  $adff                                    34
+  $eq                                      63
+  $logic_not                               1
+  $mux                                     98
+  $pmux                                    1
+
+--- Post-Optimization Report ---
+Wire count       : 204
+Wire bits        : 2281
+Cell count       : 195
+Cell breakdown   :
+  $add                                     32
+  $adff                                    1
+  $adffe                                   33
+  $eq                                      63
+  $logic_not                               1
+  $not                                     32
+  $pmux                                    1
+  $reduce_and                              32
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 229
+Post-optimization cell count : 195
+Reduction %                  : 14.85%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 4439
+Cell count                   : 4439
+Sequential cell count         : 0
+Combinational cell count      : 4439
+Wire count                   : 3425
+Wire bits                    : 4479
+Area (liberty units, from stat -liberty) : 48282.5568
+Cell breakdown                :
+  sky130_fd_sc_hd__a21boi_0                5
+  sky130_fd_sc_hd__a21o_1                  2
+  sky130_fd_sc_hd__a21oi_1                 175
+  sky130_fd_sc_hd__a221o_1                 3
+  sky130_fd_sc_hd__a221oi_1                37
+  sky130_fd_sc_hd__a222oi_1                249
+  sky130_fd_sc_hd__a22o_1                  8
+  sky130_fd_sc_hd__a22oi_1                 69
+  sky130_fd_sc_hd__a311oi_1                3
+  sky130_fd_sc_hd__a31o_1                  13
+  sky130_fd_sc_hd__a31oi_1                 72
+  sky130_fd_sc_hd__a41o_1                  11
+  sky130_fd_sc_hd__a41oi_1                 28
+  sky130_fd_sc_hd__and2_0                  98
+  sky130_fd_sc_hd__and3_1                  83
+  sky130_fd_sc_hd__and4_1                  40
+  sky130_fd_sc_hd__clkinv_1                141
+  sky130_fd_sc_hd__dfrtp_1                 1057
+  sky130_fd_sc_hd__lpflow_inputiso1p_1     15
+  sky130_fd_sc_hd__lpflow_isobufsrc_1      99
+  sky130_fd_sc_hd__nand2_1                 320
+  sky130_fd_sc_hd__nand2b_1                4
+  sky130_fd_sc_hd__nand3_1                 192
+  sky130_fd_sc_hd__nand4_1                 368
+  sky130_fd_sc_hd__nand4bb_1               2
+  sky130_fd_sc_hd__nor2_1                  387
+  sky130_fd_sc_hd__nor2b_1                 12
+  sky130_fd_sc_hd__nor3_1                  61
+  sky130_fd_sc_hd__nor3b_1                 8
+  sky130_fd_sc_hd__nor4_1                  87
+  sky130_fd_sc_hd__nor4b_1                 3
+  sky130_fd_sc_hd__nor4bb_1                1
+  sky130_fd_sc_hd__o211ai_1                1
+  sky130_fd_sc_hd__o21a_1                  3
+  sky130_fd_sc_hd__o21ai_0                 2
+  sky130_fd_sc_hd__o21ba_1                 4
+  sky130_fd_sc_hd__o21bai_1                2
+  sky130_fd_sc_hd__o22a_1                  1
+  sky130_fd_sc_hd__o311a_1                 4
+  sky130_fd_sc_hd__o311ai_0                3
+  sky130_fd_sc_hd__o31ai_1                 9
+  sky130_fd_sc_hd__or3_1                   11
+  sky130_fd_sc_hd__or3b_1                  1
+  sky130_fd_sc_hd__or4_1                   22
+  sky130_fd_sc_hd__xnor2_1                 441
+  sky130_fd_sc_hd__xor2_1                  282
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/perf_counter_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/perf_counter.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/perf_counter_report.txt
+
+======================================================================

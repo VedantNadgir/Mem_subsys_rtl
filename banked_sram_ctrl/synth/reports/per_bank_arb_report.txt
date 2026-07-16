@@ -1,0 +1,109 @@
+======================================================================
+Synthesis Report — module: per_bank_arb
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 57
+Wire bits        : 517
+Cell count       : 31
+Cell breakdown   :
+  $add                                     5
+  $and                                     2
+  $eqx                                     4
+  $gt                                      1
+  $logic_and                               3
+  $logic_not                               1
+  $mod                                     1
+  $not                                     2
+  $reduce_or                               1
+  $shl                                     5
+  $shr                                     5
+  $sub                                     1
+
+--- Pre-Optimization Report ---
+Wire count       : 34
+Wire bits        : 382
+Cell count       : 28
+Cell breakdown   :
+  $add                                     5
+  $adff                                    1
+  $and                                     2
+  $eqx                                     4
+  $gt                                      1
+  $logic_and                               3
+  $mod                                     1
+  $mux                                     5
+  $not                                     2
+  $reduce_or                               1
+  $shl                                     1
+  $shr                                     1
+  $sub                                     1
+
+--- Post-Optimization Report ---
+Wire count       : 31
+Wire bits        : 316
+Cell count       : 25
+Cell breakdown   :
+  $add                                     4
+  $adffe                                   1
+  $and                                     2
+  $eqx                                     4
+  $gt                                      1
+  $logic_and                               3
+  $mux                                     4
+  $not                                     2
+  $reduce_or                               1
+  $shl                                     1
+  $shr                                     1
+  $sub                                     1
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 28
+Post-optimization cell count : 25
+Reduction %                  : 10.71%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 42
+Cell count                   : 42
+Sequential cell count         : 0
+Combinational cell count      : 42
+Wire count                   : 41
+Wire bits                    : 49
+Area (liberty units, from stat -liberty) : 410.3936
+Cell breakdown                :
+  sky130_fd_sc_hd__a211oi_1                3
+  sky130_fd_sc_hd__a311oi_1                1
+  sky130_fd_sc_hd__a31oi_1                 1
+  sky130_fd_sc_hd__a41o_1                  1
+  sky130_fd_sc_hd__a41oi_1                 1
+  sky130_fd_sc_hd__and2_0                  3
+  sky130_fd_sc_hd__and4_1                  1
+  sky130_fd_sc_hd__clkinv_1                6
+  sky130_fd_sc_hd__dfrtp_1                 2
+  sky130_fd_sc_hd__lpflow_inputiso1p_1     1
+  sky130_fd_sc_hd__mux2i_1                 1
+  sky130_fd_sc_hd__mux4_2                  7
+  sky130_fd_sc_hd__nand2_1                 4
+  sky130_fd_sc_hd__nand2b_1                1
+  sky130_fd_sc_hd__nand4_1                 1
+  sky130_fd_sc_hd__nor2_1                  1
+  sky130_fd_sc_hd__o21ai_0                 3
+  sky130_fd_sc_hd__o31ai_1                 1
+  sky130_fd_sc_hd__or3b_1                  1
+  sky130_fd_sc_hd__or4_1                   1
+  sky130_fd_sc_hd__or4b_1                  1
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/per_bank_arb_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/per_bank_arb.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/per_bank_arb_report.txt
+
+======================================================================

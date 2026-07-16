@@ -1,0 +1,164 @@
+Regression Report
+Generated: Thu Jul 16 23:52:49 IST 2026
+========================================
+
+--- Combo: edge_case | NUM_BANKS=2 BANK_DEPTH=16 DATA_WIDTH=8 ADDR_WIDTH=5 NUM_REQ_PORTS=2 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_minimal | NUM_BANKS=2 BANK_DEPTH=16 DATA_WIDTH=8 ADDR_WIDTH=5 NUM_REQ_PORTS=2 QUEUE_DEPTH=2 ID_WIDTH=1 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_small_8 | NUM_BANKS=2 BANK_DEPTH=64 DATA_WIDTH=8 ADDR_WIDTH=7 NUM_REQ_PORTS=2 QUEUE_DEPTH=2 ID_WIDTH=2 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_small_16 | NUM_BANKS=2 BANK_DEPTH=64 DATA_WIDTH=16 ADDR_WIDTH=7 NUM_REQ_PORTS=2 QUEUE_DEPTH=2 ID_WIDTH=2 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_small_32 | NUM_BANKS=2 BANK_DEPTH=64 DATA_WIDTH=32 ADDR_WIDTH=7 NUM_REQ_PORTS=2 QUEUE_DEPTH=2 ID_WIDTH=2 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_dflt | NUM_BANKS=4 BANK_DEPTH=256 DATA_WIDTH=32 ADDR_WIDTH=10 NUM_REQ_PORTS=4 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_deep | NUM_BANKS=4 BANK_DEPTH=1024 DATA_WIDTH=32 ADDR_WIDTH=12 NUM_REQ_PORTS=4 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_narrow | NUM_BANKS=4 BANK_DEPTH=256 DATA_WIDTH=8 ADDR_WIDTH=10 NUM_REQ_PORTS=4 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_wide | NUM_BANKS=4 BANK_DEPTH=256 DATA_WIDTH=128 ADDR_WIDTH=10 NUM_REQ_PORTS=4 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_large_64 | NUM_BANKS=8 BANK_DEPTH=512 DATA_WIDTH=64 ADDR_WIDTH=12 NUM_REQ_PORTS=8 QUEUE_DEPTH=4 ID_WIDTH=6 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_large_128 | NUM_BANKS=8 BANK_DEPTH=512 DATA_WIDTH=128 ADDR_WIDTH=12 NUM_REQ_PORTS=8 QUEUE_DEPTH=8 ID_WIDTH=6 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_max_ports | NUM_BANKS=8 BANK_DEPTH=256 DATA_WIDTH=32 ADDR_WIDTH=11 NUM_REQ_PORTS=8 QUEUE_DEPTH=8 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+--- Combo: cfg_min_ports | NUM_BANKS=4 BANK_DEPTH=256 DATA_WIDTH=32 ADDR_WIDTH=10 NUM_REQ_PORTS=2 QUEUE_DEPTH=4 ID_WIDTH=4 ---
+  [PASS] unit/bank_scheduler
+  [PASS] unit/banked_sram_ctrl
+  [PASS] unit/per_bank_arb
+  [PASS] unit/perf_counter
+  [PASS] unit/req_fifo
+  [PASS] unit/rsp_fifo
+  [PASS] unit/rsp_mux
+  [PASS] unit/sram_array
+  [PASS] system/tb_sys
+  Result: 9/9
+
+
+========================================
+FINAL: 117 passed, 0 failed
+========================================

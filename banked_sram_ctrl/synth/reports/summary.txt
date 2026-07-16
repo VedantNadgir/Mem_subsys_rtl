@@ -1,0 +1,10 @@
+Module           | Cells | Area        | Delay                              | Frequency                          | Logic Depth                        | Optimization %
+-----------------+-------+-------------+------------------------------------+------------------------------------+------------------------------------+---------------
+bank_scheduler   | 103   | 2822.7072   | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 63.79%        
+banked_sram_ctrl | 614   | 4287.8624   | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 16.38%        
+per_bank_arb     | 42    | 410.3936    | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 10.71%        
+perf_counter     | 4439  | 48282.5568  | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 14.85%        
+req_fifo         | 490   | 9222.5952   | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 27.66%        
+rsp_fifo         | 488   | 9187.5616   | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 24.44%        
+rsp_mux          | 650   | 4317.8912   | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 16.38%        
+sram_array       | 21265 | 333277.1392 | Unavailable before place-and-route | Unavailable before place-and-route | Unavailable before place-and-route | 1.56%         

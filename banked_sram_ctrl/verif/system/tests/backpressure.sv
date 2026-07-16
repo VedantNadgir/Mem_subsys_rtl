@@ -24,6 +24,11 @@ task automatic run_backpressure();
   do_read(1, a, ID_WIDTH'(1));
   $display("[BP OK]  Port 1 unaffected");
   u_mon.release_ready(0);
+  //Backpressure used u_drv.send() so scoreboard does not know what values are sent to these addrs
+  //Mark them uninitialized so later test dont get affected.
+  for (int pi = 0; pi < 10; pi++) begin
+    u_sb.gold_init[make_addr(0, 30+pi)] = 0;
+  end
   repeat (QUEUE_DEPTH * 6) @(posedge clk);
   #1;
   $display("=== BACKPRESSURE: done ===");

@@ -1,0 +1,1168 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+
+-- Executing script file `/Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/generated/synth_perf_counter.ys' --
+
+1. Executing Verilog-2005 frontend: ../rtl/pkg/sram_ctrl_pkg.sv
+Parsing SystemVerilog input from `../rtl/pkg/sram_ctrl_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: ../rtl/bank_scheduler.sv
+Parsing SystemVerilog input from `../rtl/bank_scheduler.sv' to AST representation.
+Generating RTLIL representation for module `\bank_scheduler'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: ../rtl/banked_sram_ctrl.sv
+Parsing SystemVerilog input from `../rtl/banked_sram_ctrl.sv' to AST representation.
+Generating RTLIL representation for module `\banked_sram_ctrl'.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[0].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[1].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[2].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Identifier `\req_fifo_head_pkt[3].addr' is implicitly declared.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[0].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[1].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[2].addr': Setting all 2 result bits to undef.
+../rtl/banked_sram_ctrl.sv:159: Warning: Range select [1:0] out of bounds on signal `\req_fifo_head_pkt[3].addr': Setting all 2 result bits to undef.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: ../rtl/per_bank_arb.sv
+Parsing SystemVerilog input from `../rtl/per_bank_arb.sv' to AST representation.
+Generating RTLIL representation for module `\per_bank_arb'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: ../rtl/perf_counter.sv
+Parsing SystemVerilog input from `../rtl/perf_counter.sv' to AST representation.
+Generating RTLIL representation for module `\perf_counter'.
+Warning: Replacing memory \counter with list of registers. See ../rtl/perf_counter.sv:54
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: ../rtl/req_fifo.sv
+Parsing SystemVerilog input from `../rtl/req_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\req_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/req_fifo.sv:56
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: ../rtl/rsp_fifo.sv
+Parsing SystemVerilog input from `../rtl/rsp_fifo.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_fifo'.
+Warning: Replacing memory \fifo_mem with list of registers. See ../rtl/rsp_fifo.sv:52
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: ../rtl/rsp_mux.sv
+Parsing SystemVerilog input from `../rtl/rsp_mux.sv' to AST representation.
+Generating RTLIL representation for module `\rsp_mux'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: ../rtl/sram_array.sv
+Parsing SystemVerilog input from `../rtl/sram_array.sv' to AST representation.
+Generating RTLIL representation for module `\sram_array'.
+Successfully finished Verilog frontend.
+
+10. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1. Analyzing design hierarchy..
+Top module:  \perf_counter
+
+10.2. Analyzing design hierarchy..
+Top module:  \perf_counter
+Removing unused module `\sram_array'.
+Removing unused module `\rsp_mux'.
+Removing unused module `\rsp_fifo'.
+Removing unused module `\req_fifo'.
+Removing unused module `\per_bank_arb'.
+Removing unused module `\banked_sram_ctrl'.
+Removing unused module `\bank_scheduler'.
+Removed 7 unused modules.
+==STAGE:HIERARCHY==
+
+11. Printing statistics.
+
+=== perf_counter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      510 wires
+    11872 wire bits
+      141 public wires
+     3241 public wire bits
+       11 ports
+       73 port bits
+        2 processes
+       66 cells
+       32   $add
+       32   $eq
+        2   $logic_not
+
+12. Executing PROC pass (convert processes to netlists).
+
+12.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed 1 dead cases from process $proc$../rtl/perf_counter.sv:86$589 in module perf_counter.
+Marked 3 switch rules as full_case in process $proc$../rtl/perf_counter.sv:86$589 in module perf_counter.
+Marked 65 switch rules as full_case in process $proc$../rtl/perf_counter.sv:52$267 in module perf_counter.
+Removed a total of 1 dead cases.
+
+12.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 33 redundant assignments.
+Promoted 100 assignments to connections.
+
+12.4. Executing PROC_INIT pass (extract init attributes).
+
+12.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+Found async reset \rst_n in `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+
+12.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~66 debug messages>
+
+12.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+     1/7: $3$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_DATA[31:0]$597
+     2/7: $2$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_DATA[31:0]$596
+     3/7: $2$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_ADDR[4:0]$595
+     4/7: $1$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_DATA[31:0]$594
+     5/7: $1$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_ADDR[4:0]$593
+     6/7: $0\csr_ack[0:0]
+     7/7: $0\csr_rdata[31:0]
+Creating decoders for process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+     1/194: $3\sat_inc$func$../rtl/perf_counter.sv:80$265.$result[31:0]$587
+     2/194: $2\sat_inc$func$../rtl/perf_counter.sv:80$265.$result[31:0]$585
+     3/194: $3\sat_inc$func$../rtl/perf_counter.sv:80$264.$result[31:0]$583
+     4/194: $2\sat_inc$func$../rtl/perf_counter.sv:80$264.$result[31:0]$581
+     5/194: $3\sat_inc$func$../rtl/perf_counter.sv:80$263.$result[31:0]$579
+     6/194: $2\sat_inc$func$../rtl/perf_counter.sv:80$263.$result[31:0]$577
+     7/194: $3\sat_inc$func$../rtl/perf_counter.sv:80$262.$result[31:0]$575
+     8/194: $2\sat_inc$func$../rtl/perf_counter.sv:80$262.$result[31:0]$573
+     9/194: $3\sat_inc$func$../rtl/perf_counter.sv:75$261.$result[31:0]$571
+    10/194: $2\sat_inc$func$../rtl/perf_counter.sv:75$261.$result[31:0]$569
+    11/194: $3\sat_inc$func$../rtl/perf_counter.sv:75$260.$result[31:0]$567
+    12/194: $2\sat_inc$func$../rtl/perf_counter.sv:75$260.$result[31:0]$565
+    13/194: $3\sat_inc$func$../rtl/perf_counter.sv:75$259.$result[31:0]$563
+    14/194: $2\sat_inc$func$../rtl/perf_counter.sv:75$259.$result[31:0]$561
+    15/194: $3\sat_inc$func$../rtl/perf_counter.sv:75$258.$result[31:0]$559
+    16/194: $2\sat_inc$func$../rtl/perf_counter.sv:75$258.$result[31:0]$557
+    17/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$257.$result[31:0]$555
+    18/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$257.$result[31:0]$553
+    19/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$256.$result[31:0]$551
+    20/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$256.$result[31:0]$549
+    21/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$255.$result[31:0]$547
+    22/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$255.$result[31:0]$545
+    23/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$254.$result[31:0]$543
+    24/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$254.$result[31:0]$541
+    25/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$253.$result[31:0]$539
+    26/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$253.$result[31:0]$537
+    27/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$252.$result[31:0]$535
+    28/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$252.$result[31:0]$533
+    29/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$251.$result[31:0]$531
+    30/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$251.$result[31:0]$529
+    31/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$250.$result[31:0]$527
+    32/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$250.$result[31:0]$525
+    33/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$249.$result[31:0]$523
+    34/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$249.$result[31:0]$521
+    35/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$248.$result[31:0]$519
+    36/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$248.$result[31:0]$517
+    37/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$247.$result[31:0]$515
+    38/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$247.$result[31:0]$513
+    39/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$246.$result[31:0]$511
+    40/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$246.$result[31:0]$509
+    41/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$245.$result[31:0]$507
+    42/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$245.$result[31:0]$505
+    43/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$244.$result[31:0]$503
+    44/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$244.$result[31:0]$501
+    45/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$243.$result[31:0]$499
+    46/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$243.$result[31:0]$497
+    47/194: $3\sat_inc$func$../rtl/perf_counter.sv:69$242.$result[31:0]$495
+    48/194: $2\sat_inc$func$../rtl/perf_counter.sv:69$242.$result[31:0]$493
+    49/194: $3\sat_inc$func$../rtl/perf_counter.sv:62$241.$result[31:0]$491
+    50/194: $2\sat_inc$func$../rtl/perf_counter.sv:62$241.$result[31:0]$489
+    51/194: $3\sat_inc$func$../rtl/perf_counter.sv:62$240.$result[31:0]$487
+    52/194: $2\sat_inc$func$../rtl/perf_counter.sv:62$240.$result[31:0]$485
+    53/194: $3\sat_inc$func$../rtl/perf_counter.sv:62$239.$result[31:0]$483
+    54/194: $2\sat_inc$func$../rtl/perf_counter.sv:62$239.$result[31:0]$481
+    55/194: $3\sat_inc$func$../rtl/perf_counter.sv:62$238.$result[31:0]$479
+    56/194: $2\sat_inc$func$../rtl/perf_counter.sv:62$238.$result[31:0]$477
+    57/194: $3\sat_inc$func$../rtl/perf_counter.sv:58$237.$result[31:0]$475
+    58/194: $2\sat_inc$func$../rtl/perf_counter.sv:58$237.$result[31:0]$473
+    59/194: $3\sat_inc$func$../rtl/perf_counter.sv:58$236.$result[31:0]$471
+    60/194: $2\sat_inc$func$../rtl/perf_counter.sv:58$236.$result[31:0]$469
+    61/194: $3\sat_inc$func$../rtl/perf_counter.sv:58$235.$result[31:0]$467
+    62/194: $2\sat_inc$func$../rtl/perf_counter.sv:58$235.$result[31:0]$465
+    63/194: $3\sat_inc$func$../rtl/perf_counter.sv:58$234.$result[31:0]$463
+    64/194: $2\sat_inc$func$../rtl/perf_counter.sv:58$234.$result[31:0]$461
+    65/194: $1\b[31:0]
+    66/194: $0\counter[31][31:0]
+    67/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$265.$result[31:0]$458
+    68/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$265.en[0:0]$460
+    69/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$265.val[31:0]$459
+    70/194: $0\counter[30][31:0]
+    71/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$264.$result[31:0]$455
+    72/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$264.en[0:0]$457
+    73/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$264.val[31:0]$456
+    74/194: $0\counter[29][31:0]
+    75/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$263.$result[31:0]$452
+    76/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$263.en[0:0]$454
+    77/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$263.val[31:0]$453
+    78/194: $0\counter[28][31:0]
+    79/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$262.$result[31:0]$449
+    80/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$262.en[0:0]$451
+    81/194: $1\sat_inc$func$../rtl/perf_counter.sv:80$262.val[31:0]$450
+    82/194: $1\i[31:0]
+    83/194: $0\counter[27][31:0]
+    84/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$261.$result[31:0]$446
+    85/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$261.en[0:0]$448
+    86/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$261.val[31:0]$447
+    87/194: $0\counter[26][31:0]
+    88/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$260.$result[31:0]$443
+    89/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$260.en[0:0]$445
+    90/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$260.val[31:0]$444
+    91/194: $0\counter[25][31:0]
+    92/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$259.$result[31:0]$440
+    93/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$259.en[0:0]$442
+    94/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$259.val[31:0]$441
+    95/194: $0\counter[24][31:0]
+    96/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$258.$result[31:0]$437
+    97/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$258.en[0:0]$439
+    98/194: $1\sat_inc$func$../rtl/perf_counter.sv:75$258.val[31:0]$438
+    99/194: $0\counter[23][31:0]
+   100/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$257.$result[31:0]$434
+   101/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$257.en[0:0]$436
+   102/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$257.val[31:0]$435
+   103/194: $0\counter[22][31:0]
+   104/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$256.$result[31:0]$431
+   105/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$256.en[0:0]$433
+   106/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$256.val[31:0]$432
+   107/194: $0\counter[21][31:0]
+   108/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$255.$result[31:0]$428
+   109/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$255.en[0:0]$430
+   110/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$255.val[31:0]$429
+   111/194: $0\counter[20][31:0]
+   112/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$254.$result[31:0]$425
+   113/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$254.en[0:0]$427
+   114/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$254.val[31:0]$426
+   115/194: $0\counter[19][31:0]
+   116/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$253.$result[31:0]$422
+   117/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$253.en[0:0]$424
+   118/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$253.val[31:0]$423
+   119/194: $0\counter[18][31:0]
+   120/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$252.$result[31:0]$419
+   121/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$252.en[0:0]$421
+   122/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$252.val[31:0]$420
+   123/194: $0\counter[17][31:0]
+   124/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$251.$result[31:0]$416
+   125/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$251.en[0:0]$418
+   126/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$251.val[31:0]$417
+   127/194: $0\counter[16][31:0]
+   128/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$250.$result[31:0]$413
+   129/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$250.en[0:0]$415
+   130/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$250.val[31:0]$414
+   131/194: $0\counter[15][31:0]
+   132/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$249.$result[31:0]$410
+   133/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$249.en[0:0]$412
+   134/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$249.val[31:0]$411
+   135/194: $0\counter[14][31:0]
+   136/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$248.$result[31:0]$407
+   137/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$248.en[0:0]$409
+   138/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$248.val[31:0]$408
+   139/194: $0\counter[13][31:0]
+   140/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$247.$result[31:0]$404
+   141/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$247.en[0:0]$406
+   142/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$247.val[31:0]$405
+   143/194: $0\counter[12][31:0]
+   144/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$246.$result[31:0]$401
+   145/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$246.en[0:0]$403
+   146/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$246.val[31:0]$402
+   147/194: $0\counter[11][31:0]
+   148/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$245.$result[31:0]$398
+   149/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$245.en[0:0]$400
+   150/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$245.val[31:0]$399
+   151/194: $0\counter[10][31:0]
+   152/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$244.$result[31:0]$395
+   153/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$244.en[0:0]$397
+   154/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$244.val[31:0]$396
+   155/194: $0\counter[9][31:0]
+   156/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$243.$result[31:0]$392
+   157/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$243.en[0:0]$394
+   158/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$243.val[31:0]$393
+   159/194: $0\counter[8][31:0]
+   160/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$242.$result[31:0]$389
+   161/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$242.en[0:0]$391
+   162/194: $1\sat_inc$func$../rtl/perf_counter.sv:69$242.val[31:0]$390
+   163/194: $0\counter[7][31:0]
+   164/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$241.$result[31:0]$386
+   165/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$241.en[0:0]$388
+   166/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$241.val[31:0]$387
+   167/194: $0\counter[6][31:0]
+   168/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$240.$result[31:0]$383
+   169/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$240.en[0:0]$385
+   170/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$240.val[31:0]$384
+   171/194: $0\counter[5][31:0]
+   172/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$239.$result[31:0]$380
+   173/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$239.en[0:0]$382
+   174/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$239.val[31:0]$381
+   175/194: $0\counter[4][31:0]
+   176/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$238.$result[31:0]$377
+   177/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$238.en[0:0]$379
+   178/194: $1\sat_inc$func$../rtl/perf_counter.sv:62$238.val[31:0]$378
+   179/194: $0\counter[3][31:0]
+   180/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$237.$result[31:0]$374
+   181/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$237.en[0:0]$376
+   182/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$237.val[31:0]$375
+   183/194: $0\counter[2][31:0]
+   184/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$236.$result[31:0]$371
+   185/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$236.en[0:0]$373
+   186/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$236.val[31:0]$372
+   187/194: $0\counter[1][31:0]
+   188/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$235.$result[31:0]$368
+   189/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$235.en[0:0]$370
+   190/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$235.val[31:0]$369
+   191/194: $0\counter[0][31:0]
+   192/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$234.$result[31:0]$365
+   193/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$234.en[0:0]$367
+   194/194: $1\sat_inc$func$../rtl/perf_counter.sv:58$234.val[31:0]$366
+
+12.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+12.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\perf_counter.\csr_rdata' using process `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+  created $adff cell `$procdff$1308' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\csr_ack' using process `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+  created $adff cell `$procdff$1313' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_ADDR' using process `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+  created $adff cell `$procdff$1318' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_DATA' using process `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+  created $adff cell `$procdff$1323' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\b' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $dff cell `$procdff$1330' with positive edge clock.
+Creating register for signal `\perf_counter.\i' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1335' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$234.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1340' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$234.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1345' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$234.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1350' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$235.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1355' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$235.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1360' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$235.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1365' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$236.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1370' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$236.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1375' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$236.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1380' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$237.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1385' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$237.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1390' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:58$237.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1395' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$238.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1400' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$238.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1405' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$238.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1410' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$239.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1415' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$239.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1420' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$239.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1425' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$240.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1430' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$240.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1435' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$240.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1440' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$241.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1445' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$241.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1450' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:62$241.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1455' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$242.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1460' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$242.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1465' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$242.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1470' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$243.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1475' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$243.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1480' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$243.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1485' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$244.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1490' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$244.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1495' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$244.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1500' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$245.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1505' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$245.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1510' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$245.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1515' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$246.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1520' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$246.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1525' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$246.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1530' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$247.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1535' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$247.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1540' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$247.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1545' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$248.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1550' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$248.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1555' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$248.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1560' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$249.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1565' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$249.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1570' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$249.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1575' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$250.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1580' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$250.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1585' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$250.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1590' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$251.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1595' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$251.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1600' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$251.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1605' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$252.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1610' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$252.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1615' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$252.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1620' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$253.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1625' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$253.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1630' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$253.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1635' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$254.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1640' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$254.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1645' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$254.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1650' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$255.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1655' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$255.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1660' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$255.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1665' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$256.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1670' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$256.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1675' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$256.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1680' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$257.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1685' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$257.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1690' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:69$257.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1695' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$258.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1700' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$258.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1705' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$258.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1710' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$259.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1715' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$259.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1720' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$259.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1725' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$260.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1730' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$260.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1735' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$260.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1740' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$261.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1745' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$261.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1750' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:75$261.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1755' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$262.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1760' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$262.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1765' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$262.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1770' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$263.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1775' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$263.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1780' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$263.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1785' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$264.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1790' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$264.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1795' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$264.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1800' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$265.$result' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1805' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$265.val' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1810' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\sat_inc$func$../rtl/perf_counter.sv:80$265.en' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1815' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[0]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1820' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[1]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1825' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[2]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1830' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[3]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1835' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[4]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1840' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[5]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1845' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[6]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1850' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[7]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1855' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[8]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1860' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[9]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1865' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[10]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1870' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[11]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1875' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[12]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1880' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[13]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1885' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[14]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1890' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[15]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1895' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[16]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1900' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[17]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1905' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[18]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1910' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[19]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1915' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[20]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1920' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[21]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1925' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[22]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1930' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[23]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1935' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[24]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1940' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[25]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1945' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[26]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1950' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[27]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1955' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[28]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1960' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[29]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1965' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[30]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1970' with positive edge clock and positive level reset.
+Creating register for signal `\perf_counter.\counter[31]' using process `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+  created $adff cell `$procdff$1975' with positive edge clock and positive level reset.
+
+12.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+Removing empty process `perf_counter.$proc$../rtl/perf_counter.sv:86$589'.
+Found and cleaned up 64 empty switches in `\perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+Removing empty process `perf_counter.$proc$../rtl/perf_counter.sv:52$267'.
+Cleaned up 66 empty switches.
+
+12.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module perf_counter.
+<suppressed ~269 debug messages>
+
+13. Executing MEMORY pass.
+
+13.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+13.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+13.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+13.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+13.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+13.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+Removed 239 unused cells and 774 unused wires.
+<suppressed ~306 debug messages>
+
+13.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+13.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+13.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+
+13.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+13.11. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+14. Executing FSM pass (extract and optimize FSM).
+
+14.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+14.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+14.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+
+14.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+14.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+14.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+14.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+==STAGE:PRE_OPT==
+
+15. Printing statistics.
+
+=== perf_counter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      238 wires
+     5353 wire bits
+       43 public wires
+     1097 public wire bits
+       11 ports
+       73 port bits
+      229 cells
+       32   $add
+       34   $adff
+       63   $eq
+        1   $logic_not
+       98   $mux
+        1   $pmux
+
+16. Executing OPT pass (performing simple optimizations).
+
+16.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module perf_counter.
+
+16.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\perf_counter'.
+Computing hashes of 229 cells of `\perf_counter'.
+Finding duplicate cells in `\perf_counter'.
+Removed a total of 0 cells.
+
+16.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \perf_counter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1299.
+    dead port 2/2 on $mux $procmux$1290.
+    dead port 2/2 on $mux $procmux$1281.
+    dead port 2/2 on $mux $procmux$1272.
+    dead port 2/2 on $mux $procmux$1263.
+    dead port 2/2 on $mux $procmux$1254.
+    dead port 2/2 on $mux $procmux$1245.
+    dead port 2/2 on $mux $procmux$1236.
+    dead port 2/2 on $mux $procmux$1227.
+    dead port 2/2 on $mux $procmux$1218.
+    dead port 2/2 on $mux $procmux$1209.
+    dead port 2/2 on $mux $procmux$1200.
+    dead port 2/2 on $mux $procmux$1191.
+    dead port 2/2 on $mux $procmux$1182.
+    dead port 2/2 on $mux $procmux$1173.
+    dead port 2/2 on $mux $procmux$1164.
+    dead port 2/2 on $mux $procmux$1155.
+    dead port 2/2 on $mux $procmux$1146.
+    dead port 2/2 on $mux $procmux$1137.
+    dead port 2/2 on $mux $procmux$1128.
+    dead port 2/2 on $mux $procmux$1119.
+    dead port 2/2 on $mux $procmux$1110.
+    dead port 2/2 on $mux $procmux$1101.
+    dead port 2/2 on $mux $procmux$1092.
+    dead port 2/2 on $mux $procmux$1083.
+    dead port 2/2 on $mux $procmux$1074.
+    dead port 2/2 on $mux $procmux$1065.
+    dead port 2/2 on $mux $procmux$1056.
+    dead port 2/2 on $mux $procmux$1047.
+    dead port 2/2 on $mux $procmux$1038.
+    dead port 2/2 on $mux $procmux$1029.
+    dead port 2/2 on $mux $procmux$1020.
+    dead port 2/2 on $mux $procmux$1005.
+Removed 33 multiplexer ports.
+<suppressed ~132 debug messages>
+
+16.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \perf_counter.
+Performed a total of 0 changes.
+
+16.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\perf_counter'.
+Computing hashes of 196 cells of `\perf_counter'.
+Finding duplicate cells in `\perf_counter'.
+Removed a total of 0 cells.
+
+16.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $procdff$1840 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:62$238.$result[31:0]$479, Q = \counter[4]).
+Adding EN signal on $procdff$1940 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:75$258.$result[31:0]$559, Q = \counter[24]).
+Adding EN signal on $procdff$1825 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:58$235.$result[31:0]$467, Q = \counter[1]).
+Adding EN signal on $procdff$1860 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$242.$result[31:0]$495, Q = \counter[8]).
+Adding EN signal on $procdff$1910 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$252.$result[31:0]$535, Q = \counter[18]).
+Adding EN signal on $procdff$1885 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$247.$result[31:0]$515, Q = \counter[13]).
+Adding EN signal on $procdff$1835 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:58$237.$result[31:0]$475, Q = \counter[3]).
+Adding EN signal on $procdff$1308 ($adff) from module perf_counter (D = $3$mem2reg_rd$\counter$../rtl/perf_counter.sv:93$266_DATA[31:0]$597, Q = \csr_rdata).
+Adding EN signal on $procdff$1920 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$254.$result[31:0]$543, Q = \counter[20]).
+Adding EN signal on $procdff$1915 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$253.$result[31:0]$539, Q = \counter[19]).
+Adding EN signal on $procdff$1950 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:75$260.$result[31:0]$567, Q = \counter[26]).
+Adding EN signal on $procdff$1820 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:58$234.$result[31:0]$463, Q = \counter[0]).
+Adding EN signal on $procdff$1900 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$250.$result[31:0]$527, Q = \counter[16]).
+Adding EN signal on $procdff$1875 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$245.$result[31:0]$507, Q = \counter[11]).
+Adding EN signal on $procdff$1865 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$243.$result[31:0]$499, Q = \counter[9]).
+Adding EN signal on $procdff$1925 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$255.$result[31:0]$547, Q = \counter[21]).
+Adding EN signal on $procdff$1955 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:75$261.$result[31:0]$571, Q = \counter[27]).
+Adding EN signal on $procdff$1975 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:80$265.$result[31:0]$587, Q = \counter[31]).
+Adding EN signal on $procdff$1895 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$249.$result[31:0]$523, Q = \counter[15]).
+Adding EN signal on $procdff$1880 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$246.$result[31:0]$511, Q = \counter[12]).
+Adding EN signal on $procdff$1830 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:58$236.$result[31:0]$471, Q = \counter[2]).
+Adding EN signal on $procdff$1845 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:62$239.$result[31:0]$483, Q = \counter[5]).
+Adding EN signal on $procdff$1930 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$256.$result[31:0]$551, Q = \counter[22]).
+Adding EN signal on $procdff$1945 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:75$259.$result[31:0]$563, Q = \counter[25]).
+Adding EN signal on $procdff$1905 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$251.$result[31:0]$531, Q = \counter[17]).
+Adding EN signal on $procdff$1970 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:80$264.$result[31:0]$583, Q = \counter[30]).
+Adding EN signal on $procdff$1935 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$257.$result[31:0]$555, Q = \counter[23]).
+Adding EN signal on $procdff$1855 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:62$241.$result[31:0]$491, Q = \counter[7]).
+Adding EN signal on $procdff$1850 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:62$240.$result[31:0]$487, Q = \counter[6]).
+Adding EN signal on $procdff$1890 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$248.$result[31:0]$519, Q = \counter[14]).
+Adding EN signal on $procdff$1965 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:80$263.$result[31:0]$579, Q = \counter[29]).
+Adding EN signal on $procdff$1960 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:80$262.$result[31:0]$575, Q = \counter[28]).
+Adding EN signal on $procdff$1870 ($adff) from module perf_counter (D = $3\sat_inc$func$../rtl/perf_counter.sv:69$244.$result[31:0]$503, Q = \counter[10]).
+
+16.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+Removed 33 unused cells and 66 unused wires.
+<suppressed ~34 debug messages>
+
+16.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module perf_counter.
+
+16.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+16.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \perf_counter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~66 debug messages>
+
+16.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \perf_counter.
+Performed a total of 0 changes.
+
+16.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\perf_counter'.
+Computing hashes of 163 cells of `\perf_counter'.
+Finding duplicate cells in `\perf_counter'.
+Removed a total of 0 cells.
+
+16.13. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $auto$ff.cc:337:slice$1976 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$480_Y, Q = \counter[4]).
+Adding EN signal on $auto$ff.cc:337:slice$1977 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$560_Y, Q = \counter[24]).
+Adding EN signal on $auto$ff.cc:337:slice$1978 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$468_Y, Q = \counter[1]).
+Adding EN signal on $auto$ff.cc:337:slice$1979 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$496_Y, Q = \counter[8]).
+Adding EN signal on $auto$ff.cc:337:slice$1998 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$552_Y, Q = \counter[22]).
+Adding EN signal on $auto$ff.cc:337:slice$1980 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$536_Y, Q = \counter[18]).
+Adding EN signal on $auto$ff.cc:337:slice$2008 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$504_Y, Q = \counter[10]).
+Adding EN signal on $auto$ff.cc:337:slice$1981 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$516_Y, Q = \counter[13]).
+Adding EN signal on $auto$ff.cc:337:slice$1982 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$476_Y, Q = \counter[3]).
+Adding EN signal on $auto$ff.cc:337:slice$2007 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$576_Y, Q = \counter[28]).
+Adding EN signal on $auto$ff.cc:337:slice$1984 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$544_Y, Q = \counter[20]).
+Adding EN signal on $auto$ff.cc:337:slice$1985 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$540_Y, Q = \counter[19]).
+Adding EN signal on $auto$ff.cc:337:slice$2006 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$580_Y, Q = \counter[29]).
+Adding EN signal on $auto$ff.cc:337:slice$1986 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$568_Y, Q = \counter[26]).
+Adding EN signal on $auto$ff.cc:337:slice$1999 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$564_Y, Q = \counter[25]).
+Adding EN signal on $auto$ff.cc:337:slice$1987 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$464_Y, Q = \counter[0]).
+Adding EN signal on $auto$ff.cc:337:slice$2005 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$520_Y, Q = \counter[14]).
+Adding EN signal on $auto$ff.cc:337:slice$1988 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$528_Y, Q = \counter[16]).
+Adding EN signal on $auto$ff.cc:337:slice$1989 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$508_Y, Q = \counter[11]).
+Adding EN signal on $auto$ff.cc:337:slice$2001 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$584_Y, Q = \counter[30]).
+Adding EN signal on $auto$ff.cc:337:slice$1990 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$500_Y, Q = \counter[9]).
+Adding EN signal on $auto$ff.cc:337:slice$2004 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$488_Y, Q = \counter[6]).
+Adding EN signal on $auto$ff.cc:337:slice$1991 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$548_Y, Q = \counter[21]).
+Adding EN signal on $auto$ff.cc:337:slice$1992 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$572_Y, Q = \counter[27]).
+Adding EN signal on $auto$ff.cc:337:slice$1993 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$588_Y, Q = \counter[31]).
+Adding EN signal on $auto$ff.cc:337:slice$2003 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$492_Y, Q = \counter[7]).
+Adding EN signal on $auto$ff.cc:337:slice$1994 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$524_Y, Q = \counter[15]).
+Adding EN signal on $auto$ff.cc:337:slice$1995 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$512_Y, Q = \counter[12]).
+Adding EN signal on $auto$ff.cc:337:slice$2000 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$532_Y, Q = \counter[17]).
+Adding EN signal on $auto$ff.cc:337:slice$1996 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$472_Y, Q = \counter[2]).
+Adding EN signal on $auto$ff.cc:337:slice$2002 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$556_Y, Q = \counter[23]).
+Adding EN signal on $auto$ff.cc:337:slice$1997 ($adffe) from module perf_counter (D = $add$../rtl/perf_counter.sv:44$484_Y, Q = \counter[5]).
+
+16.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+Removed 32 unused cells and 32 unused wires.
+<suppressed ~33 debug messages>
+
+16.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module perf_counter.
+
+16.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+16.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \perf_counter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~2 debug messages>
+
+16.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \perf_counter.
+Performed a total of 0 changes.
+
+16.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\perf_counter'.
+Computing hashes of 195 cells of `\perf_counter'.
+Finding duplicate cells in `\perf_counter'.
+Removed a total of 0 cells.
+
+16.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+16.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+
+16.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module perf_counter.
+
+16.23. Finished fast OPT passes. (There is nothing left to do.)
+==STAGE:POST_OPT==
+
+17. Printing statistics.
+
+=== perf_counter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      204 wires
+     2281 wire bits
+       43 public wires
+     1097 public wire bits
+       11 ports
+       73 port bits
+      195 cells
+       32   $add
+        1   $adff
+       33   $adffe
+       63   $eq
+        1   $logic_not
+       32   $not
+        1   $pmux
+       32   $reduce_and
+
+18. Executing TECHMAP pass (map to technology primitives).
+
+18.1. Executing Verilog-2005 frontend: /opt/homebrew/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/homebrew/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+18.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $adffe.
+Using extmapper simplemap for cells of type $eq.
+Running "alumacc" on wrapper $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$add:Y_WIDTH=32:B_WIDTH=32:A_WIDTH=32:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using extmapper simplemap for cells of type $pmux.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $adff.
+Using template $paramod$fbc7873bff55778c0b3173955b7e4bce1d9d6834\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100000 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000100000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $or.
+No more expansions possible.
+<suppressed ~5416 debug messages>
+
+19. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+  cell sky130_fd_sc_hd__dfxtp_1 (noninv, pins=3, area=20.02) is a direct match for cell type $_DFF_P_.
+  cell sky130_fd_sc_hd__dfrtn_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_NN0_.
+  cell sky130_fd_sc_hd__dfrtp_1 (noninv, pins=4, area=25.02) is a direct match for cell type $_DFF_PN0_.
+  cell sky130_fd_sc_hd__dfstp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN1_.
+  cell sky130_fd_sc_hd__edfxtp_1 (noninv, pins=4, area=30.03) is a direct match for cell type $_DFFE_PP_.
+  cell sky130_fd_sc_hd__dfbbn_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_NNN_.
+  cell sky130_fd_sc_hd__dfbbp_1 (noninv, pins=6, area=32.53) is a direct match for cell type $_DFFSR_PNN_.
+  final dff cell mappings:
+    unmapped dff cell: $_DFF_N_
+    \sky130_fd_sc_hd__dfxtp_1 _DFF_P_ (.CLK( C), .D( D), .Q( Q));
+    \sky130_fd_sc_hd__dfrtn_1 _DFF_NN0_ (.CLK_N( C), .D( D), .Q( Q), .RESET_B( R));
+    unmapped dff cell: $_DFF_NN1_
+    unmapped dff cell: $_DFF_NP0_
+    unmapped dff cell: $_DFF_NP1_
+    \sky130_fd_sc_hd__dfrtp_1 _DFF_PN0_ (.CLK( C), .D( D), .Q( Q), .RESET_B( R));
+    \sky130_fd_sc_hd__dfstp_2 _DFF_PN1_ (.CLK( C), .D( D), .Q( Q), .SET_B( R));
+    unmapped dff cell: $_DFF_PP0_
+    unmapped dff cell: $_DFF_PP1_
+    unmapped dff cell: $_DFFE_NN_
+    unmapped dff cell: $_DFFE_NP_
+    unmapped dff cell: $_DFFE_PN_
+    \sky130_fd_sc_hd__edfxtp_1 _DFFE_PP_ (.CLK( C), .D( D), .DE( E), .Q( Q));
+    \sky130_fd_sc_hd__dfbbn_1 _DFFSR_NNN_ (.CLK_N( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_NNP_
+    unmapped dff cell: $_DFFSR_NPN_
+    unmapped dff cell: $_DFFSR_NPP_
+    \sky130_fd_sc_hd__dfbbp_1 _DFFSR_PNN_ (.CLK( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_PNP_
+    unmapped dff cell: $_DFFSR_PPN_
+    unmapped dff cell: $_DFFSR_PPP_
+
+19.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+<suppressed ~24 debug messages>
+Mapping DFF cells in module `\perf_counter':
+  mapped 1057 $_DFF_PN0_ cells to \sky130_fd_sc_hd__dfrtp_1 cells.
+
+20. Executing ABC pass (technology mapping using ABC).
+
+20.1. Extracting gate netlist of module `\perf_counter' to `<abc-temp-dir>/input.blif'..
+ABC: using cached merged SCL: /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl (1 files)
+Replacing 32 occurrences of constant undef bits with constant zero bits
+
+20.1.1. Executed ABC.
+Extracted 18330 gates and 19427 wires to a netlist network with 1094 inputs and 1056 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_scl /var/folders/01/bxfyc8j52t3gl35vw3f02t4m0000gn/T/yosys-liberty-scl-cache/yosys_merged_5a305515.scl 
+ABC: Warning: Detected 9 multi-output cells (for example, "sky130_fd_sc_hd__fa_1").
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+20.1.2. Re-integrating ABC results.
+ABC RESULTS:   sky130_fd_sc_hd__a21boi_0 cells:        5
+ABC RESULTS:   sky130_fd_sc_hd__a21o_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__a21oi_1 cells:      175
+ABC RESULTS:   sky130_fd_sc_hd__a221o_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__a221oi_1 cells:       37
+ABC RESULTS:   sky130_fd_sc_hd__a222oi_1 cells:      249
+ABC RESULTS:   sky130_fd_sc_hd__a22o_1 cells:        8
+ABC RESULTS:   sky130_fd_sc_hd__a22oi_1 cells:       69
+ABC RESULTS:   sky130_fd_sc_hd__a311oi_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__a31o_1 cells:       13
+ABC RESULTS:   sky130_fd_sc_hd__a31oi_1 cells:       72
+ABC RESULTS:   sky130_fd_sc_hd__a41o_1 cells:       11
+ABC RESULTS:   sky130_fd_sc_hd__a41oi_1 cells:       28
+ABC RESULTS:   sky130_fd_sc_hd__and2_0 cells:       98
+ABC RESULTS:   sky130_fd_sc_hd__and3_1 cells:       83
+ABC RESULTS:   sky130_fd_sc_hd__and4_1 cells:       40
+ABC RESULTS:   sky130_fd_sc_hd__clkinv_1 cells:      141
+ABC RESULTS:   sky130_fd_sc_hd__lpflow_inputiso1p_1 cells:       15
+ABC RESULTS:   sky130_fd_sc_hd__lpflow_isobufsrc_1 cells:       99
+ABC RESULTS:   sky130_fd_sc_hd__nand2_1 cells:      320
+ABC RESULTS:   sky130_fd_sc_hd__nand2b_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__nand3_1 cells:      192
+ABC RESULTS:   sky130_fd_sc_hd__nand4_1 cells:      368
+ABC RESULTS:   sky130_fd_sc_hd__nand4bb_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__nor2_1 cells:      387
+ABC RESULTS:   sky130_fd_sc_hd__nor2b_1 cells:       12
+ABC RESULTS:   sky130_fd_sc_hd__nor3_1 cells:       61
+ABC RESULTS:   sky130_fd_sc_hd__nor3b_1 cells:        8
+ABC RESULTS:   sky130_fd_sc_hd__nor4_1 cells:       87
+ABC RESULTS:   sky130_fd_sc_hd__nor4b_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__nor4bb_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o211ai_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o21a_1 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__o21ai_0 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__o21ba_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__o21bai_1 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__o22a_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o311a_1 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__o311ai_0 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__o31ai_1 cells:        9
+ABC RESULTS:   sky130_fd_sc_hd__or3_1 cells:       11
+ABC RESULTS:   sky130_fd_sc_hd__or3b_1 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or4_1 cells:       22
+ABC RESULTS:   sky130_fd_sc_hd__xnor2_1 cells:      441
+ABC RESULTS:   sky130_fd_sc_hd__xor2_1 cells:      282
+ABC RESULTS:        internal signals:    17277
+ABC RESULTS:           input signals:     1094
+ABC RESULTS:          output signals:     1056
+Removing temp directory.
+Removing global temp directory.
+
+21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \perf_counter..
+Removed 0 unused cells and 8842 unused wires.
+<suppressed ~1 debug messages>
+==STAGE:POST_TECHMAP==
+
+22. Printing statistics.
+
+=== perf_counter ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+     3425        - wires
+     4479        - wire bits
+       43        - public wires
+     1097        - public wire bits
+       11        - ports
+       73        - port bits
+     4439 4.83E+04 cells
+        5   37.536   sky130_fd_sc_hd__a21boi_0
+        2   15.014   sky130_fd_sc_hd__a21o_1
+      175   875.84   sky130_fd_sc_hd__a21oi_1
+        3   30.029   sky130_fd_sc_hd__a221o_1
+       37  324.061   sky130_fd_sc_hd__a221oi_1
+      249  2492.39   sky130_fd_sc_hd__a222oi_1
+        8   70.067   sky130_fd_sc_hd__a22o_1
+       69  517.997   sky130_fd_sc_hd__a22oi_1
+        3   26.275   sky130_fd_sc_hd__a311oi_1
+       13  113.859   sky130_fd_sc_hd__a31o_1
+       72  450.432   sky130_fd_sc_hd__a31oi_1
+       11  110.106   sky130_fd_sc_hd__a41o_1
+       28  245.235   sky130_fd_sc_hd__a41oi_1
+       98  613.088   sky130_fd_sc_hd__and2_0
+       83  519.248   sky130_fd_sc_hd__and3_1
+       40  350.336   sky130_fd_sc_hd__and4_1
+      141  529.258   sky130_fd_sc_hd__clkinv_1
+     1057 2.65E+04   sky130_fd_sc_hd__dfrtp_1
+       15    93.84   sky130_fd_sc_hd__lpflow_inputiso1p_1
+       99  619.344   sky130_fd_sc_hd__lpflow_isobufsrc_1
+      320  1.2E+03   sky130_fd_sc_hd__nand2_1
+        4   25.024   sky130_fd_sc_hd__nand2b_1
+      192  960.922   sky130_fd_sc_hd__nand3_1
+      368  2.3E+03   sky130_fd_sc_hd__nand4_1
+        2   22.522   sky130_fd_sc_hd__nand4bb_1
+      387 1.45E+03   sky130_fd_sc_hd__nor2_1
+       12   75.072   sky130_fd_sc_hd__nor2b_1
+       61  305.293   sky130_fd_sc_hd__nor3_1
+        8   60.058   sky130_fd_sc_hd__nor3b_1
+       87  544.272   sky130_fd_sc_hd__nor4_1
+        3   26.275   sky130_fd_sc_hd__nor4b_1
+        1    10.01   sky130_fd_sc_hd__nor4bb_1
+        1    7.507   sky130_fd_sc_hd__o211ai_1
+        3   22.522   sky130_fd_sc_hd__o21a_1
+        2    10.01   sky130_fd_sc_hd__o21ai_0
+        4   40.038   sky130_fd_sc_hd__o21ba_1
+        2   15.014   sky130_fd_sc_hd__o21bai_1
+        1    8.758   sky130_fd_sc_hd__o22a_1
+        4   40.038   sky130_fd_sc_hd__o311a_1
+        3   26.275   sky130_fd_sc_hd__o311ai_0
+        9   67.565   sky130_fd_sc_hd__o31ai_1
+       11   68.816   sky130_fd_sc_hd__or3_1
+        1    8.758   sky130_fd_sc_hd__or3b_1
+       22  165.158   sky130_fd_sc_hd__or4_1
+      441 3.86E+03   sky130_fd_sc_hd__xnor2_1
+      282 2.47E+03   sky130_fd_sc_hd__xor2_1
+
+   Chip area for module '\perf_counter': 48282.556800
+     of which used for sequential elements: 26450.368000 (54.78%)
+
+23. Executing Verilog backend.
+
+23.1. Executing BMUXMAP pass.
+
+23.2. Executing DEMUXMAP pass.
+Dumping module `\perf_counter'.
+
+Warnings: 11 unique messages, 23 total
+End of script. Logfile hash: aa8306f75f, time: 0.92s, user: 0.33s, system: 0.02s, MEM: 93.69 MB peak
+Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
+Time spent: 70% 1x abc (0 sec), 6% 1x techmap (0 sec), ...

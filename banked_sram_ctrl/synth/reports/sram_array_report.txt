@@ -1,0 +1,101 @@
+======================================================================
+Synthesis Report — module: sram_array
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 58
+Wire bits        : 1358
+Cell count       : 1
+Cell breakdown   :
+  $memrd                                   1
+
+--- Pre-Optimization Report ---
+Wire count       : 17436
+Wire bits        : 34062
+Cell count       : 17431
+Cell breakdown   :
+  $and                                     8496
+  $dff                                     256
+  $eq                                      16
+  $mux                                     8567
+  $or                                      96
+
+--- Post-Optimization Report ---
+Wire count       : 9228
+Wire bits        : 25606
+Cell count       : 17159
+Cell breakdown   :
+  $and                                     8496
+  $dffe                                    8192
+  $mux                                     367
+  $not                                     8
+  $or                                      96
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 17431
+Post-optimization cell count : 17159
+Reduction %                  : 1.56%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 21265
+Cell count                   : 21265
+Sequential cell count         : 8192
+Combinational cell count      : 13073
+Wire count                   : 13303
+Wire bits                    : 21311
+Area (liberty units, from stat -liberty) : 333277.1392
+Cell breakdown                :
+  sky130_fd_sc_hd__a2111oi_0               2
+  sky130_fd_sc_hd__a21boi_0                24
+  sky130_fd_sc_hd__a21o_1                  2
+  sky130_fd_sc_hd__a21oi_1                 743
+  sky130_fd_sc_hd__a221o_1                 2
+  sky130_fd_sc_hd__a221oi_1                10
+  sky130_fd_sc_hd__a222oi_1                318
+  sky130_fd_sc_hd__a22o_1                  216
+  sky130_fd_sc_hd__a22oi_1                 954
+  sky130_fd_sc_hd__a31o_1                  1
+  sky130_fd_sc_hd__a31oi_1                 13
+  sky130_fd_sc_hd__a41oi_1                 2
+  sky130_fd_sc_hd__and2_0                  4
+  sky130_fd_sc_hd__and3_1                  33
+  sky130_fd_sc_hd__edfxtp_1                8192
+  sky130_fd_sc_hd__lpflow_inputiso1p_1     5
+  sky130_fd_sc_hd__lpflow_isobufsrc_1      8
+  sky130_fd_sc_hd__mux4_2                  1553
+  sky130_fd_sc_hd__nand2_1                 532
+  sky130_fd_sc_hd__nand2b_1                8
+  sky130_fd_sc_hd__nand3_1                 10
+  sky130_fd_sc_hd__nand4_1                 8
+  sky130_fd_sc_hd__nor2_1                  8264
+  sky130_fd_sc_hd__nor3_1                  27
+  sky130_fd_sc_hd__nor4_1                  56
+  sky130_fd_sc_hd__o2111a_1                3
+  sky130_fd_sc_hd__o2111ai_1               9
+  sky130_fd_sc_hd__o211ai_1                4
+  sky130_fd_sc_hd__o21ai_0                 88
+  sky130_fd_sc_hd__o221ai_1                4
+  sky130_fd_sc_hd__o22a_1                  2
+  sky130_fd_sc_hd__o22ai_1                 24
+  sky130_fd_sc_hd__o31a_1                  14
+  sky130_fd_sc_hd__o31ai_1                 36
+  sky130_fd_sc_hd__o41a_1                  8
+  sky130_fd_sc_hd__o41ai_1                 48
+  sky130_fd_sc_hd__or3_1                   16
+  sky130_fd_sc_hd__or4_1                   21
+  sky130_fd_sc_hd__or4b_1                  1
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/sram_array_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/sram_array.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/sram_array_report.txt
+
+======================================================================

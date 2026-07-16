@@ -1,0 +1,76 @@
+======================================================================
+Synthesis Report — module: bank_scheduler
+======================================================================
+
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 67
+Wire bits        : 382
+Cell count       : 26
+Cell breakdown   :
+  $logic_and                               14
+  $logic_not                               9
+  $logic_or                                2
+  $mux                                     1
+
+--- Pre-Optimization Report ---
+Wire count       : 68
+Wire bits        : 465
+Cell count       : 58
+Cell breakdown   :
+  $adff                                    2
+  $dff                                     10
+  $logic_and                               14
+  $logic_not                               7
+  $logic_or                                2
+  $mux                                     23
+
+--- Post-Optimization Report ---
+Wire count       : 33
+Wire bits        : 235
+Cell count       : 21
+Cell breakdown   :
+  $adffe                                   2
+  $dffe                                    8
+  $logic_and                               5
+  $logic_not                               2
+  $logic_or                                2
+  $reduce_and                              2
+
+--- Optimization Summary ---
+Pre-optimization cell count  : 58
+Post-optimization cell count : 21
+Reduction %                  : 63.79%
+
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 103
+Cell count                   : 103
+Sequential cell count         : 90
+Combinational cell count      : 13
+Wire count                   : 29
+Wire bits                    : 193
+Area (liberty units, from stat -liberty) : 2822.7072
+Cell breakdown                :
+  sky130_fd_sc_hd__a21boi_0                1
+  sky130_fd_sc_hd__a21o_1                  1
+  sky130_fd_sc_hd__and2_0                  2
+  sky130_fd_sc_hd__and3_1                  4
+  sky130_fd_sc_hd__clkinv_1                1
+  sky130_fd_sc_hd__dfrtp_1                 2
+  sky130_fd_sc_hd__edfxtp_1                90
+  sky130_fd_sc_hd__nand2b_1                1
+  sky130_fd_sc_hd__nand3b_1                1
+
+--- Timing Report ---
+Critical path estimate   : Unavailable before place-and-route
+Maximum frequency estimate: Unavailable before place-and-route
+Logic depth              : Unavailable before place-and-route
+Note: Yosys without a place-and-route / STA tool does not
+produce reliable timing numbers. These fields are intentionally
+left unavailable rather than estimated.
+
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/bank_scheduler_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/bank_scheduler.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/bank_scheduler_report.txt
+
+======================================================================

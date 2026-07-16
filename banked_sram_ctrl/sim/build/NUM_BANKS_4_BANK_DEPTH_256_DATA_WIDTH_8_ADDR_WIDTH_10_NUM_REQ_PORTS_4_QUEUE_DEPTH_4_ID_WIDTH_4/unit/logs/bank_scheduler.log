@@ -1,0 +1,135 @@
+TB START
+
+=== Test 1: Reset ===
+[OK]    Test 1 : pp0_valid=0 after reset @ time 56000
+[OK]    Test 1 : pp1_valid=0 after reset @ time 56000
+[OK]    Test 1 : grant_ready=1 after reset @ time 56000
+[OK]    Test 1 : pp1_ready=1 after reset @ time 56000
+[OK]    Test 1 : sram_we=0 after reset @ time 56000
+[OK]    Test 1 : pp1_err=0 after reset @ time 56000
+
+=== Test 2: Basic Read 3-Cycle Latency ===
+[OK]    Test 2 : C1: pp0_valid=1 @ time 66000
+[OK]    Test 2 : C1: pp0_addr=0x21 @ time 66000
+[OK]    Test 2 : C1: pp0_we=0 @ time 66000
+[OK]    Test 2 : C1: pp0_err=0 @ time 66000
+[OK]    Test 2 : C1: sram_addr=0x21 @ time 66000
+[OK]    Test 2 : C1: sram_we=0 @ time 66000
+[OK]    Test 2 : C1: grant_ready=1 @ time 66000
+[OK]    Test 2 : C2: pp1_valid=1 @ time 76000
+[OK]    Test 2 : C2: pp1_rdata=CAFE_BABE @ time 76000
+[OK]    Test 2 : C2: pp1_id=0x1A @ time 76000
+[OK]    Test 2 : C2: pp1_we=0 @ time 76000
+[OK]    Test 2 : C2: pp1_err=0 @ time 76000
+[OK]    Test 2 : C3: pp1_valid=0 (bubble exited) @ time 86000
+
+=== Test 3: Basic Write ===
+[OK]    Test 3 : pp0_valid=1 @ time 96000
+[OK]    Test 3 : pp0_we=1 @ time 96000
+[OK]    Test 3 : pp0_err=0 @ time 96000
+[OK]    Test 3 : sram_addr=0x01 @ time 96000
+[OK]    Test 3 : sram_we=1 @ time 96000
+[OK]    Test 3 : sram_wdata correct @ time 96000
+[OK]    Test 3 : sram_bwe=4'hF @ time 96000
+[OK]    Test 3 : pp1_valid=1 @ time 106000
+[OK]    Test 3 : pp1_we=1 @ time 106000
+[OK]    Test 3 : pp1_err=0 @ time 106000
+
+=== Test 4: Partial Write Byte Enable ===
+[OK]    Test 4 : sram_we=1 @ time 116000
+[OK]    Test 4 : sram_wdata correct @ time 116000
+[OK]    Test 4 : sram_bwe=4'b0110 @ time 116000
+[OK]    Test 4 : sram_bwe[0]=0 @ time 116000
+[OK]    Test 4 : sram_bwe[3]=0 @ time 116000
+[OK]    Test 4 : sram_bwe[1]=1 @ time 116000
+[OK]    Test 4 : sram_bwe[2]=1 @ time 116000
+
+=== Test 5: OOB Write ===
+[OK]    Test 5 : addr_oob=1 @ time 126000
+[OK]    Test 5 : pp0_valid=1 @ time 126000
+[OK]    Test 5 : pp0_err=1 @ time 126000
+[OK]    Test 5 : pp0_we=1 @ time 126000
+[OK]    Test 5 : sram_we=0 (suppressed by OOB) @ time 126000
+[OK]    Test 5 : sram_bwe=0 @ time 126000
+[OK]    Test 5 : pp1_valid=1 @ time 136000
+[OK]    Test 5 : pp1_err=1 @ time 136000
+[OK]    Test 5 : pp1_we=1 @ time 136000
+[OK]    Test 5 : pp1_rdata=0 @ time 136000
+
+=== Test 6: OOB Read ===
+[OK]    Test 6 : pp0_err=1 @ time 146000
+[OK]    Test 6 : sram_we=0 @ time 146000
+[OK]    Test 6 : pp1_valid=1 @ time 156000
+[OK]    Test 6 : pp1_err=1 @ time 156000
+[OK]    Test 6 : pp1_rdata=0 (forced, not 0xFFFFFFFF) @ time 156000
+[OK]    Test 6 : pp1_we=0 @ time 156000
+
+=== Test 7: Full Pipeline Stall ===
+[OK]    Test 7 : pp0_valid=1 @ time 176000
+[OK]    Test 7 : pp1_valid=1 @ time 176000
+[OK]    Test 7 : pp1_ready=0 @ time 177000
+[OK]    Test 7 : grant_ready=0 @ time 177000
+[OK]    Test 7 : pp0_valid stable during stall @ time 186000
+[OK]    Test 7 : pp1_valid stable during stall @ time 186000
+[OK]    Test 7 : grant_ready=0 during stall @ time 186000
+[OK]    Test 7 : pp0_valid stable during stall @ time 196000
+[OK]    Test 7 : pp1_valid stable during stall @ time 196000
+[OK]    Test 7 : grant_ready=0 during stall @ time 196000
+
+=== Test 8: PP0 Full PP1 Empty ===
+[OK]    Test 8 : pp0_valid=1 @ time 226000
+[OK]    Test 8 : pp1_valid=0 (captured bubble) @ time 226000
+[OK]    Test 8 : pp1_ready=1 @ time 226000
+[OK]    Test 8 : grant_ready=1 @ time 226000
+[OK]    Test 8 : pp1_valid=1 (captured PP0) @ time 236000
+[OK]    Test 8 : pp0_valid=0 (captured bubble) @ time 236000
+
+=== Test 9: bank_pp1_ready=0 Addr Stable ===
+[OK]    Test 9 : grant_ready=0 @ time 257000
+[OK]    Test 9 : sram_addr stable during stall @ time 266000
+[OK]    Test 9 : pp1_valid=1 during stall @ time 266000
+[OK]    Test 9 : pp0_valid=1 during stall @ time 266000
+[OK]    Test 9 : sram_addr stable during stall @ time 276000
+[OK]    Test 9 : pp1_valid=1 during stall @ time 276000
+[OK]    Test 9 : pp0_valid=1 during stall @ time 276000
+[OK]    Test 9 : sram_addr stable during stall @ time 286000
+[OK]    Test 9 : pp1_valid=1 during stall @ time 286000
+[OK]    Test 9 : pp0_valid=1 during stall @ time 286000
+
+=== Test 10: Bubble Propagation ===
+[OK]    Test 10 : C1: pp0_valid=1 @ time 296000
+[OK]    Test 10 : C2: pp1_valid=1 (real txn in PP1) @ time 306000
+[OK]    Test 10 : C2: pp0_valid=0 (bubble) @ time 306000
+[OK]    Test 10 : C3: pp1_valid=0 (bubble exited) @ time 316000
+[OK]    Test 10 : C3: pp0_valid=0 @ time 316000
+
+=== Test 11: Back-to-Back Grants ===
+[OK]    Test 11 : C1: pp0_valid=1 @ time 326000
+[OK]    Test 11 : C1: pp0_id=A @ time 326000
+[OK]    Test 11 : C1: sram_addr=A @ time 326000
+[OK]    Test 11 : C2: pp1_valid=1 @ time 336000
+[OK]    Test 11 : C2: pp1_id=A @ time 336000
+[OK]    Test 11 : C2: pp1_rdata=A @ time 336000
+[OK]    Test 11 : C2: pp0_valid=1 @ time 336000
+[OK]    Test 11 : C2: pp0_id=B @ time 336000
+[OK]    Test 11 : C2: sram_addr=B @ time 336000
+[OK]    Test 11 : C3: pp1_valid=1 @ time 346000
+[OK]    Test 11 : C3: pp1_id=B @ time 346000
+[OK]    Test 11 : C3: pp1_rdata=B @ time 346000
+[OK]    Test 11 : C3: pp0_valid=0 @ time 346000
+
+=== Test 12: Write Response Not Zeroed ===
+[OK]    Test 12 : pp0_valid=1 @ time 356000
+[OK]    Test 12 : pp0_err=0 @ time 356000
+[OK]    Test 12 : sram_we=1 @ time 356000
+[OK]    Test 12 : pp1_valid=1 @ time 366000
+[OK]    Test 12 : pp1_we=1 @ time 366000
+[OK]    Test 12 : pp1_err=0 @ time 366000
+[OK]    Test 12 : pp1_rdata=SRAM data (not zeroed here) @ time 366000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_bank_scheduler.sv:573: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 366ns; walltime 0.000 s; speed 1.284 ms/s
+- Verilator: cpu 0.000 s on 1 threads; allocated 2 MB

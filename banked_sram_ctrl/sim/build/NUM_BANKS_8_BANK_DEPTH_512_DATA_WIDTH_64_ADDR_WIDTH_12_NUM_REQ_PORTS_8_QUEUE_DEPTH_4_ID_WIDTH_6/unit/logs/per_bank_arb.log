@@ -1,0 +1,94 @@
+TB START
+
+=== Test 1: Reset ===
+[OK]    Test: 1 : grant_valid should be 0 after reset @ time 45000
+[OK]    Test: 1 : conflict_mask should be 0 after reset @ time 45000
+[OK]    Test: 1 : grant_valid should be 1 with single req @ time 55000
+[OK]    Test: 1 : grant_port should be 0 (ptr must be 0) @ time 55000
+[OK]    Test: 1 : conflict_mask should be 0 with single req @ time 55000
+
+=== Test 2: Single Port, No Rotation ===
+[OK]    Test: 2 : grant_valid should be 1 @ time 65000
+[OK]    Test: 2 : grant_port should be 2 @ time 65000
+[OK]    Test: 2 : conflict_mask should be 0 (no contention) @ time 65000
+
+=== Test 3: Two-Port Contention ===
+[OK]    Test: 3 : grant_valid should be 1 @ time 85000
+[OK]    Test: 3 : Port 0 should win with ptr=0 @ time 85000
+[OK]    Test: 3 : conflict_mask should show port 1 lost @ time 85000
+[OK]    Test: 3 : Port 1 should win after ptr advanced to 1 @ time 105000
+[OK]    Test: 3 : conflict_mask should show port 0 lost @ time 105000
+
+=== Test 4: Priority Wrap-Around ===
+[OK]    Test: 4 : Port 2 should win with ptr=2 @ time 125000
+[OK]    Test: 4 : conflict_mask should show port 3 lost @ time 125000
+[OK]    Test: 4 : Port 3 should win with ptr=3 @ time 145000
+[OK]    Test: 4 : conflict_mask should show port 0 lost @ time 145000
+[OK]    Test: 4 : ptr should wrap to 0 (port 0 wins) @ time 175000
+
+=== Test 5: Full 4-Port Round-Robin Sweep ===
+[OK]    Test: 5 : RR sweep: port 0 @ time 185000
+[OK]    Test: 5 : conflict_mask == 4'b1110 @ time 185000
+[OK]    Test: 5 : RR sweep: port 1 @ time 205000
+[OK]    Test: 5 : conflict_mask == 4'b1101 @ time 205000
+[OK]    Test: 5 : RR sweep: port 2 @ time 225000
+[OK]    Test: 5 : conflict_mask == 4'b1011 @ time 225000
+[OK]    Test: 5 : RR sweep: port 3 @ time 245000
+[OK]    Test: 5 : conflict_mask == 4'b0111 @ time 245000
+[OK]    Test: 5 : RR sweep: port 0 again @ time 265000
+[OK]    Test: 5 : conflict_mask == 4'b1110 @ time 265000
+[OK]    Test: 5 : RR sweep: port 1 @ time 285000
+[OK]    Test: 5 : conflict_mask == 4'b1101 @ time 285000
+[OK]    Test: 5 : RR sweep: port 2 @ time 305000
+[OK]    Test: 5 : conflict_mask == 4'b1011 @ time 305000
+[OK]    Test: 5 : RR sweep: port 3 @ time 325000
+[OK]    Test: 5 : conflict_mask == 4'b0111 @ time 325000
+[OK]    Test: 5 : ptr returned to 0 after full sweep @ time 345000
+
+=== Test 6: grant_ready=0 Stall ===
+[OK]    Test: 6 : Initial grant should be port 0 @ time 355000
+[OK]    Test: 6 : grant_valid should remain 1 during stall @ time 365000
+[OK]    Test: 6 : grant_port should remain 0 during stall @ time 365000
+[OK]    Test: 6 : conflict_mask should remain stable @ time 365000
+[OK]    Test: 6 : grant_valid should remain 1 during stall @ time 375000
+[OK]    Test: 6 : grant_port should remain 0 during stall @ time 375000
+[OK]    Test: 6 : conflict_mask should remain stable @ time 375000
+[OK]    Test: 6 : grant_valid should remain 1 during stall @ time 385000
+[OK]    Test: 6 : grant_port should remain 0 during stall @ time 385000
+[OK]    Test: 6 : conflict_mask should remain stable @ time 385000
+[OK]    Test: 6 : grant_valid should remain 1 during stall @ time 395000
+[OK]    Test: 6 : grant_port should remain 0 during stall @ time 395000
+[OK]    Test: 6 : conflict_mask should remain stable @ time 395000
+[OK]    Test: 6 : grant_valid should remain 1 during stall @ time 405000
+[OK]    Test: 6 : grant_port should remain 0 during stall @ time 405000
+[OK]    Test: 6 : conflict_mask should remain stable @ time 405000
+[OK]    Test: 6 : ptr advanced to 1 after fire (was frozen at 0) @ time 425000
+
+=== Test 7: conflict_mask Accuracy ===
+[OK]    Test: 7 : grant_valid should be 1 with 3 ports @ time 435000
+[OK]    Test: 7 : Port 1 should win with ptr=1 @ time 435000
+[OK]    Test: 7 : conflict_mask should be 4'b0101 (ports 0,2 lost) @ time 435000
+[OK]    Test: 7 : grant_valid should be 1 with single port @ time 455000
+[OK]    Test: 7 : conflict_mask should be 0 when no contention @ time 455000
+[OK]    Test: 7 : grant_valid should be 0 with no requests @ time 475000
+[OK]    Test: 7 : conflict_mask should be 0 when no grant @ time 475000
+
+=== Test 8: No Requests ===
+[OK]    Test: 8 : grant_valid should be 0 with no requests @ time 485000
+[OK]    Test: 8 : conflict_mask should be 0 with no requests @ time 485000
+[OK]    Test: 8 : grant_valid should be 0 with no requests @ time 495000
+[OK]    Test: 8 : conflict_mask should be 0 with no requests @ time 495000
+[OK]    Test: 8 : grant_valid should be 0 with no requests @ time 505000
+[OK]    Test: 8 : conflict_mask should be 0 with no requests @ time 505000
+[OK]    Test: 8 : grant_valid should be 0 with no requests @ time 515000
+[OK]    Test: 8 : conflict_mask should be 0 with no requests @ time 515000
+[OK]    Test: 8 : grant_valid should be 0 with no requests @ time 525000
+[OK]    Test: 8 : conflict_mask should be 0 with no requests @ time 525000
+[OK]    Test: 8 : ptr should still be 2 after 5 idle cycles (port 3 wins) @ time 535000
+
+=== TESTBENCH SUMMARY ===
+ALL TESTS PASSED
+- /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_per_bank_arb.sv:346: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
+- Verilator: $finish at 535ns; walltime 0.001 s; speed 1.055 ms/s
+- Verilator: cpu 0.001 s on 1 threads; allocated 2 MB
