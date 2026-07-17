@@ -1026,11 +1026,23 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 3209 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 3209 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =   3382 (  4.2 %)   Cap =  5.7 ff (  5.0 %)   Area =    21832.19 ( 83.0 %)   Delay =  3208.44 ps  (  4.9 %)               
+ABC: Path  0 --    1029 : 0    9 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  19.8 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --    2264 : 2    3 sky130_fd_sc_hd__nand2b_1 A =   6.26  Df = 140.4  -31.1 ps  S =  94.4 ps  Cin =  1.9 ff  Cout =   7.6 ff  Cmax = 150.2 ff  G =  374  
+ABC: Path  2 --    2265 : 4   32 sky130_fd_sc_hd__nor4_1   A =   6.26  Df =2314.7-1930.6 ps  S =2938.6 ps  Cin =  2.4 ff  Cout =  75.7 ff  Cmax =  36.6 ff  G = 3062  
+ABC: Path  3 --    2594 : 6    1 sky130_fd_sc_hd__a222oi_1 A =  10.01  Df =2753.8-1817.1 ps  S = 483.1 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  101  
+ABC: Path  4 --    2595 : 4    1 sky130_fd_sc_hd__nand4_1  A =   6.26  Df =2994.0-1939.1 ps  S = 133.2 ps  Cin =  2.3 ff  Cout =   2.5 ff  Cmax = 124.5 ff  G =   97  
+ABC: Path  5 --    2596 : 5    1 sky130_fd_sc_hd__a221o_1  A =  10.01  Df =3116.0-1800.2 ps  S =  81.8 ps  Cin =  2.3 ff  Cout =   2.5 ff  Cmax = 158.4 ff  G =   99  
+ABC: Path  6 --    2597 : 3    1 sky130_fd_sc_hd__nor3_1   A =   5.00  Df =3162.4-1725.7 ps  S = 141.4 ps  Cin =  2.4 ff  Cout =   2.5 ff  Cmax =  52.2 ff  G =   98  
+ABC: Path  7 --    2598 : 2    1 sky130_fd_sc_hd__nor2_1   A =   3.75  Df =3208.4-1739.8 ps  S =  31.7 ps  Cin =  2.4 ff  Cout =   0.0 ff  Cmax =  86.1 ff  G =    0  
+ABC: Start-point = pi1028 (\csr_addr [1]).  End-point = po14 ($auto$rtlil.cc:3510:MuxGate$22577).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -1163,6 +1175,6 @@ Removed 0 unused cells and 8842 unused wires.
 Dumping module `\perf_counter'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: aa8306f75f, time: 0.92s, user: 0.33s, system: 0.02s, MEM: 93.69 MB peak
+End of script. Logfile hash: c40a9d81c1, time: 1.00s, user: 0.34s, system: 0.03s, MEM: 94.88 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
 Time spent: 70% 1x abc (0 sec), 6% 1x techmap (0 sec), ...

@@ -10897,11 +10897,20 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =    614 (  6.2 %)   Cap =  5.9 ff ( 10.2 %)   Area =     4287.86 ( 64.8 %)   Delay =  4136.14 ps  ( 11.6 %)               
+ABC: Path  0 --       6 : 0    4 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =   7.8 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     367 : 3    2 sky130_fd_sc_hd__nand3b_1 A =   7.51  Df = 143.6  -50.4 ps  S =  84.6 ps  Cin =  2.0 ff  Cout =   5.0 ff  Cmax = 143.7 ff  G =  238  
+ABC: Path  2 --     368 : 3   40 sky130_fd_sc_hd__nor3b_1  A =   7.51  Df =2210.2-1647.2 ps  S =2686.6 ps  Cin =  2.1 ff  Cout =  92.4 ff  Cmax =  49.4 ff  G = 4312  
+ABC: Path  3 --     629 : 6    1 sky130_fd_sc_hd__a222oi_1 A =  10.01  Df =4040.9 -227.3 ps  S = 506.9 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  103  
+ABC: Path  4 --     630 : 4    1 sky130_fd_sc_hd__o31ai_1  A =   7.51  Df =4136.1 -181.5 ps  S = 196.7 ps  Cin =  2.4 ff  Cout =   0.0 ff  Cmax =  47.6 ff  G =    0  
+ABC: Start-point = pi5 (\pp1_id [10]).  End-point = po34 (\rsp_data [95]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -10957,11 +10966,22 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =   3434 (  4.2 %)   Cap =  5.7 ff (  4.4 %)   Area =    21884.74 ( 84.2 %)   Delay =  3265.62 ps  (  3.7 %)               
+ABC: Path  0 --    1028 : 0    9 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  19.4 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --    2290 : 4   32 sky130_fd_sc_hd__nor4_1   A =   6.26  Df =2319.7-1950.8 ps  S =2996.3 ps  Cin =  2.4 ff  Cout =  77.3 ff  Cmax =  36.6 ff  G = 3102  
+ABC: Path  2 --    2781 : 6    1 sky130_fd_sc_hd__a222oi_1 A =  10.01  Df =2764.3-1986.4 ps  S = 482.1 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  101  
+ABC: Path  3 --    2782 : 4    1 sky130_fd_sc_hd__nand4_1  A =   6.26  Df =3005.3-1953.0 ps  S = 133.9 ps  Cin =  2.3 ff  Cout =   2.6 ff  Cmax = 124.5 ff  G =  104  
+ABC: Path  4 --    2789 : 3    1 sky130_fd_sc_hd__nor3_1   A =   5.00  Df =3075.1-1841.5 ps  S = 138.8 ps  Cin =  2.4 ff  Cout =   2.4 ff  Cmax =  52.2 ff  G =   96  
+ABC: Path  5 --    2790 : 4    1 sky130_fd_sc_hd__nand4_1  A =   6.26  Df =3155.4-1818.4 ps  S = 126.1 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax = 124.5 ff  G =  101  
+ABC: Path  6 --    2791 : 3    1 sky130_fd_sc_hd__o21a_1   A =   7.51  Df =3265.6-1827.6 ps  S =  21.8 ps  Cin =  2.4 ff  Cout =   0.0 ff  Cmax = 163.0 ff  G =    0  
+ABC: Start-point = pi1027 (\csr_addr [0]).  End-point = po23 ($auto$rtlil.cc:3510:MuxGate$137070).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.2.2. Re-integrating ABC results.
@@ -11033,11 +11053,19 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =    187 (  0.5 %)   Cap =  3.4 ff (  1.6 %)   Area =     1106.06 ( 95.2 %)   Delay =  2134.70 ps  ( 29.9 %)               
+ABC: Path  0 --       7 : 0    6 pi                                  A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  15.1 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     300 : 2   51 sky130_fd_sc_hd__lpflow_isobufsrc_1 A =   6.26  Df =1637.0-1173.0 ps  S =2224.6 ps  Cin =  1.9 ff  Cout = 123.3 ff  Cmax =  82.4 ff  G = 6007  
+ABC: Path  2 --     308 : 6    1 sky130_fd_sc_hd__a222oi_1           A =  10.01  Df =2008.7 -764.6 ps  S = 376.8 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  102  
+ABC: Path  3 --     309 : 2    1 sky130_fd_sc_hd__nand2_1            A =   3.75  Df =2134.7 -836.0 ps  S =  69.8 ps  Cin =  2.3 ff  Cout =   0.0 ff  Cmax = 166.6 ff  G =    0  
+ABC: Start-point = pi6 (\rd_ptr [0]).  End-point = po4 (\head_data [48]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.3.2. Re-integrating ABC results.
@@ -11084,11 +11112,20 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =     40 ( 15.0 %)   Cap =  6.5 ff ( 24.0 %)   Area =      360.35 ( 42.5 %)   Delay =  1732.86 ps  ( 25.0 %)               
+ABC: Path  0 --       4 : 0   12 pi                      A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  43.5 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      23 : 6    6 sky130_fd_sc_hd__mux4_2 A =  22.52  Df = 505.8 -157.9 ps  S = 106.2 ps  Cin =  2.6 ff  Cout =  11.1 ff  Cmax = 301.2 ff  G =  402  
+ABC: Path  2 --      27 : 4    5 sky130_fd_sc_hd__or4b_1 A =  10.01  Df =1097.5 -418.3 ps  S = 128.5 ps  Cin =  1.5 ff  Cout =  10.3 ff  Cmax = 167.6 ff  G =  639  
+ABC: Path  3 --      41 : 6    2 sky130_fd_sc_hd__mux4_2 A =  22.52  Df =1592.4 -650.9 ps  S =  85.4 ps  Cin =  2.6 ff  Cout =   4.2 ff  Cmax = 301.2 ff  G =  155  
+ABC: Path  4 --      42 : 2    1 sky130_fd_sc_hd__and2_0 A =   6.26  Df =1732.9 -702.0 ps  S =  21.3 ps  Cin =  1.6 ff  Cout =   0.0 ff  Cmax = 109.0 ff  G =    0  
+ABC: Start-point = pi3 (\ptr [0]).  End-point = po3 (\conflict_mask [1]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.4.2. Re-integrating ABC results.
@@ -11135,11 +11172,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =     11 (  9.1 %)   Cap =  2.4 ff ( 31.3 %)   Area =       70.07 ( 18.2 %)   Delay =   270.34 ps  ( 18.2 %)               
+ABC: Path  0 --      10 : 0    2 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =   4.7 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      25 : 3    3 sky130_fd_sc_hd__nand3b_1 A =   7.51  Df = 138.4  -50.7 ps  S =  76.9 ps  Cin =  2.0 ff  Cout =   4.2 ff  Cmax = 143.7 ff  G =  200  
+ABC: Path  2 --      26 : 2    1 sky130_fd_sc_hd__and2_0   A =   6.26  Df = 270.3  -88.5 ps  S =  21.5 ps  Cin =  1.6 ff  Cout =   0.0 ff  Cmax = 109.0 ff  G =    0  
+ABC: Start-point = pi9 (\bank_pp1_ready).  End-point = po4 ($auto$opt_dff.cc:336:make_patterns_logic$38578).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.5.2. Re-integrating ABC results.
@@ -11174,11 +11218,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =  13073 (  0.0 %)   Cap =  4.2 ff (  8.8 %)   Area =    87281.21 ( 85.5 %)   Delay = 30265.30 ps  ( 62.7 %)               
+ABC: Path  0 --    7943 : 0   36 pi                       A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  57.5 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --   20944 : 2 2048 sky130_fd_sc_hd__nand2_1 A =   3.75  Df =31069.4-7221.3 ps  S =44637.9 ps  Cin =  2.3 ff  Cout =5053.2 ff  Cmax = 166.6 ff  G =209525  
+ABC: Path  2 --   20948 : 2    1 sky130_fd_sc_hd__nor2_1  A =   3.75  Df =30265.3-2905.1 ps  S =3072.2 ps  Cin =  2.4 ff  Cout =   0.0 ff  Cmax =  86.1 ff  G =    0  
+ABC: Start-point = pi7942 (\we).  End-point = po49 ($memory\mem$wren[254][0][0]$y$38271).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.6.2. Re-integrating ABC results.
@@ -11246,11 +11297,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =     36 ( 11.1 %)   Cap =  3.7 ff ( 27.0 %)   Area =      316.55 ( 41.7 %)   Delay =   578.64 ps  ( 13.9 %)               
+ABC: Path  0 --      19 : 0    4 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =   8.8 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      88 : 4    1 sky130_fd_sc_hd__nor4bb_1 A =  10.01  Df = 210.1  -98.9 ps  S = 172.3 ps  Cin =  1.9 ff  Cout =   1.5 ff  Cmax =  36.6 ff  G =   75  
+ABC: Path  2 --      92 : 4    1 sky130_fd_sc_hd__or4_1    A =   7.51  Df = 578.6 -241.0 ps  S =  57.9 ps  Cin =  1.5 ff  Cout =   0.0 ff  Cmax = 167.6 ff  G =    0  
+ABC: Start-point = pi18 (\arb_grant_valid [3]).  End-point = po19 (\req_fifo_pop [0]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.7.2. Re-integrating ABC results.
@@ -11285,11 +11343,19 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 4137 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 4137 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =    144 (  1.4 %)   Cap =  3.5 ff (  2.3 %)   Area =      852.07 ( 92.4 %)   Delay =  1598.51 ps  ( 53.5 %)               
+ABC: Path  0 --       7 : 0    6 pi                                  A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  15.1 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     212 : 2   37 sky130_fd_sc_hd__lpflow_isobufsrc_1 A =   6.26  Df =1176.6 -806.8 ps  S =1584.8 ps  Cin =  1.9 ff  Cout =  87.4 ff  Cmax =  82.4 ff  G = 4331  
+ABC: Path  2 --     217 : 6    1 sky130_fd_sc_hd__a222oi_1           A =  10.01  Df =1487.1 -463.4 ps  S = 286.8 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  102  
+ABC: Path  3 --     218 : 2    1 sky130_fd_sc_hd__nand2_1            A =   3.75  Df =1598.5 -521.8 ps  S =  60.4 ps  Cin =  2.3 ff  Cout =   0.0 ff  Cmax = 166.6 ff  G =    0  
+ABC: Start-point = pi6 (\rd_ptr [0]).  End-point = po0 (\pop_data [35]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.8.2. Re-integrating ABC results.
@@ -11776,6 +11842,6 @@ Dumping module `$paramod\per_bank_arb\NUM_REQ_PORTS=s32'000000000000000000000000
 Dumping module `\banked_sram_ctrl'.
 
 Warnings: 15 unique messages, 30 total
-End of script. Logfile hash: e694d30ad9, time: 3.90s, user: 1.75s, system: 0.07s, MEM: 235.14 MB peak
+End of script. Logfile hash: 57d2cb2e3f, time: 4.16s, user: 1.82s, system: 0.10s, MEM: 220.47 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
 Time spent: 67% 1x abc (2 sec), 6% 12x opt_clean (0 sec), ...

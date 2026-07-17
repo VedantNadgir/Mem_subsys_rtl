@@ -48,3 +48,9 @@ SYSTEM_MODULE := banked_sram_ctrl
 MODULES := $(UNIT_MODULES) $(SYSTEM_MODULE)
 # --- Default module (used when MODULE is not specified) ------------
 DEFAULT_MODULE := banked_sram_ctrl
+# Target Clock period for timing driven synthesis.
+#. PERIOD=10000 --> 100 MHZ
+#. PERIOD=4000 --> 250 MHZ (Target)
+#. PERIOD=3000 --> 333 MHZ
+#. PERIOD=2000 --> 500 MHZ
+PERIOD ?= 4137

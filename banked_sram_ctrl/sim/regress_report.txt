@@ -1,5 +1,5 @@
 Regression Report
-Generated: Thu Jul 16 23:52:49 IST 2026
+Generated: Fri Jul 17 23:45:45 IST 2026
 ========================================
 
 --- Combo: edge_case | NUM_BANKS=2 BANK_DEPTH=16 DATA_WIDTH=8 ADDR_WIDTH=5 NUM_REQ_PORTS=2 QUEUE_DEPTH=4 ID_WIDTH=4 ---

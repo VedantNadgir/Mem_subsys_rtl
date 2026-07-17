@@ -640,11 +640,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 5441 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 5441 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =    650 (  0.6 %)   Cap =  5.8 ff (  6.2 %)   Area =     4317.89 ( 73.4 %)   Delay =  5440.60 ps  ( 11.8 %)               
+ABC: Path  0 --       6 : 0   83 pi                       A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout = 196.0 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     508 : 5    1 sky130_fd_sc_hd__a32o_1  A =  10.01  Df =5353.8-2388.3 ps  S =  87.1 ps  Cin =  2.3 ff  Cout =   2.5 ff  Cmax = 151.1 ff  G =   97  
+ABC: Path  2 --     511 : 5    1 sky130_fd_sc_hd__a221o_1 A =  10.01  Df =5440.6-2250.0 ps  S =  67.1 ps  Cin =  2.3 ff  Cout =   0.0 ff  Cmax = 158.4 ff  G =    0  
+ABC: Start-point = pi5 (\pp1_id [4]).  End-point = po19 (\rsp_data [110]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -756,6 +763,6 @@ Removed 0 unused cells and 3289 unused wires.
 Dumping module `\rsp_mux'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: 67e41620b7, time: 0.52s, user: 0.38s, system: 0.03s, MEM: 112.56 MB peak
+End of script. Logfile hash: 245fdfb130, time: 0.56s, user: 0.38s, system: 0.04s, MEM: 111.98 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
-Time spent: 46% 1x abc (0 sec), 17% 1x techmap (0 sec), ...
+Time spent: 45% 1x abc (0 sec), 16% 1x techmap (0 sec), ...

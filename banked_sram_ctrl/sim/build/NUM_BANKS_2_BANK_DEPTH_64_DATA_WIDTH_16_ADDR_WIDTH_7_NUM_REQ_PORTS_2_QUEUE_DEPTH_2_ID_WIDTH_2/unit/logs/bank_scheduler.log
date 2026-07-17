@@ -131,5 +131,5 @@ TB START
 ALL TESTS PASSED
 - /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_bank_scheduler.sv:573: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
-- Verilator: $finish at 366ns; walltime 0.001 s; speed 455.224 us/s
+- Verilator: $finish at 366ns; walltime 0.001 s; speed 465.057 us/s
 - Verilator: cpu 0.001 s on 1 threads; allocated 2 MB

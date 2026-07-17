@@ -24,7 +24,7 @@ include config.mk
 
 MODULE ?= $(DEFAULT_MODULE)
 
-.PHONY: help check dirs clean synth synth_all synth_unit report 
+.PHONY: help check dirs clean synth synth_all synth_unit report summary
 
 # --- Help --------------------------------------------------------
 help:
@@ -134,6 +134,7 @@ synth: check
 		-e 's#@MODULE@#$(MODULE)#g' \
 		-e 's#@LIBERTY@#$(LIBERTY_FILE)#g' \
 		-e 's#@NETLIST@#$(NETLIST_DIR)/$(MODULE)_netlist.v#g' \
+		-e 's#@PERIOD@#$(PERIOD)#g' \
 		synth.ys > $(GEN_DIR)/synth_$(MODULE).ys
 	@echo "  Wrote: $(GEN_DIR)/synth_$(MODULE).ys"
 	@echo ""
@@ -252,7 +253,20 @@ report: check
 		--module $(MODULE) \
 		--log $(LOG_DIR)/$(MODULE).log \
 		--netlist $(NETLIST_DIR)/$(MODULE)_netlist.v \
-		--report-out $(REPORT_DIR)/$(MODULE)_report.txt
+		--report-out $(REPORT_DIR)/$(MODULE)_report.txt \
+		--period $(PERIOD)
 	@echo ""
 	@echo "Result: REPORT OK"
 	@echo "  Report: $(REPORT_DIR)/$(MODULE)_report.txt"
+
+# --- Summary generation (standalone) -------------------------------
+summary: check
+	@echo ""
+	@echo "=== Generating summary from reports/ ==="
+	@$(PYTHON3) $(PARSE_SCRIPT) summarize \
+		--report-dir $(REPORT_DIR) \
+		--csv-out $(REPORT_DIR)/summary.csv \
+		--txt-out $(REPORT_DIR)/summary.txt
+	@echo "Result: SUMMARY OK"
+	@echo "  Summary: $(REPORT_DIR)/summary.txt"
+	@echo "           $(REPORT_DIR)/summary.csv"

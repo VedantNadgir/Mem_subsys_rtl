@@ -473,11 +473,20 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 1733 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 1733 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =     40 ( 15.0 %)   Cap =  6.5 ff ( 24.0 %)   Area =      360.35 ( 42.5 %)   Delay =  1732.86 ps  ( 25.0 %)               
+ABC: Path  0 --       4 : 0   12 pi                      A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  43.5 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      23 : 6    6 sky130_fd_sc_hd__mux4_2 A =  22.52  Df = 505.8 -157.9 ps  S = 106.2 ps  Cin =  2.6 ff  Cout =  11.1 ff  Cmax = 301.2 ff  G =  402  
+ABC: Path  2 --      27 : 4    5 sky130_fd_sc_hd__or4b_1 A =  10.01  Df =1097.5 -418.3 ps  S = 128.5 ps  Cin =  1.5 ff  Cout =  10.3 ff  Cmax = 167.6 ff  G =  639  
+ABC: Path  3 --      41 : 6    2 sky130_fd_sc_hd__mux4_2 A =  22.52  Df =1592.4 -650.9 ps  S =  85.4 ps  Cin =  2.6 ff  Cout =   4.2 ff  Cmax = 301.2 ff  G =  155  
+ABC: Path  4 --      42 : 2    1 sky130_fd_sc_hd__and2_0 A =   6.26  Df =1732.9 -702.0 ps  S =  21.3 ps  Cin =  1.6 ff  Cout =   0.0 ff  Cmax = 109.0 ff  G =    0  
+ABC: Start-point = pi3 (\ptr [0]).  End-point = po3 (\conflict_mask [1]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -560,6 +569,6 @@ Removed 0 unused cells and 892 unused wires.
 Dumping module `\per_bank_arb'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: 37f46b97ab, time: 0.21s, user: 0.14s, system: 0.01s, MEM: 48.73 MB peak
+End of script. Logfile hash: c0cf8ea7a0, time: 0.29s, user: 0.14s, system: 0.02s, MEM: 48.66 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
-Time spent: 34% 1x abc (0 sec), 22% 19x read_verilog (0 sec), ...
+Time spent: 35% 1x abc (0 sec), 22% 19x read_verilog (0 sec), ...

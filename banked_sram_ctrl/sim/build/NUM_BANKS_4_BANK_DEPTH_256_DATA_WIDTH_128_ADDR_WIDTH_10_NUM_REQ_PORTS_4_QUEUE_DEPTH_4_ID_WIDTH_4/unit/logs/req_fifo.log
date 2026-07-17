@@ -99,5 +99,5 @@ AFTER DEASSERT: pop=0 rd_ptr=0 head=0000000000000050
 ALL TESTS PASSED
 - /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_req_fifo.sv:497: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
-- Verilator: $finish at 855ns; walltime 0.001 s; speed 1.541 ms/s
+- Verilator: $finish at 855ns; walltime 0.001 s; speed 1.427 ms/s
 - Verilator: cpu 0.001 s on 1 threads; allocated 2 MB

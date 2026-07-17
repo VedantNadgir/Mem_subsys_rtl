@@ -505,11 +505,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 271 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 271 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =     11 (  9.1 %)   Cap =  2.4 ff ( 31.3 %)   Area =       70.07 ( 18.2 %)   Delay =   270.34 ps  ( 18.2 %)               
+ABC: Path  0 --      10 : 0    2 pi                        A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =   4.7 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      25 : 3    3 sky130_fd_sc_hd__nand3b_1 A =   7.51  Df = 138.4  -50.7 ps  S =  76.9 ps  Cin =  2.0 ff  Cout =   4.2 ff  Cmax = 143.7 ff  G =  200  
+ABC: Path  2 --      26 : 2    1 sky130_fd_sc_hd__and2_0   A =   6.26  Df = 270.3  -88.5 ps  S =  21.5 ps  Cin =  1.6 ff  Cout =   0.0 ff  Cmax = 109.0 ff  G =    0  
+ABC: Start-point = pi9 (\bank_pp1_ready).  End-point = po4 ($auto$opt_dff.cc:336:make_patterns_logic$1077).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -567,6 +574,6 @@ Removed 0 unused cells and 29 unused wires.
 Dumping module `\bank_scheduler'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: ac2168a8e6, time: 0.17s, user: 0.11s, system: 0.01s, MEM: 44.11 MB peak
+End of script. Logfile hash: d01e43450d, time: 0.22s, user: 0.11s, system: 0.02s, MEM: 44.12 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
-Time spent: 32% 1x abc (0 sec), 27% 19x read_verilog (0 sec), ...
+Time spent: 34% 1x abc (0 sec), 26% 19x read_verilog (0 sec), ...

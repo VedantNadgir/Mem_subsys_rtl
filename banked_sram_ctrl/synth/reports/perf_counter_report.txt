@@ -15,19 +15,7 @@ Cell breakdown   :
 Wire count       : 238
 Wire bits        : 5353
 Cell count       : 229
-Cell breakdown   :
-  $add                                     32
-  $adff                                    34
-  $eq                                      63
-  $logic_not                               1
-  $mux                                     98
-  $pmux                                    1
-
---- Post-Optimization Report ---
-Wire count       : 204
-Wire bits        : 2281
-Cell count       : 195
-Cell breakdown   :
+Cell breakdown  :
   $add                                     32
   $adff                                    1
   $adffe                                   33
@@ -98,13 +86,17 @@ Cell breakdown                :
   sky130_fd_sc_hd__xnor2_1                 441
   sky130_fd_sc_hd__xor2_1                  282
 
---- Timing Report ---
-Critical path estimate   : Unavailable before place-and-route
-Maximum frequency estimate: Unavailable before place-and-route
-Logic depth              : Unavailable before place-and-route
-Note: Yosys without a place-and-route / STA tool does not
-produce reliable timing numbers. These fields are intentionally
-left unavailable rather than estimated.
+--- Timing Report (ABC gate-delay estimate) ---
+Target period            : 3.209 ns  (312 MHz)
+Critical path estimate   : 3.208 ns  (gate-delay only — no wire model)
+Maximum frequency estimate: 311.7 MHz  (optimistic upper bound)
+Slack vs target          : +0.001 ns  (MET)
+Logic depth              : 7 gate levels
+Critical path start      : \csr_addr [1]
+Critical path end        : $auto$rtlil.cc:3510:MuxGate$22577
+Note: Wire delays add ~30-60% at 130nm. These numbers are a useful
+      directional guide — not production timing closure.
+      Use OpenSTA for production-grade STA with wire models.
 
 --- Artifact Paths ---
 Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/perf_counter_netlist.v

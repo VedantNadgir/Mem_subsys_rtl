@@ -8675,11 +8675,18 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 30266 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 30266 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =  13073 (  0.0 %)   Cap =  4.2 ff (  8.8 %)   Area =    87281.21 ( 85.5 %)   Delay = 30265.30 ps  ( 62.7 %)               
+ABC: Path  0 --    7943 : 0   36 pi                       A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  57.5 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --   20944 : 2 2048 sky130_fd_sc_hd__nand2_1 A =   3.75  Df =31069.4-7221.3 ps  S =44637.9 ps  Cin =  2.3 ff  Cout =5053.2 ff  Cmax = 166.6 ff  G =209525  
+ABC: Path  2 --   20948 : 2    1 sky130_fd_sc_hd__nor2_1  A =   3.75  Df =30265.3-2905.1 ps  S =3072.2 ps  Cin =  2.4 ff  Cout =   0.0 ff  Cmax =  86.1 ff  G =    0  
+ABC: Start-point = pi7942 (\we).  End-point = po49 ($memory\mem$wren[254][0][0]$y$35913).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -8798,6 +8805,6 @@ Removed 0 unused cells and 17235 unused wires.
 Dumping module `\sram_array'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: 3828df0bae, time: 2.14s, user: 0.99s, system: 0.05s, MEM: 153.45 MB peak
+End of script. Logfile hash: 079b1c3de7, time: 2.23s, user: 1.00s, system: 0.06s, MEM: 157.67 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
-Time spent: 67% 1x abc (1 sec), 7% 6x opt_clean (0 sec), ...
+Time spent: 68% 1x abc (1 sec), 7% 6x opt_clean (0 sec), ...

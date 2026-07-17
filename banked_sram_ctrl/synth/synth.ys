@@ -67,7 +67,7 @@ techmap
 dfflibmap -liberty @LIBERTY@
 
 # --- ABC logic optimization and Sky130 HD cell mapping ---------------
-abc -liberty @LIBERTY@
+abc -liberty @LIBERTY@ -D @PERIOD@ -script "+strash; &get -n; &fraig -x; &put; scorr; dc2; dretime; retime -o -D @PERIOD@; strash; &get -n; &dch -f; &nf -D @PERIOD@; &put; stime -p"
 
 # --- Final cleanup (remove unused wires/cells) -----------------------
 opt_clean -purge

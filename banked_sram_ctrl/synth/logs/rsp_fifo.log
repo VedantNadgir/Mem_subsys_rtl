@@ -498,11 +498,19 @@ ABC: + scorr
 ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
 ABC: + dc2 
 ABC: + dretime 
+ABC: + retime -o -D 2577 
 ABC: + strash 
 ABC: + &get -n 
 ABC: + &dch -f 
-ABC: + &nf 
+ABC: + &nf -D 2577 
 ABC: + &put 
+ABC: + stime -p 
+ABC: WireLoad = "none"  Gates =    225 (  0.9 %)   Cap =  3.4 ff (  1.5 %)   Area =     1325.02 ( 95.1 %)   Delay =  2576.94 ps  (  1.8 %)               
+ABC: Path  0 --       6 : 0    5 pi                                  A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =  12.8 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     348 : 2   64 sky130_fd_sc_hd__lpflow_isobufsrc_1 A =   6.26  Df =2016.4-1452.0 ps  S =2747.7 ps  Cin =  1.9 ff  Cout = 152.7 ff  Cmax =  82.4 ff  G = 7562  
+ABC: Path  2 --     567 : 6    1 sky130_fd_sc_hd__a222oi_1           A =  10.01  Df =2438.1 -983.5 ps  S = 455.5 ps  Cin =  2.3 ff  Cout =   2.4 ff  Cmax =  65.9 ff  G =  102  
+ABC: Path  3 --     568 : 2    1 sky130_fd_sc_hd__nand2_1            A =   3.75  Df =2576.9-1067.4 ps  S =  78.1 ps  Cin =  2.3 ff  Cout =   0.0 ff  Cmax = 166.6 ff  G =    0  
+ABC: Start-point = pi5 (\rd_ptr [1]).  End-point = po73 (\pop_data [63]).
 ABC: + write_blif <abc-temp-dir>/output.blif 
 
 20.1.2. Re-integrating ABC results.
@@ -578,6 +586,6 @@ Removed 0 unused cells and 1144 unused wires.
 Dumping module `\rsp_fifo'.
 
 Warnings: 11 unique messages, 23 total
-End of script. Logfile hash: 22e27ae7ea, time: 0.22s, user: 0.14s, system: 0.01s, MEM: 46.97 MB peak
+End of script. Logfile hash: b960245503, time: 0.27s, user: 0.14s, system: 0.02s, MEM: 47.02 MB peak
 Yosys 0.67+post (git sha1 b8e7da6f40ae8f552c116bf6c359b07c6533e159, Release, AppleClang clang++ 21.0.0.21000099)
-Time spent: 36% 1x abc (0 sec), 22% 19x read_verilog (0 sec), ...
+Time spent: 38% 1x abc (0 sec), 21% 19x read_verilog (0 sec), ...

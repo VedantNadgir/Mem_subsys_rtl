@@ -56,7 +56,7 @@ STAGE_MARKERS = ["HIERARCHY", "PRE_OPT", "POST_OPT", "POST_TECHMAP"]
 
 REPORT_SUFFIX = "_report.txt"
 
-SUMMARY_HEADER = ["Module", "Cells", "Area", "Delay", "Frequency", "Logic Depth", "Optimization %"]
+SUMMARY_HEADER = ["Module", "Cells", "Area", "Timing Delay (ns)", "Fmax (MHz)", "Slack (ns)", "Logic Depth", "Optimization %"]
 
 
 def fail(message):
@@ -214,7 +214,72 @@ def format_value(value, unit=""):
     return "{}{}".format(value, unit)
 
 
-def build_report(module, log_path, netlist_path, report_path, sections):
+def parse_abc_timing(log_text, period_ps):
+    """
+    Extract ABC gate-delay timing from the Yosys synthesis log.
+
+    Yosys 0.67+ with 'stime -p' prints (units: picoseconds):
+      WireLoad = "none"  Gates = N  ...  Delay = 2461.87 ps  (X%)
+      Path 0 -- M : level  N pi  ...
+      Path 1 -- M : level  N sky130_cell  ...  Df = arrival-required ps
+      ...
+      Start-point = piN (\\signal).  End-point = poN (\\signal).
+
+    Older ABC versions may use nanoseconds:
+      MaxDelay = 2.14 ns
+
+    Returns (delay_ns, freq_mhz, slack_ns, logic_depth, start_pt, end_pt)
+    or (None, None, None, None, None, None) when not found.
+
+    Gate-delay only — wire delays not modelled (~30-60% additional at 130nm).
+    """
+    period_ns = period_ps / 1000.0
+    delay_ns = None
+
+    # Yosys 0.67+ / ABC stime -p: 'Delay = 2461.87 ps'
+    m = re.search(r'\bDelay\s*=\s*([\d.]+)\s*ps\b', log_text)
+    if m:
+        delay_ns = float(m.group(1)) / 1000.0   # ps -> ns
+
+    # Older ABC: 'MaxDelay = 2.14 ns'
+    if delay_ns is None:
+        m = re.search(r'MaxDelay\s*=\s*([\d.]+)\s*ns', log_text)
+        if m:
+            delay_ns = float(m.group(1))
+
+    # Other variants: 'Delay = 2.14 ns'
+    if delay_ns is None:
+        m = re.search(r'(?<![a-zA-Z])Delay\s*=\s*([\d.]+)\s*ns', log_text)
+        if m:
+            delay_ns = float(m.group(1))
+
+    if delay_ns is None or delay_ns == 0:
+        return None, None, None, None, None, None
+
+    freq_mhz = 1000.0 / delay_ns
+    slack_ns = period_ns - delay_ns
+
+    # Logic depth: the max Path N index (Path 0 is the primary input, so
+    # the number of gate levels = max(N)across all 'Path N --' lines).
+    path_nums = re.findall(r'ABC:\s*Path\s+(\d+)\s*--', log_text)
+    logic_depth = max((int(p) for p in path_nums), default=None)
+
+    # Critical path endpoints printed by stime -p:
+    #   Start-point = pi6 (\rd_ptr [0]).  End-point = po6 (\head_data [59]).
+    start_pt, end_pt = None, None
+    sm = re.search(r'Start-point\s*=\s*\S+\s*\(([^)]+)\)', log_text)
+    em = re.search(r'End-point\s*=\s*\S+\s*\(([^)]+)\)', log_text)
+    if sm:
+        start_pt = sm.group(1).strip()
+    if em:
+        end_pt = em.group(1).strip()
+
+    return delay_ns, freq_mhz, slack_ns, logic_depth, start_pt, end_pt
+
+
+def build_report(module, log_path, netlist_path, report_path, sections,
+                 abc_delay_ns=None, abc_freq_mhz=None, abc_slack_ns=None,
+                 period_ps=4000, logic_depth=None, start_pt=None, end_pt=None):
     for stage in STAGE_MARKERS:
         if stage not in sections:
             fail(
@@ -259,15 +324,7 @@ def build_report(module, log_path, netlist_path, report_path, sections):
     lines.append("Wire count       : {}".format(format_value(pre_opt_stat["wires"])))
     lines.append("Wire bits        : {}".format(format_value(pre_opt_stat["wire_bits"])))
     lines.append("Cell count       : {}".format(format_value(pre_opt_stat["cells_total"])))
-    lines.append("Cell breakdown   :")
-    lines.append(format_cell_breakdown(pre_opt_stat["cell_breakdown"]))
-    lines.append("")
-
-    lines.append("--- Post-Optimization Report ---")
-    lines.append("Wire count       : {}".format(format_value(post_opt_stat["wires"])))
-    lines.append("Wire bits        : {}".format(format_value(post_opt_stat["wire_bits"])))
-    lines.append("Cell count       : {}".format(format_value(post_opt_stat["cells_total"])))
-    lines.append("Cell breakdown   :")
+    lines.append("Cell breakdown  :")
     lines.append(format_cell_breakdown(post_opt_stat["cell_breakdown"]))
     lines.append("")
 
@@ -293,17 +350,34 @@ def build_report(module, log_path, netlist_path, report_path, sections):
     lines.append(format_cell_breakdown(post_techmap_stat["cell_breakdown"]))
     lines.append("")
 
-    lines.append("--- Timing Report ---")
-    lines.append("Critical path estimate   : {}".format(UNAVAILABLE_TIMING))
-    lines.append("Maximum frequency estimate: {}".format(UNAVAILABLE_TIMING))
-    lines.append("Logic depth              : {}".format(UNAVAILABLE_TIMING))
-    lines.append(
-        "Note: Yosys without a place-and-route / STA tool does not"
-    )
-    lines.append(
-        "produce reliable timing numbers. These fields are intentionally"
-    )
-    lines.append("left unavailable rather than estimated.")
+    lines.append("--- Timing Report (ABC gate-delay estimate) ---")
+    period_ns = period_ps / 1000.0
+    if abc_delay_ns is not None:
+        slack_tag = "MET" if abc_slack_ns >= 0 else "VIOLATED"
+        lines.append("Target period            : {:.3f} ns  ({:.0f} MHz)".format(
+            period_ns, 1000.0 / period_ns))
+        lines.append("Critical path estimate   : {:.3f} ns  (gate-delay only — no wire model)".format(
+            abc_delay_ns))
+        lines.append("Maximum frequency estimate: {:.1f} MHz  (optimistic upper bound)".format(
+            abc_freq_mhz))
+        lines.append("Slack vs target          : {:+.3f} ns  ({})".format(
+            abc_slack_ns, slack_tag))
+        if logic_depth is not None:
+            lines.append("Logic depth              : {} gate levels".format(logic_depth))
+        else:
+            lines.append("Logic depth              : {}".format(UNAVAILABLE_TIMING))
+        if start_pt and end_pt:
+            lines.append("Critical path start      : {}".format(start_pt))
+            lines.append("Critical path end        : {}".format(end_pt))
+        lines.append("Note: Wire delays add ~30-60% at 130nm. These numbers are a useful")
+        lines.append("      directional guide — not production timing closure.")
+        lines.append("      Use OpenSTA for production-grade STA with wire models.")
+    else:
+        lines.append("Critical path estimate   : {}".format(UNAVAILABLE_TIMING))
+        lines.append("Maximum frequency estimate: {}".format(UNAVAILABLE_TIMING))
+        lines.append("Slack vs target          : {}".format(UNAVAILABLE_TIMING))
+        lines.append("Note: Re-run synthesis with PERIOD=<ps> to enable timing-driven")
+        lines.append("      ABC optimisation and gate-delay reporting.")
     lines.append("")
 
     lines.append("--- Artifact Paths ---")
@@ -320,7 +394,19 @@ def run_report(args):
     log_text = read_text_file(args.log, "Log")
     warning_count = len(re.findall(r"^Warning:", log_text, re.MULTILINE))
     sections = extract_stage_sections(log_text)
-    report_text = build_report(args.module, args.log, args.netlist, args.report_out, sections)
+    period_ps = getattr(args, 'period', 4000)
+    abc_delay_ns, abc_freq_mhz, abc_slack_ns, logic_depth, start_pt, end_pt = \
+        parse_abc_timing(log_text, period_ps)
+    report_text = build_report(
+        args.module, args.log, args.netlist, args.report_out, sections,
+        abc_delay_ns=abc_delay_ns,
+        abc_freq_mhz=abc_freq_mhz,
+        abc_slack_ns=abc_slack_ns,
+        period_ps=period_ps,
+        logic_depth=logic_depth,
+        start_pt=start_pt,
+        end_pt=end_pt,
+    )
 
     try:
         with open(args.report_out, "w") as f:
@@ -355,6 +441,7 @@ def parse_module_report(report_path):
     area = find_field(report_text, r"^Area \(liberty units.*?:\s*(.+)$")
     delay = find_field(report_text, r"^Critical path estimate\s*:\s*(.+)$")
     frequency = find_field(report_text, r"^Maximum frequency estimate:\s*(.+)$")
+    slack = find_field(report_text, r"^Slack vs target\s*:\s*(.+)$")
     logic_depth = find_field(report_text, r"^Logic depth\s*:\s*(.+)$")
     optimization_pct = find_field(report_text, r"^Reduction %\s*:\s*(.+)$")
 
@@ -364,6 +451,7 @@ def parse_module_report(report_path):
         "area": area,
         "delay": delay,
         "frequency": frequency,
+        "slack": slack,
         "logic_depth": logic_depth,
         "optimization_pct": optimization_pct,
     }
@@ -392,6 +480,7 @@ def run_summarize(args):
             data["area"],
             data["delay"],
             data["frequency"],
+            data["slack"],
             data["logic_depth"],
             data["optimization_pct"],
         ])
@@ -442,12 +531,16 @@ def main():
         description="Parse Yosys synthesis logs into reports, and aggregate reports into a summary."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
-
     report_parser = subparsers.add_parser("report", help="Parse one module's log into a report file")
     report_parser.add_argument("--module", required=True, help="Module name (e.g. req_fifo)")
     report_parser.add_argument("--log", required=True, help="Path to the Yosys log file")
     report_parser.add_argument("--netlist", required=True, help="Path to the generated netlist")
     report_parser.add_argument("--report-out", required=True, help="Path to write the report file")
+    report_parser.add_argument(
+        "--period", type=int, default=4000,
+        help="Target clock period in picoseconds used during synthesis (default: 4000 = 250 MHz). "
+             "Used to compute slack from the ABC MaxDelay estimate."
+    )
 
     summarize_parser = subparsers.add_parser("summarize", help="Aggregate all per-module reports into a summary")
     summarize_parser.add_argument("--report-dir", required=True, help="Directory containing <module>_report.txt files")

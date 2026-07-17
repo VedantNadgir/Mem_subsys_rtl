@@ -302,5 +302,5 @@
 
 - /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/system/tb_sys.sv:113: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
-- Verilator: $finish at 15us; walltime 0.003 s; speed 5.861 ms/s
+- Verilator: $finish at 15us; walltime 0.003 s; speed 4.549 ms/s
 - Verilator: cpu 0.003 s on 1 threads; allocated 2 MB

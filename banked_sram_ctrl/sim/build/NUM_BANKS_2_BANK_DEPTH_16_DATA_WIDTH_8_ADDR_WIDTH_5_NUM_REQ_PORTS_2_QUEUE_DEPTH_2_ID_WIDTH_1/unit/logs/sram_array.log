@@ -49,5 +49,5 @@
 ALL TESTS PASSED
 - /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/sim/../verif/unit/tb_sram_array.sv:378: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.050 2026-07-01
-- Verilator: $finish at 446ns; walltime 0.000 s; speed 1.118 ms/s
+- Verilator: $finish at 446ns; walltime 0.000 s; speed 1.453 ms/s
 - Verilator: cpu 0.000 s on 1 threads; allocated 2 MB

@@ -24,26 +24,7 @@ Cell breakdown   :
 Wire count       : 34
 Wire bits        : 382
 Cell count       : 28
-Cell breakdown   :
-  $add                                     5
-  $adff                                    1
-  $and                                     2
-  $eqx                                     4
-  $gt                                      1
-  $logic_and                               3
-  $mod                                     1
-  $mux                                     5
-  $not                                     2
-  $reduce_or                               1
-  $shl                                     1
-  $shr                                     1
-  $sub                                     1
-
---- Post-Optimization Report ---
-Wire count       : 31
-Wire bits        : 316
-Cell count       : 25
-Cell breakdown   :
+Cell breakdown  :
   $add                                     4
   $adffe                                   1
   $and                                     2
@@ -93,13 +74,17 @@ Cell breakdown                :
   sky130_fd_sc_hd__or4_1                   1
   sky130_fd_sc_hd__or4b_1                  1
 
---- Timing Report ---
-Critical path estimate   : Unavailable before place-and-route
-Maximum frequency estimate: Unavailable before place-and-route
-Logic depth              : Unavailable before place-and-route
-Note: Yosys without a place-and-route / STA tool does not
-produce reliable timing numbers. These fields are intentionally
-left unavailable rather than estimated.
+--- Timing Report (ABC gate-delay estimate) ---
+Target period            : 1.733 ns  (577 MHz)
+Critical path estimate   : 1.733 ns  (gate-delay only — no wire model)
+Maximum frequency estimate: 577.1 MHz  (optimistic upper bound)
+Slack vs target          : +0.000 ns  (MET)
+Logic depth              : 4 gate levels
+Critical path start      : \ptr [0]
+Critical path end        : \conflict_mask [1]
+Note: Wire delays add ~30-60% at 130nm. These numbers are a useful
+      directional guide — not production timing closure.
+      Use OpenSTA for production-grade STA with wire models.
 
 --- Artifact Paths ---
 Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/per_bank_arb_netlist.v

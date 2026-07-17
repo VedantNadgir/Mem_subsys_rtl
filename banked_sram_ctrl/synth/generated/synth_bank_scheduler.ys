@@ -67,7 +67,7 @@ techmap
 dfflibmap -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
 
 # --- ABC logic optimization and Sky130 HD cell mapping ---------------
-abc -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/../../pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib -D 271 -script "+strash; &get -n; &fraig -x; &put; scorr; dc2; dretime; retime -o -D 271; strash; &get -n; &dch -f; &nf -D 271; &put; stime -p"
 
 # --- Final cleanup (remove unused wires/cells) -----------------------
 opt_clean -purge

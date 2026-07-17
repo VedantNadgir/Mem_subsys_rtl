@@ -19,24 +19,7 @@ Cell breakdown   :
 Wire count       : 52
 Wire bits        : 1260
 Cell count       : 47
-Cell breakdown   :
-  $add                                     3
-  $adff                                    4
-  $dff                                     4
-  $eq                                      7
-  $logic_and                               4
-  $logic_not                               5
-  $lt                                      1
-  $mux                                     16
-  $pmux                                    1
-  $reduce_bool                             1
-  $sub                                     1
-
---- Post-Optimization Report ---
-Wire count       : 39
-Wire bits        : 489
-Cell count       : 34
-Cell breakdown   :
+Cell breakdown  :
   $add                                     3
   $adff                                    2
   $adffe                                   2
@@ -89,13 +72,17 @@ Cell breakdown                :
   sky130_fd_sc_hd__xnor2_1                 5
   sky130_fd_sc_hd__xor2_1                  2
 
---- Timing Report ---
-Critical path estimate   : Unavailable before place-and-route
-Maximum frequency estimate: Unavailable before place-and-route
-Logic depth              : Unavailable before place-and-route
-Note: Yosys without a place-and-route / STA tool does not
-produce reliable timing numbers. These fields are intentionally
-left unavailable rather than estimated.
+--- Timing Report (ABC gate-delay estimate) ---
+Target period            : 2.463 ns  (406 MHz)
+Critical path estimate   : 2.462 ns  (gate-delay only — no wire model)
+Maximum frequency estimate: 406.2 MHz  (optimistic upper bound)
+Slack vs target          : +0.001 ns  (MET)
+Logic depth              : 3 gate levels
+Critical path start      : \rd_ptr [0]
+Critical path end        : \head_data [59]
+Note: Wire delays add ~30-60% at 130nm. These numbers are a useful
+      directional guide — not production timing closure.
+      Use OpenSTA for production-grade STA with wire models.
 
 --- Artifact Paths ---
 Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/req_fifo_netlist.v

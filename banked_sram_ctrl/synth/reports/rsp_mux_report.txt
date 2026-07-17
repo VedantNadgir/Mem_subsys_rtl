@@ -22,23 +22,7 @@ Cell breakdown   :
 Wire count       : 234
 Wire bits        : 4218
 Cell count       : 232
-Cell breakdown   :
-  $and                                     12
-  $eq                                      12
-  $logic_and                               44
-  $logic_not                               16
-  $mul                                     8
-  $mux                                     60
-  $neg                                     28
-  $not                                     12
-  $or                                      12
-  $shift                                   28
-
---- Post-Optimization Report ---
-Wire count       : 196
-Wire bits        : 3693
-Cell count       : 194
-Cell breakdown   :
+Cell breakdown  :
   $and                                     12
   $eq                                      12
   $logic_and                               44
@@ -99,13 +83,17 @@ Cell breakdown                :
   sky130_fd_sc_hd__or4_1                   1
   sky130_fd_sc_hd__xor2_1                  1
 
---- Timing Report ---
-Critical path estimate   : Unavailable before place-and-route
-Maximum frequency estimate: Unavailable before place-and-route
-Logic depth              : Unavailable before place-and-route
-Note: Yosys without a place-and-route / STA tool does not
-produce reliable timing numbers. These fields are intentionally
-left unavailable rather than estimated.
+--- Timing Report (ABC gate-delay estimate) ---
+Target period            : 5.441 ns  (184 MHz)
+Critical path estimate   : 5.441 ns  (gate-delay only — no wire model)
+Maximum frequency estimate: 183.8 MHz  (optimistic upper bound)
+Slack vs target          : +0.000 ns  (MET)
+Logic depth              : 2 gate levels
+Critical path start      : \pp1_id [4]
+Critical path end        : \rsp_data [110]
+Note: Wire delays add ~30-60% at 130nm. These numbers are a useful
+      directional guide — not production timing closure.
+      Use OpenSTA for production-grade STA with wire models.
 
 --- Artifact Paths ---
 Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/rsp_mux_netlist.v
