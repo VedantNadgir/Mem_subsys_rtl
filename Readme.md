@@ -1,237 +1,418 @@
-# Memory Subsystem RTL
+# Banked SRAM Controller — RTL Implementation
 
-RTL implementation of a banked SRAM memory subsystem written in SystemVerilog.
+A fully parameterized, banked, synchronous on-chip SRAM controller written in SystemVerilog.
+Designed, verified, and synthesized using open-source ASIC tooling against the SkyWater SKY130 130nm process.
 
-The project is focused on RTL design, verification, linting, and synthesis using open-source ASIC tooling.
+---
+
+## What It Does
+
+The controller accepts read and write requests from multiple independent ports, arbitrates among them
+using a per-bank round-robin policy, routes each transaction to the correct SRAM bank based on the
+address, and returns read data with the original transaction ID to the requesting port.
+
+It is a **shared memory resource with multi-port access**, not a cache. There is no tag array,
+no miss handling, and no eviction. Every address maps to exactly one bank slot.
+
+---
+
+## Architecture
+
+```
+                     BANKED SRAM CONTROLLER
+ ┌─────────────────────────────────────────────────────────┐
+ │                                                         │
+ │  Port 0..N   ┌──────────┐                               │
+ │  ──req────►  │ req_fifo │ ──┐    ┌──────────────────┐   │
+ │  ◄─rsp────   │ (×ports) │   ├──► │  per_bank_arb    │   │
+ │              └──────────┘   │    │  round-robin     │   │
+ │                             │    │  (×banks)        │   │
+ │  Port 0..N   ┌──────────┐   │    └────────┬─────────┘   │
+ │  ──req────►  │ req_fifo │ ──┘             │  [PP0]      │
+ │  ◄─rsp────   │          │        ┌────────▼─────────┐   │
+ │              └──────────┘        │  bank_scheduler  │   │
+ │                                  │  OOB check       │   │
+ │                                  │  (×banks)        │   │
+ │                                  └────────┬─────────┘   │
+ │                                           │             │
+ │                    ┌──────────────────────┤             │
+ │                    │    sram_array        │  [PP1]      │
+ │                    │    (×banks)          │             │
+ │                    └──────────────────────┘             │
+ │                                           │             │
+ │                                  ┌────────▼─────────┐   │
+ │                                  │    rsp_mux       │   │
+ │                                  │  route by tag    │   │
+ │                                  └────────┬─────────┘   │
+ │              ┌──────────┐                 │             │
+ │  ◄─rsp────   │ rsp_fifo │ ◄──────────────┘             │
+ │              │ (×ports) │                               │
+ │              └──────────┘                               │
+ │              ┌──────────────────────────────────────┐   │
+ │              │  perf_counter  (CSR port)            │   │
+ │              └──────────────────────────────────────┘   │
+ └─────────────────────────────────────────────────────────┘
+```
+
+### Key Design Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Bank selection | Low-order address bits | Interleaves sequential addresses across banks, distributes traffic evenly |
+| Arbitration | Round-robin per bank | Fair, starvation-free, single pointer register per bank |
+| Conflict handling | Head-of-line stall per port | Simple, no extra queues needed |
+| Pipeline depth | 2 stages (PP0 + PP1), fixed | Read latency = 3 cycles, write commit = 2 cycles |
+| Clock domains | Single clock | No CDC required in baseline |
+
+### Pipeline
+
+```
+Cycle 0   Request accepted into req_fifo (valid/ready handshake)
+Cycle 1   Arbiter grants — PP0 captures addr/data/id → SRAM command issued
+Cycle 2   PP1 captures SRAM read data → rsp_mux routes to correct rsp_fifo
+Cycle 3   Requestor receives response
+```
+
+Read latency (no stall): **3 cycles**  
+Write commit to SRAM: **2 cycles**  
+Conflict penalty: **+1 cycle per lost arbitration round**
+
+---
+
+## Module Hierarchy
+
+```
+banked_sram_ctrl          Top-level wrapper and interconnect glue
+├── req_fifo  ×N_PORTS    Per-port synchronous request FIFO
+├── per_bank_arb  ×N_BANKS  Per-bank round-robin arbiter
+├── bank_scheduler  ×N_BANKS  PP0 + PP1 pipeline, OOB check, SRAM control
+├── sram_array  ×N_BANKS  Behavioral SRAM with per-byte write enable
+├── rsp_mux               Routes PP1 outputs to correct response FIFO
+├── rsp_fifo  ×N_PORTS    Per-port synchronous response FIFO
+└── perf_counter          32 saturating counters, CSR read port
+```
+
+---
+
+## Parameters
+
+| Parameter | Default | Legal Range | Description |
+|---|---|---|---|
+| `NUM_BANKS` | 4 | 2–16, pow2 | Number of independent SRAM banks |
+| `BANK_DEPTH` | 256 | 16–65536, pow2 | Addressable rows per bank |
+| `DATA_WIDTH` | 32 | 8, 16, 32, 64, 128 | Data bus width in bits |
+| `ADDR_WIDTH` | 10 | ≥ clog2(BANKS)+clog2(DEPTH) | Word-address width |
+| `NUM_REQ_PORTS` | 4 | 1–8 | Independent requestor ports |
+| `QUEUE_DEPTH` | 4 | 2–16, pow2 | Depth of each request and response FIFO |
+| `ID_WIDTH` | 4 | 1–8 | Transaction ID bits per port |
+
+All parameters are validated at elaboration time with `$fatal` checks.
+Illegal values are caught at simulation time 0, not silently mis-synthesized.
 
 ---
 
 ## Repository Structure
 
-```text
-Mem_Subsystem_RTL/
+```
+Mem_subsys_rtl/
 ├── banked_sram_ctrl/
 │   ├── rtl/
-│   ├── sim/
+│   │   ├── pkg/sram_ctrl_pkg.sv        Parameter package and struct definitions
+│   │   ├── banked_sram_ctrl.sv         Top-level module
+│   │   ├── bank_scheduler.sv           PP0/PP1 pipeline, OOB detection
+│   │   ├── per_bank_arb.sv             Round-robin arbiter
+│   │   ├── req_fifo.sv                 Request-side FIFO
+│   │   ├── rsp_fifo.sv                 Response-side FIFO
+│   │   ├── rsp_mux.sv                  Response routing mux
+│   │   ├── sram_array.sv               Behavioral SRAM (byte-enable)
+│   │   └── perf_counter.sv             Performance counters + CSR
 │   ├── verif/
-│   ├── constraints/
+│   │   ├── unit/                       8 directed unit testbenches
+│   │   └── system/                     System-level testbench + 5 test suites
+│   ├── sim/
+│   │   ├── makefile                    Simulation build engine
+│   │   ├── config.mk                   Parameters, flags, regression matrix
+│   │   └── filelist.f                  RTL source list for Verilator
+│   ├── synth/
+│   │   ├── makefile                    Synthesis build engine
+│   │   ├── config.mk                   Paths, module lists, clock period
+│   │   ├── synth.ys                    Yosys script template
+│   │   ├── parse_report.py             Report and summary generator
+│   │   ├── leakage_power.py            Leakage power estimator
+│   │   └── reports/                    Generated synthesis reports
 │   └── docs/
-├── pdk/
-├── pdk_tools/
-├── Resources/
-├── setup.sh
-├── setup_sky130.sh
-└── makefile
-```
-
----
-
-## Tools Used
-
-### Simulation
-
-**Verilator**
-
-Used for cycle-accurate RTL simulation.
-
----
-
-### Waveform Viewing
-
-**WaveTrace**
-
-VSCode extension used for viewing generated VCD waveform files.
-
----
-
-### Linting
-
-**Verible**
-
-Used for:
-
-* RTL linting
-* Style checking
-* Formatting
-
----
-
-### Synthesis
-
-**Yosys**
-
-Used for RTL synthesis.
-
-Use Case:
-
-* Technology mapping
-* ABC optimization
-* Gate-level netlist generation
-
----
-
-## Process Design Kit (PDK)
-
-### SkyWater SKY130
-
-Open-source 130nm CMOS process technology.
-
-Used together with Yosys for technology mapping.
-
----
-
-### Standard Cell Library
-
-**sky130_fd_sc_hd**
-
-High-density standard cell library.
-
-The project setup automatically generates Liberty timing models from the SkyWater JSON timing database.
-
-Generated Liberty:
-
-```text
-pdk/sky130_fd_sc_hd/generated_libs/
-└── sky130_fd_sc_hd__tt_025C_1v80.lib
-```
-
-Current project synthesis target:
-
-```text
-TT Corner
-25°C
-1.80V
+│       └── Project_spec.md             Locked microarchitecture spec (v1.1)
+├── pdk_tools/skywater_pdk/             Liberty file generator from SKY130 JSON
+├── Resources/                          Design notes and fundamentals
+├── setup.sh                            Tool installer (macOS/brew)
+├── setup_sky130.sh                     SKY130 Liberty generator
+└── makefile                            Root build entry point
 ```
 
 ---
 
 ## Setup
 
-Clone repository:
+### Requirements
+
+- macOS (setup.sh uses Homebrew)
+- Verilator ≥ 4.220
+- Yosys 0.x
+- Verible
+- Python 3.x
+- iverilog
+
+### Steps
 
 ```bash
+# 1. Clone
 git clone https://github.com/VedantNadgir/Mem_subsys_rtl.git
 cd Mem_subsys_rtl
-```
 
-Run environment setup:
-
-```bash
+# 2. Install tools (macOS)
 ./setup.sh
-```
 
-This installs:
-
-* Verilator
-* Verible
-* Yosys
-* Python dependencies
-
-Generate Sky130 Liberty files:
-
-```bash
+# 3. Generate SKY130 Liberty file (required for synthesis)
 ./setup_sky130.sh
+
+# 4. Install Python packages
+pip3 install -r requirements.txt
 ```
 
 ---
 
 ## Build System
 
-Top-level commands:
+All commands run from the repository root.
+
+### Code Quality
 
 ```bash
-make help
-make setup
-make lint
-make format
-make sim
+make lint           # Verible lint on all RTL sources
+make format         # Verible auto-format in-place (idempotent)
+```
+
+### Simulation
+
+```bash
+# Unit testbench for a single module (default params)
+make unit TEST=sram_array
+make unit TEST=req_fifo
+make unit TEST=rsp_fifo
+make unit TEST=per_bank_arb
+make unit TEST=bank_scheduler
+make unit TEST=rsp_mux
+make unit TEST=perf_counter
+make unit TEST=banked_sram_ctrl
+
+# Unit testbench with custom parameters
+make unit TEST=banked_sram_ctrl "PARAMS=NUM_BANKS=2 NUM_REQ_PORTS=2 ADDR_WIDTH=5 BANK_DEPTH=16"
+
+# System-level testbench (all 5 test suites)
+make sys
+
+# System testbench with custom parameters
+make sys "PARAMS=NUM_BANKS=8 NUM_REQ_PORTS=8 ADDR_WIDTH=11 BANK_DEPTH=256"
+
+# Full regression: 12 parameter configurations x (8 unit + 1 system) = 108 tests
 make regress
+```
+
+### Synthesis
+
+```bash
+# Synthesize single module (default: banked_sram_ctrl)
 make synth
-make area
-make netlist
-make clean
+
+# Synthesize specific module
+make -C banked_sram_ctrl/synth synth MODULE=req_fifo
+
+# Synthesize with a specific clock period target (picoseconds)
+make -C banked_sram_ctrl/synth synth MODULE=banked_sram_ctrl PERIOD=4000
+
+# Generate report for a module
+make -C banked_sram_ctrl/synth report MODULE=req_fifo
+
+# Synthesize all unit sub-modules + generate summary
+make synth_unit
+
+# Synthesize all modules including top-level + generate summary
+make synth_all
+
+# Leakage power estimate (no re-synthesis required)
+make -C banked_sram_ctrl/synth power
+```
+
+### Cleanup
+
+```bash
+make clean          # Remove all generated artifacts
 ```
 
 ---
 
-## Simulation Structure
+## Verification
 
-```text
-sim/
-├── makefile
-├── config.mk
-├── filelist.f
-├── tb/
-├── logs/
-└── waves/
+### Unit Tests
+
+Each RTL module has a dedicated directed testbench with 8–13 test cases.
+
+| Module | Tests | Coverage |
+|---|---|---|
+| `sram_array` | 12 TCs | Full-word writes, partial byte-lane writes, same-address RW, boundary addresses |
+| `req_fifo` | 13 TCs | Reset, fill-to-full, fall-through head, simultaneous push+pop, pointer wrap, no-comb-path |
+| `rsp_fifo` | 12 TCs | Combinational push_ready/pop_valid, full-block, simultaneous ops, pointer wrap |
+| `per_bank_arb` | 8 TCs | Reset, single-port no-rotation, 2/4-port contention, full RR sweep, stall, conflict mask |
+| `bank_scheduler` | 12 TCs | Reset, 3-cycle read latency, write, partial write, OOB, stall, bubble propagation |
+| `rsp_mux` | 12 TCs | Idle, single routing, write zeroing, ID stripping, error, collision, peak throughput |
+| `perf_counter` | 12 TCs | All 5 counter types, saturation at 0xFFFFFFFF, CSR timing, non-intrusive reads |
+| `banked_sram_ctrl` | 12 TCs | Integration: R/W round-trip, write ACK, multi-port, bank conflict, backpressure, OOB, byte-enable, in-order, random, CSR, cross-port |
+
+### System Tests
+
+The system testbench runs 5 test suites end-to-end with a scoreboard:
+
+| Suite | What it tests |
+|---|---|
+| Smoke | Basic read and write to every bank |
+| Conflict | Bank arbitration with multiple ports targeting the same bank |
+| Backpressure | Response queue stall chain and port isolation |
+| Random | 40 randomized transactions across ports and banks |
+| Stress | 100 sequential writes followed by 100 reads |
+
+### Regression
+
+12 parameter configurations are swept across all unit and system tests:
+
+| Config | Banks | Depth | Width | Ports |
+|---|---|---|---|---|
+| cfg_minimal | 2 | 16 | 8 | 2 |
+| cfg_small_8/16/32 | 2 | 64 | 8/16/32 | 2 |
+| cfg_dflt | 4 | 256 | 32 | 4 |
+| cfg_deep | 4 | 1024 | 32 | 4 |
+| cfg_narrow / cfg_wide | 4 | 256 | 8 / 128 | 4 |
+| cfg_large_64 / cfg_large_128 | 8 | 512 | 64 / 128 | 8 |
+| cfg_max_ports | 8 | 256 | 32 | 8 |
+| cfg_min_ports | 4 | 256 | 32 | 2 |
+
+
+**Result: 117 / 117 tests pass across all configurations.**
+
+---
+
+## Synthesis Results
+
+**Technology:** SkyWater SKY130 HD — TT corner, 25°C, 1.80V  
+**Tool:** Yosys 0.67 + ABC (gate-delay model, no wire parasitics)  
+**Clock target:** 4137 ps (242 MHz)
+
+### Area Summary (default parameters)
+
+| Module | Instances | Cells | Area (λ²) |
+|---|---|---|---|
+| `sram_array` | ×4 | 21 265 | 333 277 × 4 |
+| `perf_counter` | ×1 | 4 439 | 48 335 |
+| `req_fifo` | ×4 | 490 | 7 433 × 4 |
+| `rsp_fifo` | ×4 | 488 | 5 471 × 4 |
+| `rsp_mux` | ×1 | 650 | 4 288 |
+| `bank_scheduler` | ×4 | 103 | 2 823 × 4 |
+| `per_bank_arb` | ×4 | 42 | 410 × 4 |
+| `banked_sram_ctrl` (glue) | ×1 | 36 | 317 |
+| **Total system** | | **93 573** | **1 450 600** |
+
+> `sram_array` is a behavioral flip-flop model. In physical design this is replaced with a
+> SRAM compiler macro — the actual controller logic (everything except sram_array) is ~15 600 cells.
+
+### Timing (gate-delay only)
+
+| Module | Critical path delay | Gate-delay Fmax | Bottleneck path |
+|---|---|---|---|
+| `rsp_mux` | 4.136 ns | 241 MHz | pp1_id → rsp_data |
+| `perf_counter` | 3.266 ns | 306 MHz | csr_addr → counter mux |
+| `req_fifo` | 2.135 ns | 468 MHz | rd_ptr → head_data |
+| `per_bank_arb` | 1.733 ns | 577 MHz | ptr → conflict_mask |
+| `rsp_fifo` | 1.599 ns | 625 MHz | rd_ptr → pop_data |
+| `banked_sram_ctrl` (glue) | 0.579 ns | 1 728 MHz | arb_grant_valid → req_fifo_pop |
+| `bank_scheduler` | 0.270 ns | 3 700 MHz | bank_pp1_ready → internal |
+| `sram_array` | 30.265 ns | 33 MHz | behavioral model — not representative |
+
+**Controller Fmax (excluding behavioral sram_array): ~241 MHz**  
+Bottleneck: `rsp_mux` — the combinational bank-to-port routing logic.
+
+> Gate-delay only. Wire delays add approximately 30–60% at 130nm. Use OpenSTA
+> with extracted parasitics for production STA.
+
+### Leakage Power (gate-delay estimate, TT 25°C 1.80V)
+
+| Module | Leakage |
+|---|---|
+| `sram_array` ×4 | 113.594 nW |
+| `perf_counter` ×1 | 19.243 nW |
+| `req_fifo` ×4 | 3.093 nW |
+| `rsp_fifo` ×4 | 3.089 nW |
+| `rsp_mux` ×1 | 1.173 nW |
+| `banked_sram_ctrl` ×1 | 1.197 nW |
+| `bank_scheduler` ×4 | 0.944 nW |
+| `per_bank_arb` ×4 | 0.131 nW |
+
+Static leakage from Liberty `cell_leakage_power` values. Dynamic power requires switching activity data.
+
+---
+
+## Features
+
+- **Fully parameterized** — no magic numbers in RTL; every width, depth, and count is a parameter or derived from one
+- **Round-robin arbitration** — per-bank, starvation-free, single pointer register
+- **Head-of-line conflict stall** — losing port holds at queue head; no extra buffering required
+- **2-stage pipeline** — deterministic 3-cycle read latency, 2-cycle write commit
+- **Byte-enable strobe** — per-byte write masking across all DATA_WIDTH variants
+- **Out-of-range address detection** — returns `err=1` response, suppresses SRAM write
+- **In-order responses per port** — FIFO ordering guaranteed by the pipeline structure
+- **Write responses** — every accepted write generates exactly one ACK response
+- **Backpressure isolation** — a stalled port does not affect other ports
+- **Performance counters** — 5 counter types (req, rsp, conflict, queue-full, bank-idle); CSR read port; saturating 32-bit; non-intrusive
+- **Single clock domain** — asynchronous reset assert, synchronous deassert; no CDC crossings
+- **Parameter legality checks** — `$fatal` at simulation time 0 for all illegal configurations
+
+---
+
+## What Is Out of Scope (v1.0)
+
+The following features are explicitly deferred per the locked spec (v1.1):
+
+- ECC (SECDED) — no syndrome bits or correction logic
+- Prefetcher — no next-line speculation
+- MSHR / out-of-order completion — in-order only
+- Weighted round-robin — standard round-robin only
+- CDC / multi-clock — single clock domain only
+- Gate-level simulation — netlist generated but GLS flow not included
+
+---
+
+## Tools
+
+| Tool | Version | Purpose |
+|---|---|---|
+| Verilator | ≥ 4.220 | Cycle-accurate RTL simulation |
+| Yosys | 0.67+ | RTL synthesis, technology mapping |
+| ABC | (bundled with Yosys) | Logic optimization, timing-driven cell mapping |
+| Verible | latest | RTL linting, style formatting |
+| SKY130 HD | sky130_fd_sc_hd | 130nm open-source standard cell library |
+| Python 3 | ≥ 3.8 | Report parsing, leakage estimation, Liberty generation |
+| WaveTrace | VSCode extension | VCD waveform viewer |
+| iverilog | latest | Checked by synthesis environment |
+
+---
+
+## Specification
+
+Full microarchitecture specification is at:
+
+```
+banked_sram_ctrl/docs/Project_spec.md
 ```
 
-### config.mk
+Document version: **v1.1 — LOCKED**  
+Covers: parameters, address mapping, pipeline, arbitration, conflict policy, backpressure, error handling, clock domain, performance counters, CSR port.
 
-Simulation configuration variables.
-
-Examples:
-
-```make
-TOP
-TRACE
-SEED
-TIMEOUT
-```
-
----
-
-### filelist.f
-
-RTL source file list used by Verilator.
-
----
-
-### tb/
-
-Contains future testbench infrastructure.
-
----
-
-### logs/
-
-Simulation logs.
-
----
-
-### waves/
-
-Generated VCD waveform files.
-
----
-
-## Current Status
-
-Implemented:
-
-* Project structure
-* RTL hierarchy
-* Root build system
-* Simulation infrastructure
-* Verible lint integration
-* Verible formatting integration
-* Sky130 library setup
-* Liberty generation flow
-* Yosys integration preparation
-
-Planned:
-
-* Directed testbench
-* Regression framework
-* Synthesis scripts
-* Area reporting
-* Technology-mapped netlist generation
-* Gate-level verification
-
----
-
-## Notes
-
-The repository currently focuses on RTL development and infrastructure setup.
-
-Verification, synthesis automation, and physical-design-oriented flows will be expanded incrementally as the project matures.
+RTL has been audited against the spec. All architectural decisions in v1.1 are implemented. No deviations.
