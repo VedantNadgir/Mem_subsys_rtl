@@ -377,6 +377,77 @@ Static leakage from Liberty `cell_leakage_power` values. Dynamic power requires 
 
 ---
 
+## Results Spreadsheet
+Per-Module Synthesis Report (Yosys + ABC → Sky130 (Standard CMOS cells --> High Density))
+
+## Module Summary Table
+
+| Step | Module | Gate Count | Wire Bits | Area (µm²) | Logic Depth | Slack (ns) | Crit Path (ns) | Max Freq (MHz) | Leakage (nW) | Status |
+|:----:|:-------|:----------:|:---------:|:----------:|:-----------:|:----------:|:--------------:|:--------------:|:------------:|:------:|
+| 1 | sram_array.sv | 21,265 | 21,311 | 333,277.14 | 2 | 0 | 30.265 | 33 | 113.5941 | Done |
+| 2 | req_fifo.sv | 490 | 558 | 9,222.60 | 3 | 0.001 | 2.462 | 406.2 | 3.0929 | Done |
+| 3 | rsp_fifo.sv | 488 | 556 | 9,187.56 | 3 | 0 | 2.577 | 388.1 | 3.0886 | Done |
+| 4 | per_bank_arb.sv | 42 | 49 | 410.39 | 4 | 0 | 1.733 | 577.1 | 0.1312 | Done |
+| 5 | bank_scheduler.sv | 103 | 193 | 2,822.71 | 2 | 0.001 | 0.27 | 3,690 | 0.944 | Done |
+| 6 | rsp_mux.sv | 650 | 818 | 4,317.89 | 2 | 0 | 5.441 | 183.8 | 1.1732 | Done |
+| 7 | perf_counter.sv | 4,439 | 4,479 | 48,282.56 | 7 | 0.001 | 3.208 | 311.67 | 19.2426 | Done |
+| 8 | banked_sram_ctrl.sv (wrapper) | 36 | 1,723 | 316.55 | 2 | 0.001 | 0.579 | 1,724.14 | 0.0727 | Done |
+| | **SYSTEM TOTAL** | **70,997** | **96,429** | **1,450,600** | **2** | **---** | **4.137*** | **242** | **496.4941** | **Done** |
+
+*\*Critical path corresponds to rsp_mux excluding the SRAM array.*
+
+---
+
+## Detailed Notes by Module
+
+### 1. sram_array.sv
+- **Area:** 333,277.14 µm² — FF-inferred memory; area inflated significantly.
+- **Power:** Power estimation unavailable in Yosys synth. Requires per-signal toggle count frequency (TCF file).
+- **Timing:** 33 MHz (30.265 ns critical path).
+
+### 2. req_fifo.sv
+- **Timing:** Clean, 406 MHz. No issues.
+- **Area:** 9,222.60 µm².
+
+### 3. rsp_fifo.sv
+- **Timing:** Clean, 388 MHz. No issues.
+- **Area:** 9,187.56 µm².
+
+### 4. per_bank_arb.sv
+- **Timing:** Clean, 577 MHz. No issues.
+- **Area:** 410.39 µm².
+
+### 5. bank_scheduler.sv
+- **Timing:** 3,690 MHz (0.27 ns). SRAM treated as boundary I/O (blackboxed); excludes actual SRAM access time.
+- **Area:** 2,822.71 µm².
+
+### 6. rsp_mux.sv
+- **Timing:** 183.8 MHz. Likely critical path bottleneck — **fails 250 MHz target**.
+- **Area:** 4,317.89 µm².
+
+### 7. perf_counter.sv
+- **Timing:** Passes at 311.67 MHz.
+- **Area:** 48,282.56 µm² — area/gate hog after SRAM, due to 32-bit saturating CSR counter.
+
+### 8. banked_sram_ctrl.sv (wrapper)
+- **Timing:** 1,724.14 MHz.
+- **Area:** 316.55 µm².
+
+---
+
+## System Totals
+| Metric | Value |
+|:-------|:------|
+| **Total Gate Count** | 70,997 |
+| **Total Wire Bits** | 96,429 |
+| **Total Area** | ~1,450,600 µm² |
+| **System Logic Depth** | 2 |
+| **System Critical Path** | 4.137 ns (rsp_mux, SRAM excluded) |
+| **System Max Freq** | 242 MHz |
+| **Total Est. Leakage Power** | 496.4941 nW |
+| **Synthesis Status** | Done |
+---
+
 ## What Is Out of Scope (v1.0)
 
 The following features are explicitly deferred per the locked spec (v1.1):
