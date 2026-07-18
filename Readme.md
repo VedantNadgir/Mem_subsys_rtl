@@ -142,6 +142,7 @@ Mem_subsys_rtl/
 │   │   └── reports/                    Generated synthesis reports
 │   └── docs/
 │       └── Project_spec.md             Locked microarchitecture spec (v1.1)
+├── pdk/sky130_fd_sc_hd                 Actual Liberty Files
 ├── pdk_tools/skywater_pdk/             Liberty file generator from SKY130 JSON
 ├── Resources/                          Design notes and fundamentals
 ├── setup.sh                            Tool installer (macOS/brew)
