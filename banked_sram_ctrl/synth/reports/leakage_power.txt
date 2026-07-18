@@ -22,36 +22,74 @@ Module: bank_scheduler
 Module: banked_sram_ctrl
   Cell                                          Count  Leakage/cell   Contribution
   ----------------------------------------------------------------------------
-  sky130_fd_sc_hd__a222oi_1                       128     0.0024 nW       0.312 nW
-  sky130_fd_sc_hd__lpflow_isobufsrc_1             100     0.0022 nW       0.218 nW
-  sky130_fd_sc_hd__o31ai_1                         96     0.0017 nW       0.163 nW
-  sky130_fd_sc_hd__nand2_1                         75     0.0021 nW       0.159 nW
-  sky130_fd_sc_hd__and2_0                          64     0.0019 nW       0.123 nW
-  sky130_fd_sc_hd__clkinv_1                        38     0.0016 nW       0.060 nW
-  sky130_fd_sc_hd__nand3b_1                        36     0.0014 nW       0.050 nW
-  sky130_fd_sc_hd__a221o_1                          5     0.0027 nW       0.013 nW
-  sky130_fd_sc_hd__nand3_1                         12     0.0010 nW       0.012 nW
-  sky130_fd_sc_hd__a32o_1                           5     0.0023 nW       0.011 nW
-  sky130_fd_sc_hd__and3_1                           2     0.0056 nW       0.011 nW
-  sky130_fd_sc_hd__nor2_1                           5     0.0020 nW       0.010 nW
-  sky130_fd_sc_hd__o2111ai_1                       15     0.0006 nW       0.009 nW
+  sky130_fd_sc_hd__edfxtp_1                     34536     0.0098 nW     338.004 nW
+  sky130_fd_sc_hd__nor2_1                       33500     0.0020 nW      65.985 nW
+  sky130_fd_sc_hd__mux4_2                        6244     0.0064 nW      39.777 nW
+  sky130_fd_sc_hd__dfrtp_1                       1129     0.0117 nW      13.155 nW
+  sky130_fd_sc_hd__a22oi_1                       3896     0.0026 nW      10.035 nW
+  sky130_fd_sc_hd__nand2_1                       3310     0.0021 nW       7.010 nW
+  sky130_fd_sc_hd__a21oi_1                       3177     0.0017 nW       5.249 nW
+  sky130_fd_sc_hd__a222oi_1                      2000     0.0024 nW       4.869 nW
+  sky130_fd_sc_hd__a22o_1                         874     0.0041 nW       3.551 nW
+  sky130_fd_sc_hd__and3_1                         232     0.0056 nW       1.298 nW
+  sky130_fd_sc_hd__xor2_1                         252     0.0043 nW       1.078 nW
+  sky130_fd_sc_hd__xnor2_1                        478     0.0021 nW       0.987 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1             274     0.0022 nW       0.597 nW
+  sky130_fd_sc_hd__o31ai_1                        250     0.0017 nW       0.425 nW
+  sky130_fd_sc_hd__o21ai_0                        375     0.0010 nW       0.389 nW
+  sky130_fd_sc_hd__and2_0                         197     0.0019 nW       0.379 nW
+  sky130_fd_sc_hd__clkinv_1                       226     0.0016 nW       0.354 nW
+  sky130_fd_sc_hd__o41ai_1                        192     0.0014 nW       0.267 nW
+  sky130_fd_sc_hd__nand3_1                        254     0.0010 nW       0.261 nW
+  sky130_fd_sc_hd__a21boi_0                       101     0.0025 nW       0.250 nW
+  sky130_fd_sc_hd__nand4_1                        426     0.0005 nW       0.224 nW
+  sky130_fd_sc_hd__nor3_1                         211     0.0009 nW       0.195 nW
+  sky130_fd_sc_hd__a31oi_1                        122     0.0015 nW       0.181 nW
+  sky130_fd_sc_hd__nor4_1                         322     0.0005 nW       0.161 nW
+  sky130_fd_sc_hd__and4_1                          43     0.0034 nW       0.146 nW
+  sky130_fd_sc_hd__o31a_1                          64     0.0021 nW       0.132 nW
+  sky130_fd_sc_hd__o22ai_1                         96     0.0013 nW       0.126 nW
+  sky130_fd_sc_hd__a41o_1                          18     0.0066 nW       0.119 nW
+  sky130_fd_sc_hd__nand2b_1                        50     0.0023 nW       0.113 nW
+  sky130_fd_sc_hd__a221oi_1                        57     0.0018 nW       0.101 nW
+  sky130_fd_sc_hd__a41oi_1                         74     0.0014 nW       0.101 nW
+  sky130_fd_sc_hd__or3_1                           74     0.0013 nW       0.095 nW
+  sky130_fd_sc_hd__or4_1                          109     0.0009 nW       0.093 nW
+  sky130_fd_sc_hd__a21o_1                          12     0.0059 nW       0.071 nW
+  sky130_fd_sc_hd__nand3b_1                        41     0.0014 nW       0.057 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1             30     0.0018 nW       0.055 nW
+  sky130_fd_sc_hd__a31o_1                          19     0.0024 nW       0.045 nW
+  sky130_fd_sc_hd__o2111a_1                        12     0.0037 nW       0.045 nW
+  sky130_fd_sc_hd__o41a_1                          32     0.0014 nW       0.044 nW
+  sky130_fd_sc_hd__o211a_1                          4     0.0107 nW       0.043 nW
+  sky130_fd_sc_hd__dfstp_2                          4     0.0105 nW       0.042 nW
+  sky130_fd_sc_hd__a221o_1                         14     0.0027 nW       0.037 nW
+  sky130_fd_sc_hd__o22a_1                          13     0.0028 nW       0.036 nW
+  sky130_fd_sc_hd__o2111ai_1                       51     0.0006 nW       0.029 nW
+  sky130_fd_sc_hd__nor3b_1                         20     0.0013 nW       0.026 nW
+  sky130_fd_sc_hd__nor2b_1                         11     0.0022 nW       0.024 nW
+  sky130_fd_sc_hd__mux2i_1                          4     0.0059 nW       0.024 nW
+  sky130_fd_sc_hd__a32o_1                           9     0.0023 nW       0.021 nW
+  sky130_fd_sc_hd__or4b_1                           9     0.0021 nW       0.019 nW
+  sky130_fd_sc_hd__o221ai_1                        16     0.0011 nW       0.017 nW
+  sky130_fd_sc_hd__nor4bb_1                         5     0.0032 nW       0.016 nW
+  sky130_fd_sc_hd__o211ai_1                        20     0.0007 nW       0.014 nW
+  sky130_fd_sc_hd__nand4b_1                        13     0.0010 nW       0.013 nW
+  sky130_fd_sc_hd__o21a_1                           6     0.0022 nW       0.013 nW
+  sky130_fd_sc_hd__a211o_1                          4     0.0031 nW       0.013 nW
+  sky130_fd_sc_hd__a211oi_1                        12     0.0010 nW       0.012 nW
+  sky130_fd_sc_hd__or3b_1                           4     0.0026 nW       0.010 nW
+  sky130_fd_sc_hd__nor4b_1                         11     0.0009 nW       0.010 nW
+  sky130_fd_sc_hd__a311oi_1                        10     0.0010 nW       0.010 nW
+  sky130_fd_sc_hd__o21bai_1                         3     0.0029 nW       0.009 nW
+  sky130_fd_sc_hd__nand4bb_1                        4     0.0019 nW       0.008 nW
   sky130_fd_sc_hd__and3b_1                          1     0.0071 nW       0.007 nW
-  sky130_fd_sc_hd__nand4bb_1                        3     0.0019 nW       0.006 nW
-  sky130_fd_sc_hd__nand4b_1                         5     0.0010 nW       0.005 nW
-  sky130_fd_sc_hd__nand4_1                          8     0.0005 nW       0.004 nW
-  sky130_fd_sc_hd__nor3b_1                          3     0.0013 nW       0.004 nW
-  sky130_fd_sc_hd__and4_1                           1     0.0034 nW       0.003 nW
-  sky130_fd_sc_hd__a21oi_1                          2     0.0017 nW       0.003 nW
-  sky130_fd_sc_hd__nor3_1                           3     0.0009 nW       0.003 nW
-  sky130_fd_sc_hd__nand2b_1                         1     0.0023 nW       0.002 nW
-  sky130_fd_sc_hd__xnor2_1                          1     0.0021 nW       0.002 nW
-  sky130_fd_sc_hd__lpflow_inputiso1p_1              1     0.0018 nW       0.002 nW
-  sky130_fd_sc_hd__a31oi_1                          1     0.0015 nW       0.001 nW
-  sky130_fd_sc_hd__nor4b_1                          1     0.0009 nW       0.001 nW
-  sky130_fd_sc_hd__o211ai_1                         1     0.0007 nW       0.001 nW
-  sky130_fd_sc_hd__nor4_1                           1     0.0005 nW       0.001 nW
+  sky130_fd_sc_hd__a32oi_1                          4     0.0012 nW       0.005 nW
+  sky130_fd_sc_hd__o311a_1                          1     0.0038 nW       0.004 nW
+  sky130_fd_sc_hd__a2111oi_0                        8     0.0004 nW       0.003 nW
+  sky130_fd_sc_hd__o311ai_0                         3     0.0006 nW       0.002 nW
   ----------------------------------------------------------------------------
-  Total leakage : 1.1966 nW  (1.20 nW)
+  Total leakage : 496.4941 nW  (496.49 nW)
 
 Module: per_bank_arb
   Cell                                          Count  Leakage/cell   Contribution
@@ -271,19 +309,33 @@ Module: sram_array
   ----------------------------------------------------------------------------
   Total leakage : 113.5941 nW  (113.59 nW)
 
+Module: banked_sram_ctrl (top wrapper)
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__mux4_2                           4     0.0064 nW       0.025 nW
+  sky130_fd_sc_hd__and2_0                           8     0.0019 nW       0.015 nW
+  sky130_fd_sc_hd__nor4bb_1                         4     0.0032 nW       0.013 nW
+  sky130_fd_sc_hd__nand4b_1                         8     0.0010 nW       0.008 nW
+  sky130_fd_sc_hd__clkinv_1                         4     0.0016 nW       0.006 nW
+  sky130_fd_sc_hd__nand4_1                          7     0.0005 nW       0.004 nW
+  sky130_fd_sc_hd__or4_1                            1     0.0009 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 0.0727 nW  (0.07 nW)
+
 ==============================================================================
 Summary
 ==============================================================================
 Module                          Cells    Leakage (nW)         Leakage
 ------------------------------------------------------------------------------
 bank_scheduler                    103           0.944       0.9440 nW
-banked_sram_ctrl                  614           1.197       1.1966 nW
+banked_sram_ctrl                93573         496.494     496.4941 nW
 per_bank_arb                       42           0.131       0.1312 nW
 perf_counter                     4439          19.243      19.2426 nW
 req_fifo                          490           3.093       3.0929 nW
 rsp_fifo                          488           3.089       3.0886 nW
 rsp_mux                           650           1.173       1.1732 nW
 sram_array                      21265         113.594     113.5941 nW
+banked_sram_ctrl                   36           0.073       0.0727 nW
 ==============================================================================
 
 Notes:

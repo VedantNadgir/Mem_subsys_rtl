@@ -1,96 +1,177 @@
 ======================================================================
-Synthesis Report — module: banked_sram_ctrl
+Synthesis Report — module: banked_sram_ctrl  (FULL HIERARCHY — all 22 submodule instances expanded)
 ======================================================================
-
 --- Hierarchy Report (post-elaboration, pre-processing) ---
-Wire count       : 349
-Wire bits        : 6498
-Cell count       : 208
+Wire count       : 2265
+Wire bits        : 37890
+Cell count       : 738
 Cell breakdown   :
-  $and                                     16
-  $eq                                      16
-  $logic_and                               48
-  $logic_not                               20
-  $mul                                     8
-  $mux                                     4
-  $neg                                     32
-  $not                                     16
-  $or                                      16
-  $shift                                   32
-
+  $add                                      76
+  $and                                      24
+  $eq                                       96
+  $eqx                                      16
+  $gt                                       4
+  $logic_and                                204
+  $logic_not                                86
+  $logic_or                                 8
+  $lt                                       8
+  $memrd                                    4
+  $mod                                      4
+  $mul                                      8
+  $mux                                      8
+  $ne                                       8
+  $neg                                      32
+  $not                                      24
+  $or                                       32
+  $reduce_or                                8
+  $shift                                    32
+  $shiftx                                   4
+  $shl                                      20
+  $shr                                      20
+  $sub                                      12
+(4 memories / 32768 memory bits present at this stage — not yet mapped
+ to registers; also 68 processes.)
 --- Pre-Optimization Report ---
-Wire count       : 234
-Wire bits        : 4218
-Cell count       : 232
+Wire count       : 71159
+Wire bits        : 158503
+Cell count       : 70997
 Cell breakdown  :
-  $and                                     12
-  $eq                                      12
-  $logic_and                               44
-  $logic_not                               16
-  $mux                                     55
-  $neg                                     12
-  $not                                     9
-  $or                                      12
-  $shift                                   22
-
+  $add                                      76
+  $adff                                     74
+  $and                                      34004
+  $dff                                      1096
+  $eq                                       215
+  $eqx                                      16
+  $gt                                       4
+  $logic_and                                200
+  $logic_not                                89
+  $logic_or                                 8
+  $lt                                       8
+  $mod                                      4
+  $mul                                      8
+  $mux                                      34658
+  $neg                                      28
+  $not                                      20
+  $or                                       408
+  $pmux                                     13
+  $reduce_bool                              8
+  $reduce_or                                8
+  $shift                                    28
+  $shiftx                                   4
+  $shl                                      4
+  $shr                                      4
+  $sub                                      12
 --- Optimization Summary ---
-Pre-optimization cell count  : 232
-Post-optimization cell count : 194
-Reduction %                  : 16.38%
-
+Pre-optimization cell count  : 70997
+Post-optimization cell count : 69545
+Reduction %                  : 2.05%
 --- Technology-Mapped Report (final, Sky130 HD) ---
-Gate count (total cells)     : 614
-Cell count                   : 614
-Sequential cell count         : 0
-Combinational cell count      : 614
-Wire count                   : 469
-Wire bits                    : 782
-Area (liberty units, from stat -liberty) : 4287.8624
+Gate count (total cells)     : 93573
+Cell count                   : 93573
+Sequential cell count         : 35669
+Combinational cell count      : 57904
+Wire count                   : 58586
+Wire bits                    : 96429
+Area (liberty units, from stat -liberty) : 1450599.9904
 Cell breakdown                :
-  sky130_fd_sc_hd__a21oi_1                 2
-  sky130_fd_sc_hd__a221o_1                 5
-  sky130_fd_sc_hd__a222oi_1                128
-  sky130_fd_sc_hd__a31oi_1                 1
-  sky130_fd_sc_hd__a32o_1                  5
-  sky130_fd_sc_hd__and2_0                  64
-  sky130_fd_sc_hd__and3_1                  2
+  sky130_fd_sc_hd__a2111oi_0               8
+  sky130_fd_sc_hd__a211o_1                 4
+  sky130_fd_sc_hd__a211oi_1                12
+  sky130_fd_sc_hd__a21boi_0                101
+  sky130_fd_sc_hd__a21o_1                  12
+  sky130_fd_sc_hd__a21oi_1                 3177
+  sky130_fd_sc_hd__a221o_1                 14
+  sky130_fd_sc_hd__a221oi_1                57
+  sky130_fd_sc_hd__a222oi_1                2000
+  sky130_fd_sc_hd__a22o_1                  874
+  sky130_fd_sc_hd__a22oi_1                 3896
+  sky130_fd_sc_hd__a311oi_1                10
+  sky130_fd_sc_hd__a31o_1                  19
+  sky130_fd_sc_hd__a31oi_1                 122
+  sky130_fd_sc_hd__a32o_1                  9
+  sky130_fd_sc_hd__a32oi_1                 4
+  sky130_fd_sc_hd__a41o_1                  18
+  sky130_fd_sc_hd__a41oi_1                 74
+  sky130_fd_sc_hd__and2_0                  197
+  sky130_fd_sc_hd__and3_1                  232
   sky130_fd_sc_hd__and3b_1                 1
-  sky130_fd_sc_hd__and4_1                  1
-  sky130_fd_sc_hd__clkinv_1                38
-  sky130_fd_sc_hd__lpflow_inputiso1p_1     1
-  sky130_fd_sc_hd__lpflow_isobufsrc_1      100
-  sky130_fd_sc_hd__nand2_1                 75
-  sky130_fd_sc_hd__nand2b_1                1
-  sky130_fd_sc_hd__nand3_1                 12
-  sky130_fd_sc_hd__nand3b_1                36
-  sky130_fd_sc_hd__nand4_1                 8
-  sky130_fd_sc_hd__nand4b_1                5
-  sky130_fd_sc_hd__nand4bb_1               3
-  sky130_fd_sc_hd__nor2_1                  5
-  sky130_fd_sc_hd__nor3_1                  3
-  sky130_fd_sc_hd__nor3b_1                 3
-  sky130_fd_sc_hd__nor4_1                  1
-  sky130_fd_sc_hd__nor4b_1                 1
-  sky130_fd_sc_hd__o2111ai_1               15
-  sky130_fd_sc_hd__o211ai_1                1
-  sky130_fd_sc_hd__o31ai_1                 96
-  sky130_fd_sc_hd__xnor2_1                 1
-
+  sky130_fd_sc_hd__and4_1                  43
+  sky130_fd_sc_hd__clkinv_1                226
+  sky130_fd_sc_hd__dfrtp_1                 1129
+  sky130_fd_sc_hd__dfstp_2                 4
+  sky130_fd_sc_hd__edfxtp_1                34536
+  sky130_fd_sc_hd__lpflow_inputiso1p_1     30
+  sky130_fd_sc_hd__lpflow_isobufsrc_1      274
+  sky130_fd_sc_hd__mux2i_1                 4
+  sky130_fd_sc_hd__mux4_2                  6244
+  sky130_fd_sc_hd__nand2_1                 3310
+  sky130_fd_sc_hd__nand2b_1                50
+  sky130_fd_sc_hd__nand3_1                 254
+  sky130_fd_sc_hd__nand3b_1                41
+  sky130_fd_sc_hd__nand4_1                 426
+  sky130_fd_sc_hd__nand4b_1                13
+  sky130_fd_sc_hd__nand4bb_1               4
+  sky130_fd_sc_hd__nor2_1                  33500
+  sky130_fd_sc_hd__nor2b_1                 11
+  sky130_fd_sc_hd__nor3_1                  211
+  sky130_fd_sc_hd__nor3b_1                 20
+  sky130_fd_sc_hd__nor4_1                  322
+  sky130_fd_sc_hd__nor4b_1                 11
+  sky130_fd_sc_hd__nor4bb_1                5
+  sky130_fd_sc_hd__o2111a_1                12
+  sky130_fd_sc_hd__o2111ai_1               51
+  sky130_fd_sc_hd__o211a_1                 4
+  sky130_fd_sc_hd__o211ai_1                20
+  sky130_fd_sc_hd__o21a_1                  6
+  sky130_fd_sc_hd__o21ai_0                 375
+  sky130_fd_sc_hd__o21bai_1                3
+  sky130_fd_sc_hd__o221ai_1                16
+  sky130_fd_sc_hd__o22a_1                  13
+  sky130_fd_sc_hd__o22ai_1                 96
+  sky130_fd_sc_hd__o311a_1                 1
+  sky130_fd_sc_hd__o311ai_0                3
+  sky130_fd_sc_hd__o31a_1                  64
+  sky130_fd_sc_hd__o31ai_1                 250
+  sky130_fd_sc_hd__o41a_1                  32
+  sky130_fd_sc_hd__o41ai_1                 192
+  sky130_fd_sc_hd__or3_1                   74
+  sky130_fd_sc_hd__or3b_1                  4
+  sky130_fd_sc_hd__or4_1                   109
+  sky130_fd_sc_hd__or4b_1                  9
+  sky130_fd_sc_hd__xnor2_1                 478
+  sky130_fd_sc_hd__xor2_1                  252
 --- Timing Report (ABC gate-delay estimate) ---
-Target period            : 4.137 ns  (242 MHz)
-Critical path estimate   : 4.136 ns  (gate-delay only — no wire model)
-Maximum frequency estimate: 241.8 MHz  (optimistic upper bound)
-Slack vs target          : +0.001 ns  (MET)
-Logic depth              : 6 gate levels
-Critical path start      : \pp1_id [10]
-Critical path end        : \rsp_data [95]
-Note: Wire delays add ~30-60% at 130nm. These numbers are a useful
-      directional guide — not production timing closure.
-      Use OpenSTA for production-grade STA with wire models.
-
+Target period            : 4.137 ns  (241.72 MHz)  [same -D constraint used for every module's ABC run]
+Critical path estimate   : 30.265 ns  (worst of the 8 per-module ABC runs — bounded by sram_array)
+Maximum frequency estimate: 33.04 MHz  (optimistic upper bound)
+Slack vs target          : -26.128 ns  (NOT MET)
+Logic depth              : 2 gate levels
+Critical path start      : \we  (inside sram_array instance)
+Critical path end        : $memory\mem$wren[254][0][0]$y$38271  (inside sram_array instance)
+Note: This flow synthesizes each RTL module SEPARATELY (bank_scheduler,
+      per_bank_arb, perf_counter, req_fifo, rsp_fifo, rsp_mux, sram_array,
+      banked_sram_ctrl wrapper) and runs ABC per-module with a shared
+      4137 ps target. There is no single flattened top-level STA in this
+      log, so "expanded" critical path = worst individual-block path
+      across all instances, which is sram_array's write-enable → memory
+      write-select path (30.27 ns, ~7.3x over target — dominates because
+      of the 21265-cell sram_array subtree, 4 instances). Per-block
+      critical paths for reference (Gates / Delay):
+        rsp_mux        614 gates   4.136 ns
+        perf_counter  3434 gates   3.266 ns
+        req_fifo        187 gates   2.135 ns
+        per_bank_arb     40 gates   1.733 ns
+        bank_scheduler   11 gates   0.270 ns
+        sram_array    13073 gates  30.265 ns  <- worst, drives this report
+        banked_sram_ctrl 36 gates   0.579 ns
+        rsp_fifo        144 gates   1.599 ns
+      Wire delays add ~30-60% at 130nm. Use OpenSTA for production,
+      hierarchy-flattened STA with real wire/parasitic models.
 --- Artifact Paths ---
 Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/banked_sram_ctrl_netlist.v
 Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/banked_sram_ctrl.log
 Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/banked_sram_ctrl_report.txt
-
+Note: netlist/log/report paths follow the same convention seen for
+      bank_scheduler in synth_banked_sram_ctrl.ys; not literally printed
+      in this log (only the .ys script path at line 9 is).
 ======================================================================

@@ -1,0 +1,67 @@
+======================================================================
+Synthesis Report — module: banked_sram_ctrl  (TOP WRAPPER ONLY — submodules as black boxes)
+======================================================================
+--- Hierarchy Report (post-elaboration, pre-processing) ---
+Wire count       : 258
+Wire bits        : 3808
+Cell count       : 120
+Cell breakdown   :
+  $eq                                       32
+  $logic_and                                56
+  $logic_not                                8
+  $or                                       16
+  $reduce_or                                4
+  $shiftx                                   4
+--- Pre-Optimization Report ---
+Wire count       : 127
+Wire bits        : 2344
+Cell count       : 100
+Cell breakdown  :
+  $eq                                       12
+  $logic_and                                56
+  $logic_not                                12
+  $or                                       12
+  $reduce_or                                4
+  $shiftx                                   4
+--- Optimization Summary ---
+Pre-optimization cell count  : 100
+Post-optimization cell count : 64
+Reduction %                  : 36.00%
+--- Technology-Mapped Report (final, Sky130 HD) ---
+Gate count (total cells)     : 36
+Cell count                   : 36
+Sequential cell count         : 0
+Combinational cell count      : 36
+Wire count                   : 76
+Wire bits                    : 1728
+Area (liberty units, from stat -liberty) : 316.5536
+Cell breakdown                :
+  sky130_fd_sc_hd__and2_0                  8
+  sky130_fd_sc_hd__clkinv_1                4
+  sky130_fd_sc_hd__mux4_2                  4
+  sky130_fd_sc_hd__nand4_1                 7
+  sky130_fd_sc_hd__nand4b_1                8
+  sky130_fd_sc_hd__nor4bb_1                4
+  sky130_fd_sc_hd__or4_1                   1
+--- Timing Report (ABC gate-delay estimate) ---
+Target period            : 4.137 ns  (241.72 MHz)
+Critical path estimate   : 0.579 ns  (gate-delay only — no wire model)
+Maximum frequency estimate: 1728.19 MHz  (optimistic upper bound)
+Slack vs target          : +3.558 ns  (MET)
+Logic depth              : 2 gate levels
+Critical path start      : \arb_grant_valid[3]
+Critical path end        : \req_fifo_pop[0]
+Note: This is the wrapper's OWN ABC run only — glue logic between
+      req_fifo/bank_scheduler/per_bank_arb/sram_array/rsp_mux/rsp_fifo/
+      perf_counter instances. All 22 submodule instances are black-boxed
+      here (0 sequential cells because the wrapper itself is pure
+      combinational interconnect/muxing logic).
+      Wire delays add ~30-60% at 130nm. Use OpenSTA for production STA.
+--- Artifact Paths ---
+Generated netlist path : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/netlists/banked_sram_ctrl_netlist.v
+Generated log path     : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/logs/banked_sram_ctrl.log
+Generated report path  : /Users/vedantnadgir/Desktop/Mem_Subsystem_RTL/banked_sram_ctrl/synth/reports/top_level_wrapper_report.txt
+Note: netlist/log/report paths follow the same convention seen for
+      bank_scheduler in synth_banked_sram_ctrl.ys; not literally printed
+      in this log (only the .ys script path at line 9 is).
+======================================================================
