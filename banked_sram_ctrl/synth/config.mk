@@ -23,7 +23,7 @@ PYTHON3  := python3
 
 # --- Helper scripts ------------------------------------------------
 PARSE_SCRIPT := $(ROOT_DIR)parse_report.py
-
+POWER_SCRIPT := $(ROOT_DIR)leakage_power.py
 # --- Sky130 liberty ------------------------------------------------
 LIBERTY_FILE := $(REPO_ROOT)pdk/sky130_fd_sc_hd/generated_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
 

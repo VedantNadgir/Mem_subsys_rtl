@@ -24,7 +24,7 @@ include config.mk
 
 MODULE ?= $(DEFAULT_MODULE)
 
-.PHONY: help check dirs clean synth synth_all synth_unit report summary
+.PHONY: help check dirs clean synth synth_all synth_unit report summary power
 
 # --- Help --------------------------------------------------------
 help:
@@ -191,6 +191,7 @@ synth_unit: check
 		--report-dir $(REPORT_DIR) \
 		--csv-out $(REPORT_DIR)/summary.csv \
 		--txt-out $(REPORT_DIR)/summary.txt
+	@$(MAKE) --no-print-directory -C $(ROOT_DIR) power
 	@echo "Result: SYNTH_UNIT OK"
 	@echo "  Summary: $(REPORT_DIR)/summary.txt"
 	@echo "           $(REPORT_DIR)/summary.csv"
@@ -229,6 +230,7 @@ synth_all: check
 		--report-dir $(REPORT_DIR) \
 		--csv-out $(REPORT_DIR)/summary.csv \
 		--txt-out $(REPORT_DIR)/summary.txt
+	@$(MAKE) --no-print-directory -C $(ROOT_DIR) power
 	@echo "Result: SYNTH_ALL OK"
 	@echo "  Summary: $(REPORT_DIR)/summary.txt"
 	@echo "           $(REPORT_DIR)/summary.csv"
@@ -259,6 +261,17 @@ report: check
 	@echo "Result: REPORT OK"
 	@echo "  Report: $(REPORT_DIR)/$(MODULE)_report.txt"
 
+# --- Leakage Power -------------------------------------------------
+power: 
+	@test -f $(POWER_SCRIPT) || { echo "[ERROR]..."; exit 1; }
+	@test -f $(LIBERTY_FILE) || { echo "[ERROR]..."; exit 1; }
+	@ls $(REPORT_DIR)/*_report.txt || { echo "[ERROR]..."; exit 1; }
+	@$(PYTHON3) $(POWER_SCRIPT) \
+		--liberty $(LIBERTY_FILE) \
+		--report-dir $(REPORT_DIR) \
+		--output $(REPORT_DIR)/leakage_power.txt
+	@echo "Result: POWER OK"
+
 # --- Summary generation (standalone) -------------------------------
 summary: check
 	@echo ""
@@ -267,6 +280,7 @@ summary: check
 		--report-dir $(REPORT_DIR) \
 		--csv-out $(REPORT_DIR)/summary.csv \
 		--txt-out $(REPORT_DIR)/summary.txt
+	@$(MAKE) --no-print-directory -C $(ROOT_DIR) power
 	@echo "Result: SUMMARY OK"
 	@echo "  Summary: $(REPORT_DIR)/summary.txt"
 	@echo "           $(REPORT_DIR)/summary.csv"

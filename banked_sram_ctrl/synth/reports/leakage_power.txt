@@ -1,0 +1,293 @@
+==============================================================================
+Leakage Power Estimate  —  sky130_fd_sc_hd  TT 25°C 1.80V
+Static gate leakage only  |  no switching activity  |  no wire capacitance
+Liberty source: sky130_fd_sc_hd__tt_025C_1v80.lib  (leakage_power_unit = 1nW)
+==============================================================================
+
+Module: bank_scheduler
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__edfxtp_1                        90     0.0098 nW       0.881 nW
+  sky130_fd_sc_hd__dfrtp_1                          2     0.0117 nW       0.023 nW
+  sky130_fd_sc_hd__and3_1                           4     0.0056 nW       0.022 nW
+  sky130_fd_sc_hd__a21o_1                           1     0.0059 nW       0.006 nW
+  sky130_fd_sc_hd__and2_0                           2     0.0019 nW       0.004 nW
+  sky130_fd_sc_hd__a21boi_0                         1     0.0025 nW       0.002 nW
+  sky130_fd_sc_hd__nand2b_1                         1     0.0023 nW       0.002 nW
+  sky130_fd_sc_hd__clkinv_1                         1     0.0016 nW       0.002 nW
+  sky130_fd_sc_hd__nand3b_1                         1     0.0014 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 0.9440 nW  (0.94 nW)
+
+Module: banked_sram_ctrl
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__a222oi_1                       128     0.0024 nW       0.312 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1             100     0.0022 nW       0.218 nW
+  sky130_fd_sc_hd__o31ai_1                         96     0.0017 nW       0.163 nW
+  sky130_fd_sc_hd__nand2_1                         75     0.0021 nW       0.159 nW
+  sky130_fd_sc_hd__and2_0                          64     0.0019 nW       0.123 nW
+  sky130_fd_sc_hd__clkinv_1                        38     0.0016 nW       0.060 nW
+  sky130_fd_sc_hd__nand3b_1                        36     0.0014 nW       0.050 nW
+  sky130_fd_sc_hd__a221o_1                          5     0.0027 nW       0.013 nW
+  sky130_fd_sc_hd__nand3_1                         12     0.0010 nW       0.012 nW
+  sky130_fd_sc_hd__a32o_1                           5     0.0023 nW       0.011 nW
+  sky130_fd_sc_hd__and3_1                           2     0.0056 nW       0.011 nW
+  sky130_fd_sc_hd__nor2_1                           5     0.0020 nW       0.010 nW
+  sky130_fd_sc_hd__o2111ai_1                       15     0.0006 nW       0.009 nW
+  sky130_fd_sc_hd__and3b_1                          1     0.0071 nW       0.007 nW
+  sky130_fd_sc_hd__nand4bb_1                        3     0.0019 nW       0.006 nW
+  sky130_fd_sc_hd__nand4b_1                         5     0.0010 nW       0.005 nW
+  sky130_fd_sc_hd__nand4_1                          8     0.0005 nW       0.004 nW
+  sky130_fd_sc_hd__nor3b_1                          3     0.0013 nW       0.004 nW
+  sky130_fd_sc_hd__and4_1                           1     0.0034 nW       0.003 nW
+  sky130_fd_sc_hd__a21oi_1                          2     0.0017 nW       0.003 nW
+  sky130_fd_sc_hd__nor3_1                           3     0.0009 nW       0.003 nW
+  sky130_fd_sc_hd__nand2b_1                         1     0.0023 nW       0.002 nW
+  sky130_fd_sc_hd__xnor2_1                          1     0.0021 nW       0.002 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1              1     0.0018 nW       0.002 nW
+  sky130_fd_sc_hd__a31oi_1                          1     0.0015 nW       0.001 nW
+  sky130_fd_sc_hd__nor4b_1                          1     0.0009 nW       0.001 nW
+  sky130_fd_sc_hd__o211ai_1                         1     0.0007 nW       0.001 nW
+  sky130_fd_sc_hd__nor4_1                           1     0.0005 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 1.1966 nW  (1.20 nW)
+
+Module: per_bank_arb
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__mux4_2                           7     0.0064 nW       0.045 nW
+  sky130_fd_sc_hd__dfrtp_1                          2     0.0117 nW       0.023 nW
+  sky130_fd_sc_hd__clkinv_1                         6     0.0016 nW       0.009 nW
+  sky130_fd_sc_hd__nand2_1                          4     0.0021 nW       0.008 nW
+  sky130_fd_sc_hd__a41o_1                           1     0.0066 nW       0.007 nW
+  sky130_fd_sc_hd__mux2i_1                          1     0.0059 nW       0.006 nW
+  sky130_fd_sc_hd__and2_0                           3     0.0019 nW       0.006 nW
+  sky130_fd_sc_hd__and4_1                           1     0.0034 nW       0.003 nW
+  sky130_fd_sc_hd__o21ai_0                          3     0.0010 nW       0.003 nW
+  sky130_fd_sc_hd__a211oi_1                         3     0.0010 nW       0.003 nW
+  sky130_fd_sc_hd__or3b_1                           1     0.0026 nW       0.003 nW
+  sky130_fd_sc_hd__nand2b_1                         1     0.0023 nW       0.002 nW
+  sky130_fd_sc_hd__or4b_1                           1     0.0021 nW       0.002 nW
+  sky130_fd_sc_hd__nor2_1                           1     0.0020 nW       0.002 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1              1     0.0018 nW       0.002 nW
+  sky130_fd_sc_hd__o31ai_1                          1     0.0017 nW       0.002 nW
+  sky130_fd_sc_hd__a31oi_1                          1     0.0015 nW       0.001 nW
+  sky130_fd_sc_hd__a41oi_1                          1     0.0014 nW       0.001 nW
+  sky130_fd_sc_hd__a311oi_1                         1     0.0010 nW       0.001 nW
+  sky130_fd_sc_hd__or4_1                            1     0.0009 nW       0.001 nW
+  sky130_fd_sc_hd__nand4_1                          1     0.0005 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 0.1312 nW  (0.13 nW)
+
+Module: perf_counter
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__dfrtp_1                       1057     0.0117 nW      12.316 nW
+  sky130_fd_sc_hd__xor2_1                         282     0.0043 nW       1.206 nW
+  sky130_fd_sc_hd__xnor2_1                        441     0.0021 nW       0.911 nW
+  sky130_fd_sc_hd__nor2_1                         387     0.0020 nW       0.762 nW
+  sky130_fd_sc_hd__nand2_1                        320     0.0021 nW       0.678 nW
+  sky130_fd_sc_hd__a222oi_1                       249     0.0024 nW       0.606 nW
+  sky130_fd_sc_hd__and3_1                          83     0.0056 nW       0.464 nW
+  sky130_fd_sc_hd__a21oi_1                        175     0.0017 nW       0.289 nW
+  sky130_fd_sc_hd__clkinv_1                       141     0.0016 nW       0.221 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1              99     0.0022 nW       0.216 nW
+  sky130_fd_sc_hd__nand3_1                        192     0.0010 nW       0.197 nW
+  sky130_fd_sc_hd__nand4_1                        368     0.0005 nW       0.194 nW
+  sky130_fd_sc_hd__and2_0                          98     0.0019 nW       0.188 nW
+  sky130_fd_sc_hd__a22oi_1                         69     0.0026 nW       0.178 nW
+  sky130_fd_sc_hd__and4_1                          40     0.0034 nW       0.136 nW
+  sky130_fd_sc_hd__a31oi_1                         72     0.0015 nW       0.107 nW
+  sky130_fd_sc_hd__a41o_1                          11     0.0066 nW       0.073 nW
+  sky130_fd_sc_hd__a221oi_1                        37     0.0018 nW       0.066 nW
+  sky130_fd_sc_hd__nor3_1                          61     0.0009 nW       0.056 nW
+  sky130_fd_sc_hd__nor4_1                          87     0.0005 nW       0.044 nW
+  sky130_fd_sc_hd__a41oi_1                         28     0.0014 nW       0.038 nW
+  sky130_fd_sc_hd__a22o_1                           8     0.0041 nW       0.033 nW
+  sky130_fd_sc_hd__a31o_1                          13     0.0024 nW       0.031 nW
+  sky130_fd_sc_hd__o21ba_1                          4     0.0073 nW       0.029 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1             15     0.0018 nW       0.028 nW
+  sky130_fd_sc_hd__nor2b_1                         12     0.0022 nW       0.026 nW
+  sky130_fd_sc_hd__or4_1                           22     0.0009 nW       0.019 nW
+  sky130_fd_sc_hd__o31ai_1                          9     0.0017 nW       0.015 nW
+  sky130_fd_sc_hd__o311a_1                          4     0.0038 nW       0.015 nW
+  sky130_fd_sc_hd__or3_1                           11     0.0013 nW       0.014 nW
+  sky130_fd_sc_hd__a21boi_0                         5     0.0025 nW       0.012 nW
+  sky130_fd_sc_hd__a21o_1                           2     0.0059 nW       0.012 nW
+  sky130_fd_sc_hd__nor3b_1                          8     0.0013 nW       0.010 nW
+  sky130_fd_sc_hd__nand2b_1                         4     0.0023 nW       0.009 nW
+  sky130_fd_sc_hd__a221o_1                          3     0.0027 nW       0.008 nW
+  sky130_fd_sc_hd__o21a_1                           3     0.0022 nW       0.007 nW
+  sky130_fd_sc_hd__o21bai_1                         2     0.0029 nW       0.006 nW
+  sky130_fd_sc_hd__nand4bb_1                        2     0.0019 nW       0.004 nW
+  sky130_fd_sc_hd__nor4bb_1                         1     0.0032 nW       0.003 nW
+  sky130_fd_sc_hd__a311oi_1                         3     0.0010 nW       0.003 nW
+  sky130_fd_sc_hd__o22a_1                           1     0.0028 nW       0.003 nW
+  sky130_fd_sc_hd__nor4b_1                          3     0.0009 nW       0.003 nW
+  sky130_fd_sc_hd__or3b_1                           1     0.0026 nW       0.003 nW
+  sky130_fd_sc_hd__o21ai_0                          2     0.0010 nW       0.002 nW
+  sky130_fd_sc_hd__o311ai_0                         3     0.0006 nW       0.002 nW
+  sky130_fd_sc_hd__o211ai_1                         1     0.0007 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 19.2426 nW  (19.24 nW)
+
+Module: req_fifo
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__edfxtp_1                       256     0.0098 nW       2.505 nW
+  sky130_fd_sc_hd__nand2_1                        134     0.0021 nW       0.284 nW
+  sky130_fd_sc_hd__a222oi_1                        64     0.0024 nW       0.156 nW
+  sky130_fd_sc_hd__dfrtp_1                          7     0.0117 nW       0.082 nW
+  sky130_fd_sc_hd__dfstp_2                          1     0.0105 nW       0.011 nW
+  sky130_fd_sc_hd__xnor2_1                          5     0.0021 nW       0.010 nW
+  sky130_fd_sc_hd__xor2_1                           2     0.0043 nW       0.009 nW
+  sky130_fd_sc_hd__nor2_1                           3     0.0020 nW       0.006 nW
+  sky130_fd_sc_hd__and3_1                           1     0.0056 nW       0.006 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1               2     0.0022 nW       0.004 nW
+  sky130_fd_sc_hd__and2_0                           2     0.0019 nW       0.004 nW
+  sky130_fd_sc_hd__or3_1                            2     0.0013 nW       0.003 nW
+  sky130_fd_sc_hd__a32o_1                           1     0.0023 nW       0.002 nW
+  sky130_fd_sc_hd__o31a_1                           1     0.0021 nW       0.002 nW
+  sky130_fd_sc_hd__a21oi_1                          1     0.0017 nW       0.002 nW
+  sky130_fd_sc_hd__clkinv_1                         1     0.0016 nW       0.002 nW
+  sky130_fd_sc_hd__nor3b_1                          1     0.0013 nW       0.001 nW
+  sky130_fd_sc_hd__a32oi_1                          1     0.0012 nW       0.001 nW
+  sky130_fd_sc_hd__o21ai_0                          1     0.0010 nW       0.001 nW
+  sky130_fd_sc_hd__nand3_1                          1     0.0010 nW       0.001 nW
+  sky130_fd_sc_hd__nor3_1                           1     0.0009 nW       0.001 nW
+  sky130_fd_sc_hd__nor4b_1                          1     0.0009 nW       0.001 nW
+  sky130_fd_sc_hd__nand4_1                          1     0.0005 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 3.0929 nW  (3.09 nW)
+
+Module: rsp_fifo
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__edfxtp_1                       256     0.0098 nW       2.505 nW
+  sky130_fd_sc_hd__nand2_1                        133     0.0021 nW       0.282 nW
+  sky130_fd_sc_hd__a222oi_1                        64     0.0024 nW       0.156 nW
+  sky130_fd_sc_hd__dfrtp_1                          7     0.0117 nW       0.082 nW
+  sky130_fd_sc_hd__o211a_1                          1     0.0107 nW       0.011 nW
+  sky130_fd_sc_hd__xnor2_1                          5     0.0021 nW       0.010 nW
+  sky130_fd_sc_hd__nor2_1                           4     0.0020 nW       0.008 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1               3     0.0022 nW       0.007 nW
+  sky130_fd_sc_hd__xor2_1                           1     0.0043 nW       0.004 nW
+  sky130_fd_sc_hd__a22o_1                           1     0.0041 nW       0.004 nW
+  sky130_fd_sc_hd__and2_0                           2     0.0019 nW       0.004 nW
+  sky130_fd_sc_hd__a211o_1                          1     0.0031 nW       0.003 nW
+  sky130_fd_sc_hd__clkinv_1                         2     0.0016 nW       0.003 nW
+  sky130_fd_sc_hd__nor3_1                           3     0.0009 nW       0.003 nW
+  sky130_fd_sc_hd__nor3b_1                          2     0.0013 nW       0.003 nW
+  sky130_fd_sc_hd__nand2b_1                         1     0.0023 nW       0.002 nW
+  sky130_fd_sc_hd__o31a_1                           1     0.0021 nW       0.002 nW
+  sky130_fd_sc_hd__nor4_1                           1     0.0005 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 3.0886 nW  (3.09 nW)
+
+Module: rsp_mux
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__nand2_1                        135     0.0021 nW       0.286 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1             100     0.0022 nW       0.218 nW
+  sky130_fd_sc_hd__a32oi_1                         89     0.0012 nW       0.111 nW
+  sky130_fd_sc_hd__a22oi_1                         28     0.0026 nW       0.072 nW
+  sky130_fd_sc_hd__nand2b_1                        29     0.0023 nW       0.065 nW
+  sky130_fd_sc_hd__o211ai_1                        87     0.0007 nW       0.061 nW
+  sky130_fd_sc_hd__a221o_1                         22     0.0027 nW       0.058 nW
+  sky130_fd_sc_hd__a32o_1                          22     0.0023 nW       0.051 nW
+  sky130_fd_sc_hd__nand3b_1                        29     0.0014 nW       0.041 nW
+  sky130_fd_sc_hd__nand3_1                         36     0.0010 nW       0.037 nW
+  sky130_fd_sc_hd__nor2_1                          15     0.0020 nW       0.030 nW
+  sky130_fd_sc_hd__o211a_1                          2     0.0107 nW       0.021 nW
+  sky130_fd_sc_hd__and3_1                           3     0.0056 nW       0.017 nW
+  sky130_fd_sc_hd__and3b_1                          2     0.0071 nW       0.014 nW
+  sky130_fd_sc_hd__and4_1                           4     0.0034 nW       0.014 nW
+  sky130_fd_sc_hd__a222oi_1                         5     0.0024 nW       0.012 nW
+  sky130_fd_sc_hd__and4b_1                          2     0.0060 nW       0.012 nW
+  sky130_fd_sc_hd__a221oi_1                         4     0.0018 nW       0.007 nW
+  sky130_fd_sc_hd__nor4bb_1                         2     0.0032 nW       0.006 nW
+  sky130_fd_sc_hd__clkinv_1                         4     0.0016 nW       0.006 nW
+  sky130_fd_sc_hd__o32ai_1                          4     0.0011 nW       0.004 nW
+  sky130_fd_sc_hd__xor2_1                           1     0.0043 nW       0.004 nW
+  sky130_fd_sc_hd__nand4b_1                         3     0.0010 nW       0.003 nW
+  sky130_fd_sc_hd__o2111ai_1                        5     0.0006 nW       0.003 nW
+  sky130_fd_sc_hd__nor3b_1                          2     0.0013 nW       0.003 nW
+  sky130_fd_sc_hd__or3b_1                           1     0.0026 nW       0.003 nW
+  sky130_fd_sc_hd__nor4_1                           5     0.0005 nW       0.003 nW
+  sky130_fd_sc_hd__nand4bb_1                        1     0.0019 nW       0.002 nW
+  sky130_fd_sc_hd__nor3_1                           2     0.0009 nW       0.002 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1              1     0.0018 nW       0.002 nW
+  sky130_fd_sc_hd__a21oi_1                          1     0.0017 nW       0.002 nW
+  sky130_fd_sc_hd__a311o_1                          1     0.0016 nW       0.002 nW
+  sky130_fd_sc_hd__a211oi_1                         1     0.0010 nW       0.001 nW
+  sky130_fd_sc_hd__nor4b_1                          1     0.0009 nW       0.001 nW
+  sky130_fd_sc_hd__or4_1                            1     0.0009 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 1.1732 nW  (1.17 nW)
+
+Module: sram_array
+  Cell                                          Count  Leakage/cell   Contribution
+  ----------------------------------------------------------------------------
+  sky130_fd_sc_hd__edfxtp_1                      8192     0.0098 nW      80.175 nW
+  sky130_fd_sc_hd__nor2_1                        8264     0.0020 nW      16.278 nW
+  sky130_fd_sc_hd__mux4_2                        1553     0.0064 nW       9.893 nW
+  sky130_fd_sc_hd__a22oi_1                        954     0.0026 nW       2.457 nW
+  sky130_fd_sc_hd__a21oi_1                        743     0.0017 nW       1.227 nW
+  sky130_fd_sc_hd__nand2_1                        532     0.0021 nW       1.127 nW
+  sky130_fd_sc_hd__a22o_1                         216     0.0041 nW       0.878 nW
+  sky130_fd_sc_hd__a222oi_1                       318     0.0024 nW       0.774 nW
+  sky130_fd_sc_hd__and3_1                          33     0.0056 nW       0.185 nW
+  sky130_fd_sc_hd__o21ai_0                         88     0.0010 nW       0.091 nW
+  sky130_fd_sc_hd__o41ai_1                         48     0.0014 nW       0.067 nW
+  sky130_fd_sc_hd__o31ai_1                         36     0.0017 nW       0.061 nW
+  sky130_fd_sc_hd__a21boi_0                        24     0.0025 nW       0.059 nW
+  sky130_fd_sc_hd__o22ai_1                         24     0.0013 nW       0.031 nW
+  sky130_fd_sc_hd__o31a_1                          14     0.0021 nW       0.029 nW
+  sky130_fd_sc_hd__nor4_1                          56     0.0005 nW       0.028 nW
+  sky130_fd_sc_hd__nor3_1                          27     0.0009 nW       0.025 nW
+  sky130_fd_sc_hd__or3_1                           16     0.0013 nW       0.021 nW
+  sky130_fd_sc_hd__a31oi_1                         13     0.0015 nW       0.019 nW
+  sky130_fd_sc_hd__nand2b_1                         8     0.0023 nW       0.018 nW
+  sky130_fd_sc_hd__or4_1                           21     0.0009 nW       0.018 nW
+  sky130_fd_sc_hd__a221oi_1                        10     0.0018 nW       0.018 nW
+  sky130_fd_sc_hd__lpflow_isobufsrc_1               8     0.0022 nW       0.017 nW
+  sky130_fd_sc_hd__a21o_1                           2     0.0059 nW       0.012 nW
+  sky130_fd_sc_hd__o2111a_1                         3     0.0037 nW       0.011 nW
+  sky130_fd_sc_hd__o41a_1                           8     0.0014 nW       0.011 nW
+  sky130_fd_sc_hd__nand3_1                         10     0.0010 nW       0.010 nW
+  sky130_fd_sc_hd__lpflow_inputiso1p_1              5     0.0018 nW       0.009 nW
+  sky130_fd_sc_hd__and2_0                           4     0.0019 nW       0.008 nW
+  sky130_fd_sc_hd__o22a_1                           2     0.0028 nW       0.006 nW
+  sky130_fd_sc_hd__a221o_1                          2     0.0027 nW       0.005 nW
+  sky130_fd_sc_hd__o2111ai_1                        9     0.0006 nW       0.005 nW
+  sky130_fd_sc_hd__o221ai_1                         4     0.0011 nW       0.004 nW
+  sky130_fd_sc_hd__nand4_1                          8     0.0005 nW       0.004 nW
+  sky130_fd_sc_hd__o211ai_1                         4     0.0007 nW       0.003 nW
+  sky130_fd_sc_hd__a41oi_1                          2     0.0014 nW       0.003 nW
+  sky130_fd_sc_hd__a31o_1                           1     0.0024 nW       0.002 nW
+  sky130_fd_sc_hd__or4b_1                           1     0.0021 nW       0.002 nW
+  sky130_fd_sc_hd__a2111oi_0                        2     0.0004 nW       0.001 nW
+  ----------------------------------------------------------------------------
+  Total leakage : 113.5941 nW  (113.59 nW)
+
+==============================================================================
+Summary
+==============================================================================
+Module                          Cells    Leakage (nW)         Leakage
+------------------------------------------------------------------------------
+bank_scheduler                    103           0.944       0.9440 nW
+banked_sram_ctrl                  614           1.197       1.1966 nW
+per_bank_arb                       42           0.131       0.1312 nW
+perf_counter                     4439          19.243      19.2426 nW
+req_fifo                          490           3.093       3.0929 nW
+rsp_fifo                          488           3.089       3.0886 nW
+rsp_mux                           650           1.173       1.1732 nW
+sram_array                      21265         113.594     113.5941 nW
+==============================================================================
+
+Notes:
+  1. Values are static leakage (Ileak × Vdd) from Liberty cell_leakage_power.
+  2. Dynamic power (α × C × Vdd² × f) requires switching activity data.
+     Typical dynamic/leakage ratio: 10×–100× at nominal operating frequency.
+  3. For full power breakdown use OpenSTA with a VCD annotation.
