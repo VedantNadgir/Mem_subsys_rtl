@@ -1,7 +1,7 @@
 # Banked SRAM Controller — RTL Implementation
 
 A fully parameterized, banked, synchronous on-chip SRAM controller written in SystemVerilog.
-Designed, verified, and synthesized using open-source ASIC tooling against the SkyWater SKY130 130nm process.
+Designed, verified, and synthesized using open-source ASIC tooling against the SkyWater 130nm process.
 
 ---
 
